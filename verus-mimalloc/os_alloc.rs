@@ -244,19 +244,12 @@ fn unix_mmap(
 {
     let is_large = true;
     if (large_only || use_large_os_page(size, try_alignment)) && allow_large {
-        todo();
+        return (core::ptr::null_mut(), is_large, Tracked(MemChunk::empty()));
     }
 
     let is_large = false;
     let (p, Tracked(mem)) = unix_mmapx(addr, size, try_alignment, prot_rw);
-    if p.addr() != 0 {
-        if allow_large && use_large_os_page(size, try_alignment) {
-            todo();
-        }
-        return (p, is_large, Tracked(mem));
-    } else {
-        todo(); loop{}
-    }
+    (p, is_large, Tracked(mem))
 }
 
 exec static ALIGNED_BASE: core::sync::atomic::AtomicUsize = core::sync::atomic::AtomicUsize::new(0);
@@ -365,4 +358,3 @@ fn unix_mmapx(
 }
 
 }
-
