@@ -55,6 +55,8 @@ fn segment_commit_mask(
             start_p as int <= segment_ptr as int + i * SLICE_SIZE
             && start_p as int + full_size >= segment_ptr as int + (i + 1) * SLICE_SIZE
         )
+        && (!conservative && p as int == segment_ptr as int && size == COMMIT_SIZE as usize ==>
+            final(cm)@ == Set::range(0, 1))
         //&& start_p as int % SLICE_SIZE as int == 0
         //&& full_size as int % SLICE_SIZE as int == 0
     }})
@@ -103,6 +105,16 @@ fn segment_commit_mask(
     cm.create(bitidx, bitcount);
 
     proof {
+        if !conservative && p as int == segment_ptr as int && size == COMMIT_SIZE as usize {
+            assert(pstart == 0);
+            assert(start == 0);
+            assert(pstart + size == COMMIT_SIZE as usize);
+            assert(end == COMMIT_SIZE as usize);
+            assert(full_size == COMMIT_SIZE as usize);
+            assert(bitidx == 0);
+            assert(bitcount == 1);
+            assert(cm@ == Set::range(0, 1));
+        }
         let start_p = start_p as int;
         if conservative {
             assert(p <= start_p);
@@ -155,6 +167,8 @@ fn segment_commitx(
         commit ==> success ==> set_int_range(p as int, p + size) <=
             final(local).commit_mask(segment.segment_id@).bytes(segment.segment_id@)
              - final(local).decommit_mask(segment.segment_id@).bytes(segment.segment_id@),
+        commit && p == segment.segment_ptr.addr() && size == COMMIT_SIZE as usize
+            && old(local).commit_mask(segment.segment_id@)@.contains(0) ==> success,
 
         final(local).page_organization == old(local).page_organization,
         final(local).pages == old(local).pages,
@@ -173,11 +187,29 @@ fn segment_commitx(
     let (start, full_size) = segment_commit_mask(
         segment.segment_ptr as *mut u8, !commit, p, size, &mut mask);
 
+    proof {
+        if commit && p == segment.segment_ptr.addr() && size == COMMIT_SIZE as usize
+            && old(local).commit_mask(sid)@.contains(0)
+        {
+            assert(mask@ == Set::range(0, 1));
+            assert(mask@.subset_of(old(local).commit_mask(sid)@));
+            assert(local.commit_mask(sid)@ == old(local).commit_mask(sid)@);
+        }
+    }
+
     if mask.is_empty() || full_size == 0 {
         return true;
     }
 
     if commit && !segment.get_commit_mask(Tracked(&*local)).all_set(&mask) {
+        proof {
+            if commit && p == segment.segment_ptr.addr() && size == COMMIT_SIZE as usize
+                && old(local).commit_mask(sid)@.contains(0)
+            {
+                assert(mask@.subset_of(local.commit_mask(sid)@));
+                assert(false);
+            }
+        }
         proof {
             let ghost sid = segment.segment_id@;
             assert(local.mem_chunk_good(sid));
@@ -325,6 +357,8 @@ pub fn segment_ensure_committed(
         success ==> set_int_range(p as int, p + size) <=
             final(local).commit_mask(segment.segment_id@).bytes(segment.segment_id@)
             - final(local).decommit_mask(segment.segment_id@).bytes(segment.segment_id@),
+        p == segment.segment_ptr.addr() && size == COMMIT_SIZE as usize
+            && old(local).commit_mask(segment.segment_id@)@.contains(0) ==> success,
 
         final(local).page_organization == old(local).page_organization,
 {

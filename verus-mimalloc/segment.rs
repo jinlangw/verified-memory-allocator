@@ -712,6 +712,8 @@ fn segment_span_allocate(
         success ==> final(local).page_organization.pages[slice.page_id@].count
             == Some(slice_count as nat),
         success ==> page_init_is_committed(slice.page_id@, *final(local)),
+        slice.page_id@.idx == 0 && slice_count == 1
+            && old(local).commit_mask(segment.segment_id@)@.contains(0) ==> success,
         common_preserves(*old(local), *final(local)),
         segment.is_in(*final(local)),
 {
@@ -729,6 +731,15 @@ fn segment_span_allocate(
 
     //assert(slice_count * SLICE_SIZE <= SLICES_PER_SEGMENT * SLICE_SIZE);
     if !segment_ensure_committed(segment, p, slice_count * SLICE_SIZE as usize, Tracked(&mut *local)) {
+        proof {
+            if slice.page_id@.idx == 0 && slice_count == 1
+                && old(local).commit_mask(segment.segment_id@)@.contains(0)
+            {
+                assert(p == segment.segment_ptr.addr());
+                assert(slice_count * SLICE_SIZE as usize == COMMIT_SIZE as usize);
+                assert(false);
+            }
+        }
         return false;
     }
 
@@ -1292,11 +1303,12 @@ fn segment_alloc(
             segment_ptr.segment_ptr.addr() + SIZEOF_SEGMENT_HEADER) as *mut Page,
         page_id: Ghost(PageId { segment_id, idx: 0 }),
     };
-    //assert(first_slice.wf());
-    let success = segment_span_allocate(segment_ptr, first_slice, 1, tld, Tracked(&mut *local));
-    if !success {
-        todo(); // TODO actually we don't need this check cause we can't fail
+    proof {
+        assert(segment_ptr.segment_ptr.addr() != 0);
+        assert(local.commit_mask(segment_id)@.contains(0));
     }
+    let success = segment_span_allocate(segment_ptr, first_slice, 1, tld, Tracked(&mut *local));
+    assert(success);
     //assert(local.wf_main());
 
     /*let all_page_headers_points_to_raw = mem_chunk.take_points_to_range(
@@ -1370,6 +1382,7 @@ fn segment_os_alloc(
             &&& segment_ptr.segment_ptr@.provenance == segment_ptr.segment_id@.provenance
             &&& set_int_range(segment_start(segment_ptr.segment_id@),
                     segment_start(segment_ptr.segment_id@) + COMMIT_SIZE).subset_of( final(pcommit_mask).bytes(segment_ptr.segment_id@) )
+            &&& final(pcommit_mask)@.contains(0)
             &&& final(pcommit_mask).bytes(segment_ptr.segment_id@).subset_of(mem_chunk@.os_rw_bytes())
             &&& mem_chunk@.os_rw_bytes().subset_of(mem_chunk@.points_to.dom())
         })
