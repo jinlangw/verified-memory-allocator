@@ -114,7 +114,10 @@ pub fn heap_init(Tracked(global): Tracked<Global>, // $line_count$Trusted$
     let heap = HeapPtr { heap_ptr, heap_id: Ghost(HeapId { id: heap_ptr.addr() as nat, provenance: heap_ptr@.provenance, uniq: uniq_reservation_tok.element().uniq }) };
     let tld = TldPtr { tld_ptr, tld_id: Ghost(TldId { id: tld_ptr.addr() as nat, provenance: tld_ptr@.provenance }) };
 
-    let page_empty_stuff = init_empty_page_ptr();
+    let page_empty_stuff = match init_empty_page_ptr() {
+        Some(page_empty_stuff) => page_empty_stuff,
+        None => return (HeapPtr { heap_ptr: core::ptr::null_mut(), heap_id: Ghost(arbitrary()) }, Tracked(None)),
+    };
     let EmptyPageStuff { ptr: page_empty_ptr, pfa: Tracked(page_empty_ptr_access) } = page_empty_stuff;
 
     let mut pages_free_direct = pages_free_direct_tmp();
@@ -661,7 +664,7 @@ fn thread_data_alloc()
     let (addr, Tracked(mc)) = crate::os_mem::mmap_prot_read_write(core::ptr::null_mut(), 4096);
 
     if addr.addr() == MAP_FAILED {
-        todo();
+        return (core::ptr::null_mut(), Tracked(mc));
     }
 
     proof {
@@ -708,13 +711,13 @@ static EMPTY_PAGE_PTR: std::sync::LazyLock<EmptyPageStuff> =
     std::sync::LazyLock::new(init_empty_page_ptr);
 */
 
-fn init_empty_page_ptr() -> (e: EmptyPageStuff)
-    ensures e.wf(),
+fn init_empty_page_ptr() -> (e: Option<EmptyPageStuff>)
+    ensures e.is_some() ==> e.unwrap().wf(),
 {
     let (pt, Tracked(mut mc)) = crate::os_mem::mmap_prot_read_write(core::ptr::null_mut(), 4096);
 
     if pt.addr() == MAP_FAILED {
-        todo();
+        return None;
     }
 
     proof { const_facts(); }
@@ -773,7 +776,7 @@ fn init_empty_page_ptr() -> (e: EmptyPageStuff)
             next: next_perm,
         },
     });
-    EmptyPageStuff { ptr: page_ptr, pfa: Tracked(pfa) }
+    Some(EmptyPageStuff { ptr: page_ptr, pfa: Tracked(pfa) })
 }
 
 /*
