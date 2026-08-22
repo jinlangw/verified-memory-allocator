@@ -297,7 +297,13 @@ fn segments_page_find_and_allocate(
                     tld_ptr,
                     Tracked(&mut *local));
                 if !suc {
-                    todo();
+                    let slice_index = slice.get_index();
+                    proof {
+                        local.page_organization.get_count_bound_very_unready();
+                    }
+                    segment_span_free(segment, slice_index, slice_count, false, tld_ptr,
+                        Tracked(&mut *local));
+                    return PagePtr::null();
                 }
 
                 //assert(local.wf_main());
@@ -714,6 +720,7 @@ fn segment_span_allocate(
         success ==> page_init_is_committed(slice.page_id@, *final(local)),
         slice.page_id@.idx == 0 && slice_count == 1
             && old(local).commit_mask(segment.segment_id@)@.contains(0) ==> success,
+        !success ==> final(local).page_organization == old(local).page_organization,
         common_preserves(*old(local), *final(local)),
         segment.is_in(*final(local)),
 {
