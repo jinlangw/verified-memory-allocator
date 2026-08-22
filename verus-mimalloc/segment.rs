@@ -1676,9 +1676,22 @@ fn segment_span_free(
         //    == (slice_index + slice_count) * SLICE_SIZE);
     }
     if allow_decommit {
+        let slice_start = slice.slice_start();
+        let slice_bytes = slice_count * SLICE_SIZE as usize;
+        proof {
+            assert(slice.page_id@.idx == slice_index);
+            assert(slice_start as int == segment_start(segment_ptr.segment_id@) + SLICE_SIZE * slice_index);
+            assert(segment_ptr.segment_ptr.addr() as int == segment_start(segment_ptr.segment_id@));
+            assert((slice_index + slice_count) * SLICE_SIZE <= SEGMENT_SIZE) by(nonlinear_arith)
+                requires
+                    slice_index + slice_count <= SLICES_PER_SEGMENT,
+                    SLICES_PER_SEGMENT == SEGMENT_SIZE / SLICE_SIZE,
+                    SLICE_SIZE > 0;
+            assert(slice_start + slice_bytes <= segment_ptr.segment_ptr.addr() + SEGMENT_SIZE);
+        }
         segment_perhaps_decommit(segment_ptr, 
-            slice.slice_start(),
-            slice_count * SLICE_SIZE as usize,
+            slice_start,
+            slice_bytes,
             Tracked(&mut *local));
     }
     //assert(local.wf_main());
@@ -1775,8 +1788,17 @@ pub fn segment_page_free(page: PagePtr, force: bool, tld: TldPtr, Tracked(local)
     let used = segment.get_used(Tracked(&*local));
     if used == 0 {
         segment_free(segment, force, tld, Tracked(&mut *local));
-    } else if used == segment.get_abandoned(Tracked(&*local)) {
-        todo();
+    } else {
+        let abandoned = segment.get_abandoned(Tracked(&*local));
+        proof {
+            assert(local.segments[segment.segment_id@].wf(
+                segment.segment_id@,
+                local.thread_token.value().segments[segment.segment_id@],
+                local.instance,
+            ));
+            assert(abandoned == 0);
+        }
+        assert(used != abandoned);
     }
 }
 

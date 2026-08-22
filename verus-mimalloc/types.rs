@@ -451,6 +451,7 @@ impl SegmentLocalAccess {
 
         &&& segment_state.shared_access.points_to.value().main2.id() == self.main2.id()
         &&& self.main2.value().kind == SegmentKind::Normal
+        &&& self.main2.value().abandoned == 0
 
         &&& segment_state.is_enabled
     }
