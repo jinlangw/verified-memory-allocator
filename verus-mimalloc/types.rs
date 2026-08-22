@@ -450,6 +450,7 @@ impl SegmentLocalAccess {
         &&& segment_state.shared_access.points_to.value().main.id() == self.main.id()
 
         &&& segment_state.shared_access.points_to.value().main2.id() == self.main2.id()
+        &&& self.main2.value().kind == SegmentKind::Normal
 
         &&& segment_state.is_enabled
     }
@@ -1440,8 +1441,27 @@ impl SegmentPtr {
     #[inline(always)]
     pub fn is_abandoned(&self, Tracked(local): Tracked<&Local>) -> (is_ab: bool)
         requires self.wf(), self.is_in(*local), local.wf_main(),
+        ensures !is_ab,
     {
-        self.get_ref(Tracked(local)).thread_id.load() == 0
+        let segment = self.get_ref(Tracked(local));
+        let thread_id = atomic_with_ghost!(
+            &segment.thread_id => load();
+            returning thread_id;
+            ghost g => {
+                assert(local.thread_token.value().segments.dom().contains(self.segment_id@));
+                assert(local.thread_token.value().segments[self.segment_id@].is_enabled);
+                assert(g.key() == self.segment_id@);
+                local.instance.local_thread_owns_segment(
+                    local.thread_id,
+                    self.segment_id@,
+                    &local.thread_token,
+                    &g,
+                );
+                local.is_thread.nonzero();
+                assert(local.thread_id.thread_id != 0);
+            }
+        );
+        thread_id == 0
     }
 
     #[inline(always)]

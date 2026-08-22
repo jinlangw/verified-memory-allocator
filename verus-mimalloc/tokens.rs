@@ -618,6 +618,15 @@ tokenized_state_machine!{ Mim {
         }
     }
 
+    property!{
+        local_thread_owns_segment(thread_id: ThreadId, segment_id: SegmentId) {
+            have thread_local_state >= [ thread_id => let thread_state ];
+            have thread_of_segment >= [ segment_id => let tid ];
+            require(thread_state.segments.dom().contains(segment_id));
+            assert(tid == thread_id);
+        }
+    }
+
     // Setting up a page
 
     /*pub open spec fn block_map_on_create_page(page_id: PageId, n_blocks: nat, block_size: nat)

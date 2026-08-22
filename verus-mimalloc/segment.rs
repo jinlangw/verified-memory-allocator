@@ -2028,12 +2028,11 @@ fn segment_span_free_coalesce(slice: PagePtr, tld: TldPtr, Tracked(local): Track
 {
     let segment = SegmentPtr::ptr_segment(slice);
     let is_abandoned = segment.is_abandoned(Tracked(&*local));
-    if is_abandoned { todo(); }
+    assert(!is_abandoned);
 
     let kind = segment.get_segment_kind(Tracked(&*local));
-    if matches!(kind, SegmentKind::Huge) {
-        todo();
-    }
+    assert(kind == SegmentKind::Normal);
+    assert(!matches!(kind, SegmentKind::Huge));
 
     let mut slice_count = slice.get_count(Tracked(&*local));
 
