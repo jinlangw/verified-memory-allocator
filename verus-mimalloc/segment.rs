@@ -938,6 +938,7 @@ fn segment_alloc(
         tld.wf(),
         tld.is_in(*old(local)),
         required == 0, // only handling non-huge-pages for now
+        page_alignment == 0, // normal pages
     ensures
         final(local).wf(),
         common_preserves(*old(local), *final(local)),
@@ -1315,11 +1316,7 @@ fn segment_alloc(
         //assert(local.wf_main());
     }
 
-    if required == 0 {
-        segment_span_free(segment_ptr, 1, SLICES_PER_SEGMENT as usize - 1, false, tld, Tracked(&mut *local));
-    } else {
-        todo();
-    }
+    segment_span_free(segment_ptr, 1, SLICES_PER_SEGMENT as usize - 1, false, tld, Tracked(&mut *local));
 
     return segment_ptr;
 }
@@ -1357,6 +1354,7 @@ fn segment_os_alloc(
         tld.wf(),
         tld.is_in(*old(local)),
         psegment_slices == SLICES_PER_SEGMENT,
+        page_alignment == 0,
     ensures
         final(local).wf(),
         common_preserves(*old(local), *final(local)),
@@ -1391,16 +1389,6 @@ fn segment_os_alloc(
     let mut pinfo_slices = pinfo_slices;
     let mut pre_size = pre_size;
     let tracked mut mem = MemChunk::empty();
-
-    if page_alignment > 0 {
-        /*
-        assert(page_alignment >= SEGMENT_ALIGN);
-        alignment = page_alignment;
-        let info_size = pinfo_sizes * SLICE_SIZE;
-        align_offset = align_up(info_size, SEGMENT_ALIGN);
-        */
-        todo(); 
-    }
 
     let segment_size = psegment_slices * SLICE_SIZE as usize;
 
