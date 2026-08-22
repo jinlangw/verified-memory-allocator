@@ -47,6 +47,8 @@ pub fn segment_page_alloc(
         heap.wf(),
         heap.is_in(*old(local)),
         2 <= block_size,
+        page_alignment <= ALIGNMENT_MAX,
+        block_size <= LARGE_OBJ_SIZE_MAX,
     ensures
         final(local).wf_main(),
         common_preserves(*old(local), *final(local)),
@@ -62,18 +64,12 @@ pub fn segment_page_alloc(
 {
     proof { const_facts(); }
 
-    if unlikely(page_alignment > ALIGNMENT_MAX as usize) {
-        todo();
-    }
-
     if block_size <= SMALL_OBJ_SIZE_MAX as usize {
         segments_page_alloc(heap, block_size, block_size, tld, Tracked(&mut *local))
     } else if block_size <= MEDIUM_OBJ_SIZE_MAX as usize {
         segments_page_alloc(heap, MEDIUM_PAGE_SIZE as usize, block_size, tld, Tracked(&mut *local))
-    } else if block_size <= LARGE_OBJ_SIZE_MAX as usize {
-        segments_page_alloc(heap, block_size, block_size, tld, Tracked(&mut *local))
     } else {
-        todo(); loop{}
+        segments_page_alloc(heap, block_size, block_size, tld, Tracked(&mut *local))
     }
 }
 

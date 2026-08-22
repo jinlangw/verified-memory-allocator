@@ -210,6 +210,7 @@ fn page_fresh_alloc(heap_ptr: HeapPtr, pq: usize, block_size: usize, page_alignm
         2 <= block_size,
         valid_bin_idx(pq as int),
         block_size == size_of_bin(pq as int),
+        page_alignment <= ALIGNMENT_MAX,
         block_size <= MEDIUM_OBJ_SIZE_MAX,
     ensures
         final(local).wf(),
@@ -219,6 +220,7 @@ fn page_fresh_alloc(heap_ptr: HeapPtr, pq: usize, block_size: usize, page_alignm
         page.page_ptr.addr() != 0 ==> 
             final(local).pages.index(page.page_id@).inner.value().xblock_size == block_size,
 {
+    proof { const_facts(); }
     let tld_ptr = heap_ptr.get_ref(Tracked(&*local)).tld_ptr;
     let page_ptr = crate::segment::segment_page_alloc(heap_ptr, block_size, page_alignment, tld_ptr, Tracked(&mut *local));
     if page_ptr.page_ptr.addr() == 0 {
