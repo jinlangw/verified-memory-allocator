@@ -1,6 +1,12 @@
 .PHONY: all verify build libc bench clean
 
+# Verus must be built with `--features singular` (layout.rs uses integer_ring).
+VERUS_DIR ?=
+ifeq ($(VERUS_DIR),)
 VERUS ?= verus
+else
+VERUS ?= $(VERUS_DIR)/verus
+endif
 VERUS_SINGULAR_PATH ?= /usr/bin/Singular
 export VERUS_SINGULAR_PATH
 

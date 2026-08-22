@@ -76,7 +76,9 @@
         "recommends": [],
         "decreases": [],
         "extra_qualifiers": []
-      }
+      },
+      "frontier": false,
+      "frontier_note": "proof fn: erased by the verus! expansion, so rust-analyzer cannot prepare a call hierarchy on it. Contract stays frozen and is still checked by boundary_guard/middle_guard; it carries no exec obligations, so it seeds no frontier."
     }
   ]
 }
