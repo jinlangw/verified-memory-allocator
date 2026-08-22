@@ -30,6 +30,7 @@ pub fn arena_alloc_aligned(
         size as int % page_size() == 0,
         alignment + page_size() <= usize::MAX,
         size == SEGMENT_SIZE,
+        align_offset == 0,
     ensures ({
         let (addr, mem, commit, large, is_pinned, is_zero, mem_id) = res;
         addr as int != 0 ==> (

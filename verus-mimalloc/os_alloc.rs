@@ -19,6 +19,7 @@ pub fn os_alloc_aligned_offset(
         size as int % page_size() == 0,
         size == SEGMENT_SIZE,
         alignment as int % page_size() == 0,
+        offset == 0,
     ensures ({ let (addr, is_large, mem) = res;
         addr as int != 0 ==> (
             mem@.wf()
@@ -39,7 +40,7 @@ pub fn os_alloc_aligned_offset(
     if offset == 0 {
         return os_alloc_aligned(size, alignment, request_commit, allow_large);
     } else {
-        todo(); loop{}
+        assert(false); loop{}
         /*
         let extra = align_up(offset, alignment) - offset;
         let oversize = size + extra;
