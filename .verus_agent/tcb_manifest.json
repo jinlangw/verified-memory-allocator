@@ -1,0 +1,24 @@
+{
+  "sanctioned": [
+    {
+      "kind": "path",
+      "value": "verus-mimalloc/os_mem.rs",
+      "marker": null
+    },
+    {
+      "kind": "path",
+      "value": "verus-mimalloc/thread.rs",
+      "marker": null
+    },
+    {
+      "kind": "path",
+      "value": "verus-mimalloc/lib.rs",
+      "marker": null
+    },
+    {
+      "kind": "symbol",
+      "value": "print_hex",
+      "marker": null
+    }
+  ]
+}
