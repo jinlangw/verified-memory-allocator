@@ -118,12 +118,20 @@ use crate::types::todo;
 pub fn option_eager_commit_delay() -> i64 { 1 }
 pub fn option_eager_commit() -> bool { true }
 pub fn option_allow_decommit() -> bool { true }
-pub fn option_page_reset() -> bool { false }
+pub fn option_page_reset() -> (enabled: bool)
+    ensures enabled == false
+{
+    false
+}
 
 //pub fn option_decommit_delay() -> i64 { assume(false); 1 /*25*/ }
 //pub fn option_decommit_extend_delay() -> i64 { assume(false); 0 /*1*/ }
 
-pub fn option_decommit_delay() -> i64 { 25 }
+pub fn option_decommit_delay() -> (delay: i64)
+    ensures delay == 25
+{
+    25
+}
 pub fn option_decommit_extend_delay() -> i64 { 1 }
 
 

@@ -372,94 +372,92 @@ pub fn segment_perhaps_decommit(
         return;
     }
 
-    if option_decommit_delay() == 0 {
-        todo();
-    } else {
-        proof {
-            segment_id_divis(segment);
-        }
+    let decommit_delay = option_decommit_delay();
+    assert(decommit_delay != 0);
+    proof {
+        segment_id_divis(segment);
+    }
 
-        let mut mask: CommitMask = CommitMask::empty();
-        let (start, full_size) =
-            segment_commit_mask(segment.segment_ptr as *mut u8, true, p, size, &mut mask);
+    let mut mask: CommitMask = CommitMask::empty();
+    let (start, full_size) =
+        segment_commit_mask(segment.segment_ptr as *mut u8, true, p, size, &mut mask);
 
-        if mask.is_empty() || full_size == 0 {
-            return;
-        }
+    if mask.is_empty() || full_size == 0 {
+        return;
+    }
 
-        let mut cmask = CommitMask::empty();
+    let mut cmask = CommitMask::empty();
+    segment_get_mut_main!(segment, local, main => {
+        main.commit_mask.create_intersect(&mask, &mut cmask);
+        main.decommit_mask.set(&cmask);
+    });
+
+    proof {
+        const_facts();
+        reveal(CommitMask::bytes);
+        let segment_id = segment.segment_id@;
+        segment_start_mult_commit_size(segment_id);
+        assert(segment.segment_ptr as int % COMMIT_SIZE as int == 0);
+        /*assert forall |addr| mask.bytes(segment_id).contains(addr)
+            implies set_int_range(p as int, p + size).contains(addr)
+        by {
+            assert(mask@.contains((addr - segment.segment_ptr.addr()) / COMMIT_SIZE as int));
+            assert((addr - segment.segment_ptr.addr()) / COMMIT_SIZE as int
+                >= (start - segment.segment_ptr.addr()) / COMMIT_SIZE as int);
+            assert(addr >= start);
+            assert(addr >= p);
+            assert(addr < p + size);
+        }*/
+        assert(mask.bytes(segment_id)
+            <= set_int_range(p as int, p + size));
+        assert(cmask.bytes(segment_id)
+            <= set_int_range(p as int, p + size));
+        assert(local.decommit_mask(segment_id).bytes(segment_id) =~=
+            old(local).decommit_mask(segment_id).bytes(segment_id) + cmask.bytes(segment_id));
+        assert(old(local).mem_chunk_good(segment_id));
+        preserve_totals(*old(local), *local, segment_id);
+        //assert(local.segment_pages_used_total(segment_id)
+        //    =~= old(local).segment_pages_used_total(segment_id));
+        //assert(local.segment_pages_range_total(segment_id)
+        //    =~= old(local).segment_pages_range_total(segment_id));
+        preserves_mem_chunk_good_except(*old(local), *local, segment.segment_id@);
+        assert(mem_chunk_good1(
+            local.segments[segment_id].mem,
+            segment_id,
+            local.commit_mask(segment_id).bytes(segment_id),
+            local.decommit_mask(segment_id).bytes(segment_id),
+            local.segment_pages_range_total(segment_id),
+            local.segment_pages_used_total(segment_id),
+        ));
+        assert(local.mem_chunk_good(segment.segment_id@));
+        assert(local.unused_pages === old(local).unused_pages);
+        assert(local.page_organization === old(local).page_organization);
+        assert(local.wf_main());
+    }
+    let ghost local_snap = *local;
+
+    let now = clock_now();
+    if segment.get_decommit_expire(Tracked(&*local)) == 0 {
         segment_get_mut_main!(segment, local, main => {
-            main.commit_mask.create_intersect(&mask, &mut cmask);
-            main.decommit_mask.set(&cmask);
+            main.decommit_expire = now.wrapping_add(option_decommit_delay());
         });
-
-        proof {
-            const_facts();
-            reveal(CommitMask::bytes);
-            let segment_id = segment.segment_id@;
-            segment_start_mult_commit_size(segment_id);
-            assert(segment.segment_ptr as int % COMMIT_SIZE as int == 0);
-            /*assert forall |addr| mask.bytes(segment_id).contains(addr)
-                implies set_int_range(p as int, p + size).contains(addr)
-            by {
-                assert(mask@.contains((addr - segment.segment_ptr.addr()) / COMMIT_SIZE as int));
-                assert((addr - segment.segment_ptr.addr()) / COMMIT_SIZE as int
-                    >= (start - segment.segment_ptr.addr()) / COMMIT_SIZE as int);
-                assert(addr >= start);
-                assert(addr >= p);
-                assert(addr < p + size);
-            }*/
-            assert(mask.bytes(segment_id)
-                <= set_int_range(p as int, p + size));
-            assert(cmask.bytes(segment_id)
-                <= set_int_range(p as int, p + size));
-            assert(local.decommit_mask(segment_id).bytes(segment_id) =~=
-                old(local).decommit_mask(segment_id).bytes(segment_id) + cmask.bytes(segment_id));
-            assert(old(local).mem_chunk_good(segment_id));
-            preserve_totals(*old(local), *local, segment_id);
-            //assert(local.segment_pages_used_total(segment_id)
-            //    =~= old(local).segment_pages_used_total(segment_id));
-            //assert(local.segment_pages_range_total(segment_id)
-            //    =~= old(local).segment_pages_range_total(segment_id));
-            preserves_mem_chunk_good_except(*old(local), *local, segment.segment_id@);
-            assert(mem_chunk_good1(
-                local.segments[segment_id].mem,
-                segment_id,
-                local.commit_mask(segment_id).bytes(segment_id),
-                local.decommit_mask(segment_id).bytes(segment_id),
-                local.segment_pages_range_total(segment_id),
-                local.segment_pages_used_total(segment_id),
-            ));
-            assert(local.mem_chunk_good(segment.segment_id@));
-            assert(local.unused_pages === old(local).unused_pages);
-            assert(local.page_organization === old(local).page_organization);
-            assert(local.wf_main());
-        }
-        let ghost local_snap = *local;
-
-        let now = clock_now();
-        if segment.get_decommit_expire(Tracked(&*local)) == 0 {
-            segment_get_mut_main!(segment, local, main => {
-                main.decommit_expire = now.wrapping_add(option_decommit_delay());
-            });
-            proof { preserves_mem_chunk_good(local_snap, *local); }
-        } else if segment.get_decommit_expire(Tracked(&*local)) <= now {
-            let ded = option_decommit_extend_delay();
-            if segment.get_decommit_expire(Tracked(&*local)).wrapping_add(option_decommit_extend_delay()) <= now {
-                segment_delayed_decommit(segment, true, Tracked(&mut *local));
-            } else {
-                segment_get_mut_main!(segment, local, main => {
-                    main.decommit_expire = now.wrapping_add(option_decommit_extend_delay());
-                });
-                proof { preserves_mem_chunk_good(local_snap, *local); }
-            }
+        proof { preserves_mem_chunk_good(local_snap, *local); }
+    } else if segment.get_decommit_expire(Tracked(&*local)) <= now {
+        let ded = option_decommit_extend_delay();
+        if segment.get_decommit_expire(Tracked(&*local)).wrapping_add(option_decommit_extend_delay()) <= now {
+            segment_delayed_decommit(segment, true, Tracked(&mut *local));
         } else {
             segment_get_mut_main!(segment, local, main => {
-                main.decommit_expire =
-                    main.decommit_expire.wrapping_add(option_decommit_extend_delay());
+                main.decommit_expire = now.wrapping_add(option_decommit_extend_delay());
             });
             proof { preserves_mem_chunk_good(local_snap, *local); }
         }
+    } else {
+        segment_get_mut_main!(segment, local, main => {
+            main.decommit_expire =
+                main.decommit_expire.wrapping_add(option_decommit_extend_delay());
+        });
+        proof { preserves_mem_chunk_good(local_snap, *local); }
     }
 
     assert(local.unused_pages === old(local).unused_pages);

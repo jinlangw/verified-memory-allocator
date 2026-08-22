@@ -1803,9 +1803,7 @@ fn segment_page_clear(page: PagePtr, tld: TldPtr, Tracked(local): Tracked<&mut L
     let mem_is_pinned = segment.get_mem_is_pinned(Tracked(&*local));
     let is_reset = page.get_inner_ref(Tracked(&*local)).get_is_reset();
     let option_page_reset = option_page_reset();
-    if !mem_is_pinned && !is_reset && option_page_reset {
-        todo();
-    }
+    assert(!option_page_reset);
 
     let tracked block_tokens;
     let tracked block_pt;
