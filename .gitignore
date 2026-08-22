@@ -1,2 +1,7 @@
 build/
 test_libc/target/
+target/
+/.verus-ra-cache/
+*.rlib
+*.rmeta
+*.so

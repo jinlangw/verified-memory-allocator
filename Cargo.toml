@@ -1,0 +1,13 @@
+# Cargo/rust-analyzer view of the Verus crate. Verification itself still runs
+# through `make verify` (raw `verus lib.rs`); this manifest exists so
+# rust-analyzer can resolve and expand the `verus!` proc macros for the
+# call-graph derivation.
+[workspace]
+resolver = "2"
+members = [
+    "verus-mimalloc",
+    ".verus_deps/builtin",
+    ".verus_deps/builtin_macros",
+    ".verus_deps/state_machines_macros",
+    ".verus_deps/vstd",
+]
