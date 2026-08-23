@@ -679,6 +679,57 @@ state_machine!{ PageOrg {
     {
     }
 
+    pub proof fn segment_first_count_bound(&self, segment_id: SegmentId)
+        requires
+            self.invariant(),
+            self.popped == Popped::No,
+            self.segments.dom().contains(segment_id),
+        ensures
+            self.pages[PageId { segment_id, idx: 0 }].count.is_some(),
+            self.pages[PageId { segment_id, idx: 0 }].offset == Some(0nat),
+            1 <= self.pages[PageId { segment_id, idx: 0 }].count.unwrap() <= SLICES_PER_SEGMENT,
+    {
+        let page_id = PageId { segment_id, idx: 0 };
+        assert(self.attached_ranges_segment(segment_id));
+        assert(self.attached_rec0(segment_id, false));
+        assert(self.good_range0(segment_id));
+    }
+
+    pub proof fn popped_ec_zero_when_no(&self, segment_id: SegmentId)
+        requires
+            self.popped == Popped::No,
+        ensures
+            self.popped_ec(segment_id) == 0,
+    {
+    }
+
+    pub proof fn used_offset0_does_count(&self, page_id: PageId)
+        requires
+            self.pages.dom().contains(page_id),
+            page_id.idx != 0,
+            self.pages[page_id].is_used,
+            self.pages[page_id].offset == Some(0nat),
+        ensures
+            self.does_count(page_id),
+    {
+    }
+
+    pub proof fn first_page_range_not_used(&self, segment_id: SegmentId)
+        requires
+            self.invariant(),
+            self.popped == Popped::No,
+            self.segments.dom().contains(segment_id),
+        ensures
+            forall |pid: PageId|
+                pid.segment_id == segment_id
+                && 0 <= pid.idx < self.pages[PageId { segment_id, idx: 0 }].count.unwrap()
+                ==> !self.pages[pid].is_used,
+    {
+        let page_id = PageId { segment_id, idx: 0 };
+        assert(self.attached_ranges_segment(segment_id));
+        assert(self.good_range0(segment_id));
+    }
+
     pub proof fn lemma_range_disjoint_very_unready(&self, page_id: PageId)
         requires self.invariant(), self.popped.is_VeryUnready(),
             self.pages.dom().contains(page_id),

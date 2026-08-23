@@ -742,6 +742,52 @@ tokenized_state_machine!{ Mim {
     }
 
     transition!{
+        segment_disable(
+            thread_id: ThreadId,
+            segment_id: SegmentId,
+        ) {
+            remove thread_local_state -= [ thread_id => let ts ];
+            have thread_of_segment >= [ segment_id => let tid ];
+            require ts.segments.dom().contains(segment_id);
+            require ts.segments[segment_id].is_enabled;
+            require forall |pid: PageId| pid.segment_id == segment_id ==>
+                !ts.pages.dom().contains(pid);
+
+            let shared_access = ts.segments[segment_id].shared_access;
+            let new_segment_state = SegmentState {
+                is_enabled: false,
+                .. ts.segments[segment_id]
+            };
+            let new_segments = ts.segments.insert(segment_id, new_segment_state);
+            let ts2 = ThreadState { segments: new_segments, .. ts };
+            add thread_local_state += [ thread_id => ts2 ];
+            withdraw segment_shared_access -= [ segment_id => shared_access ]
+            by {
+                assert(pre.segment_shared_access.dom().contains(segment_id));
+                assert(pre.segment_shared_access[segment_id] == shared_access);
+            };
+        }
+    }
+
+    transition!{
+        segment_destroy_tokens(
+            thread_id: ThreadId,
+            segment_id: SegmentId,
+        ) {
+            remove thread_local_state -= [ thread_id => let ts ];
+            remove thread_of_segment -= [ segment_id => let tid ];
+            require ts.segments.dom().contains(segment_id);
+            require !ts.segments[segment_id].is_enabled;
+            require forall |pid: PageId| pid.segment_id == segment_id ==>
+                !ts.pages.dom().contains(pid);
+
+            let new_segments = ts.segments.remove(segment_id);
+            let ts2 = ThreadState { segments: new_segments, .. ts };
+            add thread_local_state += [ thread_id => ts2 ];
+        }
+    }
+
+    transition!{
         create_page_mk_tokens(
             thread_id: ThreadId,
             page_id: PageId,
@@ -1459,6 +1505,134 @@ tokenized_state_machine!{ Mim {
    
     #[inductive(segment_enable)]
     fn segment_enable_inductive(pre: Self, post: Self, thread_id: ThreadId, segment_id: SegmentId, shared_access: SegmentSharedAccess) { }
+
+    #[inductive(segment_disable)]
+    fn segment_disable_inductive(pre: Self, post: Self, thread_id: ThreadId, segment_id: SegmentId) {
+        assert forall |pid: PageId| #[trigger] post.page_shared_access.dom().contains(pid)
+            implies post.inv_page_shared_access_dom()
+        by {
+            assert(pre.page_shared_access.dom().contains(pid));
+            assert(pre.inv_page_shared_access_dom());
+            if pid.segment_id == segment_id {
+                assert(!pre.thread_local_state[thread_id].pages.dom().contains(pid));
+                assert(!pre.page_shared_access.dom().contains(pid));
+            }
+        }
+
+        assert(post.inv_page_shared_access_dom());
+
+        assert forall |sid: SegmentId| #[trigger] post.segment_shared_access.dom().contains(sid)
+            implies post.inv_segment_shared_access_dom()
+        by {
+            assert(pre.segment_shared_access.dom().contains(sid));
+            assert(pre.inv_segment_shared_access_dom());
+            assert(sid != segment_id);
+        }
+
+        assert(post.inv_segment_shared_access_dom());
+
+        assert forall |block_id: BlockId| #[trigger] post.block.dom().contains(block_id)
+            implies post.inv_block_id_valid_for_block(block_id)
+        by {
+            assert(pre.block.dom().contains(block_id));
+            assert(pre.inv_block_id_valid_for_block(block_id));
+            if block_id.page_id.segment_id == segment_id {
+                assert(pre.thread_of_segment[segment_id] == thread_id);
+                assert(pre.thread_local_state[thread_id].pages.dom().contains(block_id.page_id));
+                assert(false);
+            }
+        }
+
+        assert(post.inv_block_id_valid());
+
+        assert forall |tid: ThreadId, pid: PageId|
+            post.thread_local_state.dom().contains(tid)
+            && #[trigger] post.thread_local_state[tid].pages.dom().contains(pid)
+            implies post.thread_local_state[tid].segments.dom().contains(pid.segment_id)
+                && post.thread_local_state[tid].segments[pid.segment_id].is_enabled
+        by {
+            assert(pre.thread_local_state.dom().contains(tid));
+            assert(pre.thread_local_state[tid].pages.dom().contains(pid));
+            assert(pre.page_implies_segment_enabled());
+            if tid == thread_id && pid.segment_id == segment_id {
+                assert(!pre.thread_local_state[thread_id].pages.dom().contains(pid));
+                assert(false);
+            }
+        }
+
+        assert(post.page_implies_segment_enabled());
+    }
+
+    #[inductive(segment_destroy_tokens)]
+    fn segment_destroy_tokens_inductive(pre: Self, post: Self, thread_id: ThreadId, segment_id: SegmentId) {
+        assert forall |pid: PageId| #[trigger] post.page_shared_access.dom().contains(pid)
+            implies post.inv_page_shared_access_dom()
+        by {
+            assert(pre.page_shared_access.dom().contains(pid));
+            assert(pre.inv_page_shared_access_dom());
+            if pid.segment_id == segment_id {
+                assert(!pre.thread_local_state[thread_id].pages.dom().contains(pid));
+                assert(!pre.page_shared_access.dom().contains(pid));
+            }
+        }
+
+        assert(post.inv_page_shared_access_dom());
+
+        assert forall |sid: SegmentId| #[trigger] post.segment_shared_access.dom().contains(sid)
+            implies post.inv_segment_shared_access_dom()
+        by {
+            assert(pre.segment_shared_access.dom().contains(sid));
+            assert(pre.inv_segment_shared_access_dom());
+            assert(sid != segment_id);
+        }
+
+        assert(post.inv_segment_shared_access_dom());
+
+        assert forall |tid: ThreadId, sid: SegmentId|
+            post.thread_local_state.dom().contains(tid)
+            && #[trigger] post.thread_local_state[tid].segments.dom().contains(sid)
+            implies post.thread_of_segment.dom().contains(sid)
+                && post.thread_of_segment[sid] == tid
+        by {
+            assert(pre.thread_local_state.dom().contains(tid));
+            assert(pre.thread_local_state[tid].segments.dom().contains(sid));
+            assert(pre.inv_thread_of_segment1());
+            assert(sid != segment_id);
+        }
+
+        assert(post.inv_thread_of_segment1());
+
+        assert forall |block_id: BlockId| #[trigger] post.block.dom().contains(block_id)
+            implies post.inv_block_id_valid_for_block(block_id)
+        by {
+            assert(pre.block.dom().contains(block_id));
+            assert(pre.inv_block_id_valid_for_block(block_id));
+            if block_id.page_id.segment_id == segment_id {
+                assert(pre.thread_of_segment[segment_id] == thread_id);
+                assert(pre.thread_local_state[thread_id].pages.dom().contains(block_id.page_id));
+                assert(false);
+            }
+        }
+
+        assert(post.inv_block_id_valid());
+
+        assert forall |tid: ThreadId, pid: PageId|
+            post.thread_local_state.dom().contains(tid)
+            && #[trigger] post.thread_local_state[tid].pages.dom().contains(pid)
+            implies post.thread_local_state[tid].segments.dom().contains(pid.segment_id)
+                && post.thread_local_state[tid].segments[pid.segment_id].is_enabled
+        by {
+            assert(pre.thread_local_state.dom().contains(tid));
+            assert(pre.thread_local_state[tid].pages.dom().contains(pid));
+            assert(pre.page_implies_segment_enabled());
+            if tid == thread_id && pid.segment_id == segment_id {
+                assert(!pre.thread_local_state[thread_id].pages.dom().contains(pid));
+                assert(false);
+            }
+        }
+
+        assert(post.page_implies_segment_enabled());
+    }
    
     #[inductive(create_page_mk_tokens)]
     fn create_page_mk_tokens_inductive(pre: Self, post: Self, thread_id: ThreadId, page_id: PageId, n_slices: nat, block_size: nat, page_map: Map<PageId, PageState>) {

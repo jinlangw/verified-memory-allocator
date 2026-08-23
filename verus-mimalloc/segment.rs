@@ -12,7 +12,7 @@ use vstd::set_lib::*;
 use vstd::cell::pcell::*;
 use vstd::atomic_ghost::*;
 
-use crate::tokens::{Mim, BlockId, DelayState, PageId, PageState, SegmentState, ThreadId};
+use crate::tokens::{Mim, BlockId, DelayState, PageId, PageState, SegmentId, SegmentState, ThreadId};
 use crate::types::*;
 use crate::layout::*;
 use crate::bin_sizes::*;
@@ -1488,6 +1488,53 @@ fn segment_os_alloc(
     return (segment, psegment_slices, pre_size, pinfo_slices, is_zero, pcommit, mem_id, mem_large, is_pinned, align_offset, Tracked(mem));
 }
 
+proof fn segment_used_zero_no_used_primary(local: Local, segment_id: SegmentId)
+    requires
+        local.wf_main(),
+        local.page_organization.segments.dom().contains(segment_id),
+        local.page_organization.segments[segment_id].used == 0,
+        local.page_organization.popped == Popped::No,
+    ensures
+        forall |pid: PageId| pid.segment_id == segment_id ==> !local.is_used_primary(pid),
+{
+    local.page_organization.popped_ec_zero_when_no(segment_id);
+    assert(local.page_organization.ucount(segment_id) == 0);
+    assert forall |pid: PageId| pid.segment_id == segment_id implies !local.is_used_primary(pid) by {
+        if local.is_used_primary(pid) {
+            assert(local.page_organization.pages.dom().contains(pid));
+            assert(local.page_organization.pages[pid].is_used);
+            assert(local.page_organization.pages[pid].offset == Some(0nat));
+            if pid.idx == 0 {
+                assert(page_organization_pages_match_data(
+                    local.page_organization.pages[pid],
+                    local.pages[pid],
+                    local.psa[pid],
+                    pid,
+                    local.page_organization.popped));
+                match local.page_organization.pages[pid].page_header_kind {
+                    None => {
+                        assert(!local.page_organization.pages[pid].is_used);
+                    }
+                    Some(PageHeaderKind::Normal(_, _)) => {
+                        assert(pid.idx != 0);
+                    }
+                }
+                assert(false);
+            } else if pid.idx == SLICES_PER_SEGMENT {
+                assert(!local.page_organization.pages[pid].is_used);
+                assert(false);
+            } else if pid.idx < SLICES_PER_SEGMENT {
+                local.page_organization.ucount_eq0_inverse(pid);
+                local.page_organization.used_offset0_does_count(pid);
+                assert(local.page_organization.does_count(pid));
+                assert(false);
+            } else {
+                assert(false);
+            }
+        }
+    }
+}
+
 fn segment_free(segment: SegmentPtr, force: bool, tld: TldPtr, Tracked(local): Tracked<&mut Local>)
     requires
         old(local).wf(),
@@ -1495,34 +1542,119 @@ fn segment_free(segment: SegmentPtr, force: bool, tld: TldPtr, Tracked(local): T
         tld.is_in(*old(local)),
         segment.wf(),
         segment.is_in(*old(local)),
+        old(local).segments[segment.segment_id@].main2.value().used == 0,
     ensures
         final(local).wf(),
         common_preserves(*old(local), *final(local)),
 {
-    todo();
-    /*
+    proof { const_facts(); }
+
+    let first_slice = segment.get_page_header_ptr(0);
+    let first_count = first_slice.get_count(Tracked(&*local));
     proof {
+        assert(first_slice.page_id@ == PageId { segment_id: segment.segment_id@, idx: 0 });
+        local.page_organization.segment_first_count_bound(segment.segment_id@);
+        assert(local.page_organization_valid());
+        assert(page_organization_pages_match(
+            local.page_organization.pages,
+            local.pages,
+            local.psa,
+            local.page_organization.popped));
+        assert(local.page_organization.pages.dom() =~= local.pages.dom());
+        assert(local.page_organization.pages.dom() =~= local.psa.dom());
+        assert(local.page_organization.pages.dom().contains(first_slice.page_id@));
+        assert(page_organization_pages_match_data(
+            local.page_organization.pages[first_slice.page_id@],
+            local.pages[first_slice.page_id@],
+            local.psa[first_slice.page_id@],
+            first_slice.page_id@,
+            local.page_organization.popped));
+        assert(first_count == local.page_organization.pages[first_slice.page_id@].count.unwrap());
+        assert(1 <= first_count <= SLICES_PER_SEGMENT);
+        segment_used_zero_no_used_primary(*local, segment.segment_id@);
+        assert(local.page_organization.pages[first_slice.page_id@].offset == Some(0nat));
+        assert(!local.is_used_primary(first_slice.page_id@));
+        assert(!local.page_organization.pages[first_slice.page_id@].is_used);
+        local.page_organization.first_page_range_not_used(segment.segment_id@);
+    }
+
+    proof {
+        assert(local.page_organization.segments[segment.segment_id@].used
+            == local.segments[segment.segment_id@].main2.value().used);
+        segment_used_zero_no_used_primary(*local, segment.segment_id@);
         let next_state = PageOrg::take_step::segment_freeing_start(local.page_organization, segment.segment_id@);
         local.page_organization = next_state;
+        assert(local.page_organization.popped == Popped::SegmentFreeing(segment.segment_id@, first_count as int));
+        assert forall |page_id: PageId| old(local).is_used_primary(page_id)
+            implies local.is_used_primary(page_id)
+                && old(local).page_capacity(page_id) <= local.page_capacity(page_id)
+                && old(local).page_reserved(page_id) <= local.page_reserved(page_id)
+                && old(local).page_count(page_id) == local.page_count(page_id)
+                && old(local).block_size(page_id) == local.block_size(page_id)
+        by {
+            if page_id.segment_id == segment.segment_id@ {
+                assert(false);
+            }
+        }
+        assert forall |page_id: PageId| local.is_used_primary(page_id)
+            implies old(local).is_used_primary(page_id)
+        by {
+            if page_id.segment_id == segment.segment_id@ {
+                assert(!local.page_organization.pages[page_id].is_used);
+                assert(false);
+            }
+        }
         preserves_mem_chunk_good(*old(local), *local);
+        assert(local.page_organization.invariant());
+        assert(page_organization_queues_match(
+            local.page_organization.unused_dlist_headers,
+            local.tld.value().segments.span_queue_headers@));
+        assert(page_organization_used_queues_match(
+            local.page_organization.used_dlist_headers,
+            local.heap.pages.value()@));
+        assert(page_organization_pages_match(
+            local.page_organization.pages,
+            local.pages,
+            local.psa,
+            local.page_organization.popped));
+        assert(page_organization_segments_match(
+            local.page_organization.segments,
+            local.segments));
+        assert forall |page_id: PageId| #[trigger] local.page_organization.pages.dom().contains(page_id)
+            implies (!local.page_organization.pages[page_id].is_used <==> local.unused_pages.dom().contains(page_id))
+        by {
+            if page_id.segment_id == segment.segment_id@ && 0 <= page_id.idx < first_count {
+                let first_page_id = PageId { segment_id: segment.segment_id@, idx: 0 };
+                old(local).page_organization.first_page_range_not_used(segment.segment_id@);
+                assert(old(local).page_organization.pages[first_page_id].count.unwrap() == first_count);
+                assert(first_page_id.idx <= page_id.idx
+                    < first_page_id.idx + old(local).page_organization.pages[first_page_id].count.unwrap());
+                assert(!old(local).page_organization.pages[page_id].is_used);
+                assert(old(local).unused_pages.dom().contains(page_id));
+            } else {
+                assert(local.page_organization.pages[page_id].is_used
+                    == old(local).page_organization.pages[page_id].is_used);
+            }
+        }
+        assert(local.page_organization_valid());
         assert(local.wf_main());
     }
 
-    let mut slice = segment.get_page_header_ptr(0);
+    let mut slice = segment.get_page_header_ptr(first_count as usize);
     let end = segment.get_page_after_end();
-    let page_count = 0;
-    while slice.page_ptr.to_usize() < end.to_usize()
+    while slice.page_ptr.addr() < end.addr()
         invariant local.wf_main(),
             segment.wf(),
             segment.is_in(*local),
             tld.is_in(*local),
             tld.wf(),
-            slice.page_ptr.id() < end.id() ==> slice.wf(),
-            slice.page_ptr.id() >= end.id() ==> slice.page_id@.idx == SLICES_PER_SEGMENT,
+            slice.page_ptr.addr() < end.addr() ==> slice.wf(),
+            slice.page_ptr.addr() >= end.addr() ==> slice.page_id@.idx == SLICES_PER_SEGMENT,
             slice.page_id@.segment_id == segment.segment_id@,
             local.page_organization.popped == Popped::SegmentFreeing(slice.page_id@.segment_id, slice.page_id@.idx as int),
-            end.id() == page_header_start(
+            end.addr() == page_header_start(
                 PageId { segment_id: segment.segment_id@, idx: SLICES_PER_SEGMENT as nat }),
+            common_preserves(*old(local), *local),
     {
         let ghost list_idx = local.page_organization.segment_freeing_is_in();
 
@@ -1531,7 +1663,7 @@ fn segment_free(segment: SegmentPtr, force: bool, tld: TldPtr, Tracked(local): T
             let sbin_idx = slice_bin(count as usize);
             span_queue_delete(tld, sbin_idx, slice, Tracked(&mut *local), Ghost(list_idx), Ghost(count as int));
         } else {
-            todo();
+            assert(false);
         }
 
         let count = slice.get_count(Tracked(&*local));
@@ -1539,10 +1671,144 @@ fn segment_free(segment: SegmentPtr, force: bool, tld: TldPtr, Tracked(local): T
         slice = slice.add_offset(count as usize);
     }
 
-    todo();
+    proof {
+        let segment_id = segment.segment_id@;
+        let keys = page_id_range(segment_id, 0, SLICES_PER_SEGMENT as nat + 1);
+        let next_state = PageOrg::take_step::segment_freeing_finish(local.page_organization);
+        assert forall |pid: PageId| pid.segment_id == segment_id
+            implies !local.thread_token.value().pages.dom().contains(pid)
+        by {
+            if local.thread_token.value().pages.dom().contains(pid) {
+                assert(local.pages.dom().contains(pid));
+                assert(local.page_organization.pages.dom().contains(pid));
+                if pid.idx < SLICES_PER_SEGMENT {
+                    assert(!local.page_organization.pages[pid].is_used);
+                } else if pid.idx == SLICES_PER_SEGMENT {
+                    assert(!local.page_organization.pages[pid].is_used);
+                } else {
+                    assert(false);
+                }
+                assert(local.unused_pages.dom().contains(pid));
+                assert(false);
+            }
+        }
+    }
 
-    // mi_segment_os_free(segment, tld);
-    */
+    let ghost local_before_token_cleanup = *local;
+    let tracked mut segment_shared_access;
+    let segment_ref = segment.get_ref(Tracked(&*local));
+    let loaded_thread_id = atomic_with_ghost!(
+        &segment_ref.thread_id => load();
+        returning thread_id_u64;
+        ghost g => {
+            let ghost segment_id = segment.segment_id@;
+            let ghost local_before_disable = *local;
+            let tracked thread_state_tok = local.take_thread_token();
+            assert forall |pid: PageId| pid.segment_id == segment_id
+                implies !thread_state_tok.value().pages.dom().contains(pid)
+            by {
+                assert(!local_before_disable.thread_token.value().pages.dom().contains(pid));
+                assert(thread_state_tok == local_before_disable.thread_token);
+            }
+            local.instance.local_thread_owns_segment(
+                local.thread_id,
+                segment_id,
+                &thread_state_tok,
+                &g);
+            assert(g.value() == local.thread_id);
+            let tracked (Tracked(thread_state_tok), Tracked(ssa)) =
+                local.instance.segment_disable(local.thread_id, segment_id, thread_state_tok, &g);
+            local.thread_token = thread_state_tok;
+            segment_shared_access = ssa;
+        }
+    );
+
+    let segment_header = ptr_mut_read(segment.segment_ptr, Tracked(&mut segment_shared_access.points_to));
+    let (_, Tracked(thread_of_segment_tok)) = segment_header.thread_id.into_inner();
+
+    proof {
+        let segment_id = segment.segment_id@;
+        let keys = page_id_range(segment_id, 0, SLICES_PER_SEGMENT as nat + 1);
+        let next_state = PageOrg::take_step::segment_freeing_finish(local.page_organization);
+        let ghost local_before_destroy = *local;
+        let tracked thread_state_tok = local.take_thread_token();
+        assert(!thread_state_tok.value().segments[segment_id].is_enabled);
+        assert forall |pid: PageId| pid.segment_id == segment_id
+            implies !thread_state_tok.value().pages.dom().contains(pid)
+        by {
+            assert(!local_before_destroy.thread_token.value().pages.dom().contains(pid));
+            assert(thread_state_tok == local_before_destroy.thread_token);
+        }
+        let tracked thread_state_tok =
+            local.instance.segment_destroy_tokens(local.thread_id, segment_id, thread_state_tok, thread_of_segment_tok);
+        local.thread_token = thread_state_tok;
+        let tracked _segment_access = local.segments.tracked_remove(segment_id);
+        let tracked _pages = local.pages.tracked_remove_keys(keys);
+        assert forall |pid: PageId| keys.contains(pid)
+            implies local.unused_pages.dom().contains(pid)
+        by {
+            assert(pid.segment_id == segment_id);
+            assert(local.page_organization.pages.dom().contains(pid));
+            assert(!local.page_organization.pages[pid].is_used);
+        }
+        let tracked _unused_pages = local.unused_pages.tracked_remove_keys(keys);
+        local.psa = local.psa.remove_keys(keys);
+        local.page_organization = next_state;
+
+        assert(local.thread_token.value().segments.dom() =~= local.segments.dom());
+        assert_sets_equal!(local.page_organization.pages.dom(), local.pages.dom());
+        assert(local.page_organization.invariant());
+        assert(page_organization_queues_match(
+            local.page_organization.unused_dlist_headers,
+            local.tld.value().segments.span_queue_headers@));
+        assert(page_organization_used_queues_match(
+            local.page_organization.used_dlist_headers,
+            local.heap.pages.value()@));
+        assert(page_organization_pages_match(
+            local.page_organization.pages,
+            local.pages,
+            local.psa,
+            local.page_organization.popped));
+        assert(page_organization_segments_match(
+            local.page_organization.segments,
+            local.segments));
+        assert forall |sid: SegmentId| #[trigger] local.segments.dom().contains(sid)
+            implies local.mem_chunk_good(sid)
+        by {
+            assert(sid != segment_id);
+            assert(local_before_token_cleanup.segments.dom().contains(sid));
+            assert(local_before_token_cleanup.mem_chunk_good(sid));
+            assert(local.segments[sid].mem == local_before_token_cleanup.segments[sid].mem);
+            assert(local.commit_mask(sid).bytes(sid)
+                == local_before_token_cleanup.commit_mask(sid).bytes(sid));
+            assert(local.decommit_mask(sid).bytes(sid)
+                == local_before_token_cleanup.decommit_mask(sid).bytes(sid));
+            assert forall |page_id: PageId| page_id.segment_id == sid && #[trigger] local.is_used_primary(page_id)
+                implies local_before_token_cleanup.is_used_primary(page_id)
+                    && local_before_token_cleanup.page_count(page_id) == local.page_count(page_id)
+                    && local_before_token_cleanup.page_capacity(page_id) == local.page_capacity(page_id)
+                    && local_before_token_cleanup.block_size(page_id) == local.block_size(page_id)
+            by {
+                assert(page_id.segment_id != segment_id);
+            }
+            assert forall |page_id: PageId| page_id.segment_id == sid && #[trigger] local_before_token_cleanup.is_used_primary(page_id)
+                implies local.is_used_primary(page_id)
+            by {
+                assert(page_id.segment_id != segment_id);
+            }
+            preserve_totals(local_before_token_cleanup, *local, sid);
+            assert(mem_chunk_good1(
+                local.segments[sid].mem,
+                sid,
+                local.commit_mask(sid).bytes(sid),
+                local.decommit_mask(sid).bytes(sid),
+                local.segment_pages_range_total(sid),
+                local.segment_pages_used_total(sid),
+            ));
+        }
+        assert(local.page_organization_valid());
+        assert(local.wf_main());
+    }
 }
 
 fn segment_os_free(segment: SegmentPtr, tld: TldPtr, Tracked(local): Tracked<&mut Local>)
@@ -1787,6 +2053,9 @@ pub fn segment_page_free(page: PagePtr, force: bool, tld: TldPtr, Tracked(local)
 
     let used = segment.get_used(Tracked(&*local));
     if used == 0 {
+        proof {
+            assert(local.segments[segment.segment_id@].main2.value().used == 0);
+        }
         segment_free(segment, force, tld, Tracked(&mut *local));
     } else {
         let abandoned = segment.get_abandoned(Tracked(&*local));
