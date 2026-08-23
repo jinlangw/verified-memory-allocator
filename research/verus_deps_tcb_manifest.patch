@@ -1,0 +1,21 @@
+diff --git a/.verus_agent/tcb_manifest.json b/.verus_agent/tcb_manifest.json
+--- a/.verus_agent/tcb_manifest.json
++++ b/.verus_agent/tcb_manifest.json
+@@
+     {
+       "kind": "symbol",
+       "value": "print_hex",
+       "marker": null
++    },
++    {
++      "kind": "path",
++      "value": ".verus_deps/builtin",
++      "marker": null
++    },
++    {
++      "kind": "path",
++      "value": ".verus_deps/vstd",
++      "marker": null
+     }
+   ]
+ }

@@ -27,6 +27,7 @@ pub fn os_alloc_aligned_offset(
             && mem@.os_has_range(addr as int, size as int)
             && mem@.points_to.provenance() == addr@.provenance
             && addr as int + size <= usize::MAX
+            && addr as int % page_size() == 0
             && (request_commit ==> mem@.os_has_range_read_write(addr as int, size as int))
             && (request_commit ==> mem@.pointsto_has_range(addr as int, size as int))
             && (!request_commit ==> mem@.os_has_range_no_read_write(addr as int, size as int))
@@ -113,6 +114,7 @@ pub fn os_alloc_aligned(
             && mem@.os_has_range(addr as int, size as int)
             && mem@.points_to.provenance() == addr@.provenance
             && addr as int + size <= usize::MAX
+            && addr as int % page_size() == 0
             && (request_commit ==> mem@.os_has_range_read_write(addr as int, size as int))
             && (request_commit ==> mem@.pointsto_has_range(addr as int, size as int))
             && (!request_commit ==> mem@.os_has_range_no_read_write(addr as int, size as int))
@@ -149,6 +151,7 @@ pub fn os_mem_alloc_aligned(
             && mem@.os_exact_range(addr as int, size as int)
             && mem@.points_to.provenance() == addr@.provenance
             && addr as int + size <= usize::MAX
+            && addr as int % page_size() == 0
             && (request_commit ==> mem@.os_has_range_read_write(addr as int, size as int))
             && (request_commit ==> mem@.pointsto_has_range(addr as int, size as int))
             && (!request_commit ==> mem@.os_has_range_no_read_write(addr as int, size as int))
@@ -174,7 +177,13 @@ pub fn os_mem_alloc_aligned(
     }
 
     if p.addr() % alignment != 0 {
+        proof {
+            assert(p as int % page_size() == 0);
+        }
         if p.addr() % get_page_size() != 0 {
+            proof {
+                assert(false);
+            }
             return (core::ptr::null_mut(), is_large, Tracked(mem));
         }
         proof {
@@ -321,6 +330,7 @@ fn os_mem_alloc(
             mem@.wf()
             && mem@.points_to.provenance() == addr@.provenance
             && addr as int + size <= usize::MAX
+            && addr as int % page_size() == 0
             && mem@.os_exact_range(addr as int, size as int)
             && (request_commit ==> mem@.os_has_range_read_write(addr as int, size as int))
             && (request_commit ==> mem@.pointsto_has_range(addr as int, size as int))
@@ -366,6 +376,7 @@ fn unix_mmap(
             && mem@.points_to.provenance() == addr@.provenance
             && mem@.os_exact_range(addr as int, size as int)
             && addr as int + size <= usize::MAX
+            && addr as int % page_size() == 0
             && (prot_rw ==> mem@.os_has_range_read_write(addr as int, size as int))
             && (prot_rw ==> mem@.pointsto_has_range(addr as int, size as int))
             && (!prot_rw ==> mem@.os_has_range_no_read_write(addr as int, size as int))
@@ -449,6 +460,7 @@ fn unix_mmapx(
             && mem@.os_exact_range(addr as int, size as int)
             && mem@.points_to.provenance() == addr@.provenance
             && addr as int + size <= usize::MAX
+            && addr as int % page_size() == 0
             && (prot_rw ==> mem@.os_has_range_read_write(addr as int, size as int))
             && (prot_rw ==> mem@.pointsto_has_range(addr as int, size as int))
             && (!prot_rw ==> mem@.os_has_range_no_read_write(addr as int, size as int))
