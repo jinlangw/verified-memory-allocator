@@ -200,6 +200,30 @@ pub fn mprotect_prot_read_write(addr: *mut u8, len: usize, Tracked(mem): Tracked
     _mprotect_prot_read_write(addr as *mut libc::c_void, len);
 }
 
+// Release a mapping back to the OS. This consumes the MemChunk by value: the
+// permission is surrendered and never handed back, mirroring the fact that the
+// pages cease to exist in the process address space.
+//
+// `has_pointsto_for_all_read_write` is required for the same reason
+// `mprotect_prot_none` requires it: without it the caller could split the
+// PointsToRaw for these bytes out of the chunk, keep it, surrender only the OS
+// range, and then write through the retained permission after the pages are
+// gone.
+#[verus::trusted]
+#[verifier::external_body]
+pub fn munmap_release(addr: *mut u8, len: usize, Tracked(mem): Tracked<MemChunk>)
+    requires
+        len > 0,
+        addr as int % page_size() == 0,
+        len as int % page_size() == 0,
+        mem.wf(),
+        mem.os_exact_range(addr as int, len as int),
+        mem.has_pointsto_for_all_read_write(),
+        mem.points_to.provenance() == addr@.provenance,
+{
+    _munmap_release(addr as *mut libc::c_void, len);
+}
+
 //// Tested for macOS / Linux
 
 #[verus::trusted]
@@ -257,6 +281,17 @@ fn _mprotect_prot_none(addr: *mut libc::c_void, len: usize) {
             PROT_NONE);
         if res != 0 {
             panic!("mprotect failed");
+        }
+    }
+}
+
+#[verus::trusted]
+#[verifier::external]
+fn _munmap_release(addr: *mut libc::c_void, len: usize) {
+    unsafe {
+        let res = libc::munmap(addr, len);
+        if res != 0 {
+            panic!("munmap failed");
         }
     }
 }
