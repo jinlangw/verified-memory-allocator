@@ -1811,6 +1811,16 @@ fn segment_free(segment: SegmentPtr, force: bool, tld: TldPtr, Tracked(local): T
     }
 }
 
+fn segment_os_free(segment: SegmentPtr, tld: TldPtr, Tracked(local): Tracked<&mut Local>)
+    requires
+        old(local).wf_main(),
+        segment.wf(),
+        segment.is_in(*old(local)),
+        tld.wf(),
+        tld.is_in(*old(local)),
+{
+}
+
 // segment_slices = # of slices in the segment
 // pre_size = size of the pages that contain the segment metadata
 // info_slices = # of slices needed to contain the pages of the segment metadata
