@@ -1,6 +1,6 @@
 {
   "schema_version": 6,
-  "fingerprint": "df67068f400c19ea89f89f6ab6cbb9a42663025a5fbd9bf679b50e6dede02789",
+  "fingerprint": "ecf236ec39e6cd42238764ee75d7bbd0f1fcd4f56c62f853e49a505b5a8949ea",
   "components": {
     "schema_version": 6,
     "baseline_sha": "1ccf01387963f83a3defe0c8109037999ab4c843",
@@ -10,7 +10,7 @@
       "/users/jinlang/verified-memory-allocator/verus-mimalloc/alloc_fast.rs:heap_malloc",
       "/users/jinlang/verified-memory-allocator/verus-mimalloc/free.rs:free"
     ],
-    "call_shape_sha": "308ff4a326b1d8c8fca24e8fe22fd3e11c3d23555cf3a7c107e57d281f3f45e7",
+    "call_shape_sha": "75997ad7881d872d26c782b862ac6e7c0d58db9d56becb1467e98ad3fd64055d",
     "cargo_sha": "fcdfc96962a9bdbbfed3dab7245b0dc605041b3bdc5297ef35679d6657b3697a",
     "rust_analyzer": "rust-analyzer 1.96.0 (ac68faa 2026-05-25)"
   },
@@ -454,41 +454,41 @@
         "detail": "fn segment_commit_mask(\n    segment_ptr: *mut u8,\n    conservative: bool,\n    p: usize,\n    size: usize,\n    cm: &mut CommitMask\n) -> (*mut u8, usize)"
       },
       {
-        "id": "verus-mimalloc/commit_segment.rs::segment_commitx@L131",
+        "id": "verus-mimalloc/commit_segment.rs::segment_commitx@L143",
         "file": "verus-mimalloc/commit_segment.rs",
         "symbol": "segment_commitx",
         "name": "segment_commitx",
-        "line": 131,
+        "line": 143,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn segment_commitx(\n    segment: SegmentPtr,\n    commit: bool,\n    p: usize,\n    size: usize,\n    verus_tmp_local: Tracked<&mut Local>\n) -> bool"
       },
       {
-        "id": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L469",
+        "id": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L501",
         "file": "verus-mimalloc/commit_segment.rs",
         "symbol": "segment_delayed_decommit",
         "name": "segment_delayed_decommit",
-        "line": 469,
+        "line": 501,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn segment_delayed_decommit(segment: SegmentPtr, force: bool, verus_tmp_local: Tracked<&mut Local>)"
       },
       {
-        "id": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L311",
+        "id": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L343",
         "file": "verus-mimalloc/commit_segment.rs",
         "symbol": "segment_ensure_committed",
         "name": "segment_ensure_committed",
-        "line": 311,
+        "line": 343,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn segment_ensure_committed(segment: SegmentPtr, p: usize, size: usize, verus_tmp_local: Tracked<&mut Local>) -> bool"
       },
       {
-        "id": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
+        "id": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L383",
         "file": "verus-mimalloc/commit_segment.rs",
         "symbol": "segment_perhaps_decommit",
         "name": "segment_perhaps_decommit",
-        "line": 349,
+        "line": 383,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn segment_perhaps_decommit(segment: SegmentPtr, p: usize, size: usize, verus_tmp_local: Tracked<&mut Local>)"
@@ -504,21 +504,21 @@
         "detail": "pub fn option_allow_decommit() -> bool"
       },
       {
-        "id": "verus-mimalloc/config.rs::option_decommit_delay@L126",
+        "id": "verus-mimalloc/config.rs::option_decommit_delay@L130",
         "file": "verus-mimalloc/config.rs",
         "symbol": "option_decommit_delay",
         "name": "option_decommit_delay",
-        "line": 126,
+        "line": 130,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn option_decommit_delay() -> i64"
       },
       {
-        "id": "verus-mimalloc/config.rs::option_decommit_extend_delay@L127",
+        "id": "verus-mimalloc/config.rs::option_decommit_extend_delay@L135",
         "file": "verus-mimalloc/config.rs",
         "symbol": "option_decommit_extend_delay",
         "name": "option_decommit_extend_delay",
-        "line": 127,
+        "line": 135,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn option_decommit_extend_delay() -> i64"
@@ -634,21 +634,21 @@
         "detail": "fn free_generic(\n    segment: *mut SegmentHeader,\n    page: PagePtr,\n    is_local: bool,\n    p: *mut u8,\n    verus_tmp_perm: Tracked<PointsToRaw>,\n    verus_tmp_dealloc: Tracked<MimDeallocInner>,\n    verus_tmp_local: Tracked<&mut Local>\n)"
       },
       {
-        "id": "verus-mimalloc/init.rs::PageQueue::empty@L275",
+        "id": "verus-mimalloc/init.rs::PageQueue::empty@L278",
         "file": "verus-mimalloc/init.rs",
         "symbol": "PageQueue::empty",
         "name": "empty",
-        "line": 275,
+        "line": 278,
         "character": 7,
         "lsp_kind": 12,
         "detail": "fn empty(wsize: usize) -> PageQueue"
       },
       {
-        "id": "verus-mimalloc/init.rs::current_thread_count@L831",
+        "id": "verus-mimalloc/init.rs::current_thread_count@L834",
         "file": "verus-mimalloc/init.rs",
         "symbol": "current_thread_count",
         "name": "current_thread_count",
-        "line": 831,
+        "line": 834,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn current_thread_count() -> usize"
@@ -664,61 +664,61 @@
         "detail": "pub fn heap_init(verus_tmp_global: Tracked<Global>, verus_tmp_right: Tracked<Mim::right_to_use_thread>, verus_tmp_cur_thread: Tracked<IsThread>) -> (HeapPtr, Tracked<Option<Local>>)"
       },
       {
-        "id": "verus-mimalloc/init.rs::increment_thread_count@L826",
+        "id": "verus-mimalloc/init.rs::increment_thread_count@L829",
         "file": "verus-mimalloc/init.rs",
         "symbol": "increment_thread_count",
         "name": "increment_thread_count",
-        "line": 826,
+        "line": 829,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn increment_thread_count()"
       },
       {
-        "id": "verus-mimalloc/init.rs::init_empty_page_ptr@L711",
+        "id": "verus-mimalloc/init.rs::init_empty_page_ptr@L714",
         "file": "verus-mimalloc/init.rs",
         "symbol": "init_empty_page_ptr",
         "name": "init_empty_page_ptr",
-        "line": 711,
+        "line": 714,
         "character": 3,
         "lsp_kind": 12,
-        "detail": "fn init_empty_page_ptr() -> EmptyPageStuff"
+        "detail": "fn init_empty_page_ptr() -> Option<EmptyPageStuff>"
       },
       {
-        "id": "verus-mimalloc/init.rs::pages_free_direct_tmp@L479",
+        "id": "verus-mimalloc/init.rs::pages_free_direct_tmp@L482",
         "file": "verus-mimalloc/init.rs",
         "symbol": "pages_free_direct_tmp",
         "name": "pages_free_direct_tmp",
-        "line": 479,
+        "line": 482,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn pages_free_direct_tmp() -> [*mut Page; {const}]"
       },
       {
-        "id": "verus-mimalloc/init.rs::pages_tmp@L292",
+        "id": "verus-mimalloc/init.rs::pages_tmp@L295",
         "file": "verus-mimalloc/init.rs",
         "symbol": "pages_tmp",
         "name": "pages_tmp",
-        "line": 292,
+        "line": 295,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn pages_tmp() -> [PageQueue; {const}]"
       },
       {
-        "id": "verus-mimalloc/init.rs::span_queue_headers_tmp@L613",
+        "id": "verus-mimalloc/init.rs::span_queue_headers_tmp@L616",
         "file": "verus-mimalloc/init.rs",
         "symbol": "span_queue_headers_tmp",
         "name": "span_queue_headers_tmp",
-        "line": 613,
+        "line": 616,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn span_queue_headers_tmp() -> [SpanQueueHeader; {const}]"
       },
       {
-        "id": "verus-mimalloc/init.rs::thread_data_alloc@L650",
+        "id": "verus-mimalloc/init.rs::thread_data_alloc@L653",
         "file": "verus-mimalloc/init.rs",
         "symbol": "thread_data_alloc",
         "name": "thread_data_alloc",
-        "line": 650,
+        "line": 653,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn thread_data_alloc() -> (*mut u8, Tracked<MemChunk>)"
@@ -894,31 +894,31 @@
         "detail": "pub fn masked_ptr_delay_set_ptr(v: *mut Node, new_ptr: *mut Node, verus_tmp_expected_delay: Ghost<DelayState>, verus_tmp_expected_ptr: Ghost<*mut Node>) -> *mut Node"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::aligned_base_add@L265",
+        "id": "verus-mimalloc/os_alloc.rs::aligned_base_add@L278",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "aligned_base_add",
         "name": "aligned_base_add",
-        "line": 265,
+        "line": 278,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn aligned_base_add(s: usize) -> usize"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::aligned_base_cas@L270",
+        "id": "verus-mimalloc/os_alloc.rs::aligned_base_cas@L283",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "aligned_base_cas",
         "name": "aligned_base_cas",
-        "line": 270,
+        "line": 283,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn aligned_base_cas(s: usize, t: usize)"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L98",
+        "id": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L99",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "os_alloc_aligned",
         "name": "os_alloc_aligned",
-        "line": 98,
+        "line": 99,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn os_alloc_aligned(size: usize, alignment: usize, request_commit: bool, allow_large: bool) -> (*mut u8, bool, Tracked<MemChunk>)"
@@ -934,71 +934,71 @@
         "detail": "pub fn os_alloc_aligned_offset(\n    size: usize,\n    alignment: usize,\n    offset: usize,\n    request_commit: bool,\n    allow_large: bool\n) -> (*mut u8, bool, Tracked<MemChunk>)"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L278",
+        "id": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L291",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "os_get_aligned_hint",
         "name": "os_get_aligned_hint",
-        "line": 278,
+        "line": 291,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn os_get_aligned_hint(try_alignment: usize, size: usize) -> usize"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::os_good_alloc_size@L60",
+        "id": "verus-mimalloc/os_alloc.rs::os_good_alloc_size@L61",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "os_good_alloc_size",
         "name": "os_good_alloc_size",
-        "line": 60,
+        "line": 61,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn os_good_alloc_size(size: usize) -> usize"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L179",
+        "id": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L186",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "os_mem_alloc",
         "name": "os_mem_alloc",
-        "line": 179,
+        "line": 186,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn os_mem_alloc(size: usize, try_alignment: usize, request_commit: bool, allow_large: bool) -> (*mut u8, bool, Tracked<MemChunk>)"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L135",
+        "id": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L136",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "os_mem_alloc_aligned",
         "name": "os_mem_alloc_aligned",
-        "line": 135,
+        "line": 136,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn os_mem_alloc_aligned(size: usize, alignment: usize, request_commit: bool, allow_large: bool) -> (*mut u8, bool, Tracked<MemChunk>)"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::unix_mmap@L220",
+        "id": "verus-mimalloc/os_alloc.rs::unix_mmap@L239",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "unix_mmap",
         "name": "unix_mmap",
-        "line": 220,
+        "line": 239,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn unix_mmap(\n    addr: *mut u8,\n    size: usize,\n    try_alignment: usize,\n    prot_rw: bool,\n    large_only: bool,\n    allow_large: bool\n) -> (*mut u8, bool, Tracked<MemChunk>)"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::unix_mmapx@L312",
+        "id": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "unix_mmapx",
         "name": "unix_mmapx",
-        "line": 312,
+        "line": 325,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn unix_mmapx(hint: *mut u8, size: usize, try_alignment: usize, prot_rw: bool) -> (*mut u8, Tracked<MemChunk>)"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::use_large_os_page@L216",
+        "id": "verus-mimalloc/os_alloc.rs::use_large_os_page@L224",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "use_large_os_page",
         "name": "use_large_os_page",
-        "line": 216,
+        "line": 224,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn use_large_os_page(size: usize, alignment: usize) -> bool"
@@ -1154,11 +1154,11 @@
         "detail": "pub fn find_page(heap_ptr: HeapPtr, size: usize, huge_alignment: usize, verus_tmp_local: Tracked<&mut Local>) -> PagePtr"
       },
       {
-        "id": "verus-mimalloc/page.rs::page_free@L597",
+        "id": "verus-mimalloc/page.rs::page_free@L599",
         "file": "verus-mimalloc/page.rs",
         "symbol": "page_free",
         "name": "page_free",
-        "line": 597,
+        "line": 599,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn page_free(\n    page: PagePtr,\n    pq: usize,\n    force: bool,\n    verus_tmp_local: Tracked<&mut Local>,\n    verus_tmp_list_idx: Ghost<int>\n)"
@@ -1184,21 +1184,21 @@
         "detail": "fn page_fresh_alloc(\n    heap_ptr: HeapPtr,\n    pq: usize,\n    block_size: usize,\n    page_alignment: usize,\n    verus_tmp_local: Tracked<&mut Local>\n) -> PagePtr"
       },
       {
-        "id": "verus-mimalloc/page.rs::page_init@L247",
+        "id": "verus-mimalloc/page.rs::page_init@L249",
         "file": "verus-mimalloc/page.rs",
         "symbol": "page_init",
         "name": "page_init",
-        "line": 247,
+        "line": 249,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn page_init(\n    heap_ptr: HeapPtr,\n    page_ptr: PagePtr,\n    block_size: usize,\n    tld_ptr: TldPtr,\n    verus_tmp_local: Tracked<&mut Local>,\n    verus_tmp_pq: Ghost<int>\n)"
       },
       {
-        "id": "verus-mimalloc/page.rs::page_queue_enqueue_from@L654",
+        "id": "verus-mimalloc/page.rs::page_queue_enqueue_from@L656",
         "file": "verus-mimalloc/page.rs",
         "symbol": "page_queue_enqueue_from",
         "name": "page_queue_enqueue_from",
-        "line": 654,
+        "line": 656,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn page_queue_enqueue_from(\n    heap: HeapPtr,\n    to: usize,\n    from: usize,\n    page: PagePtr,\n    verus_tmp_local: Tracked<&mut Local>,\n    verus_tmp_list_idx: Ghost<int>,\n    verus_tmp_next_id: Ghost<PageId>\n)"
@@ -1214,51 +1214,51 @@
         "detail": "fn page_queue_find_free_ex(heap_ptr: HeapPtr, pq: usize, first_try: bool, verus_tmp_local: Tracked<&mut Local>) -> PagePtr"
       },
       {
-        "id": "verus-mimalloc/page.rs::page_queue_of@L513",
+        "id": "verus-mimalloc/page.rs::page_queue_of@L515",
         "file": "verus-mimalloc/page.rs",
         "symbol": "page_queue_of",
         "name": "page_queue_of",
-        "line": 513,
+        "line": 515,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn page_queue_of(page: PagePtr, verus_tmp_local: Tracked<&Local>) -> (HeapPtr, usize, Ghost<int>)"
       },
       {
-        "id": "verus-mimalloc/page.rs::page_retire@L559",
+        "id": "verus-mimalloc/page.rs::page_retire@L561",
         "file": "verus-mimalloc/page.rs",
         "symbol": "page_retire",
         "name": "page_retire",
-        "line": 559,
+        "line": 561,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn page_retire(page: PagePtr, verus_tmp_local: Tracked<&mut Local>)"
       },
       {
-        "id": "verus-mimalloc/page.rs::page_to_full@L618",
+        "id": "verus-mimalloc/page.rs::page_to_full@L620",
         "file": "verus-mimalloc/page.rs",
         "symbol": "page_to_full",
         "name": "page_to_full",
-        "line": 618,
+        "line": 620,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn page_to_full(\n    page: PagePtr,\n    heap: HeapPtr,\n    pq: usize,\n    verus_tmp_local: Tracked<&mut Local>,\n    verus_tmp_list_idx: Ghost<int>,\n    verus_tmp_next_id: Ghost<PageId>\n)"
       },
       {
-        "id": "verus-mimalloc/page.rs::page_try_use_delayed_free@L679",
+        "id": "verus-mimalloc/page.rs::page_try_use_delayed_free@L681",
         "file": "verus-mimalloc/page.rs",
         "symbol": "page_try_use_delayed_free",
         "name": "page_try_use_delayed_free",
-        "line": 679,
+        "line": 681,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn page_try_use_delayed_free(page: PagePtr, delay: usize, override_never: bool, verus_tmp_local: Tracked<&Local>) -> bool"
       },
       {
-        "id": "verus-mimalloc/page.rs::page_unfull@L636",
+        "id": "verus-mimalloc/page.rs::page_unfull@L638",
         "file": "verus-mimalloc/page.rs",
         "symbol": "page_unfull",
         "name": "page_unfull",
-        "line": 636,
+        "line": 638,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn page_unfull(page: PagePtr, verus_tmp_local: Tracked<&mut Local>)"
@@ -1304,41 +1304,41 @@
         "detail": "pub fn page_queue_remove(\n    heap: HeapPtr,\n    pq: usize,\n    page: PagePtr,\n    verus_tmp_local: Tracked<&mut Local>,\n    verus_tmp_list_idx: Ghost<int>,\n    verus_tmp_next_id: Ghost<PageId>\n)"
       },
       {
-        "id": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "id": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "segment_alloc",
         "name": "segment_alloc",
-        "line": 931,
+        "line": 945,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn segment_alloc(\n    required: usize,\n    page_alignment: usize,\n    req_arena_id: ArenaId,\n    tld: TldPtr,\n    verus_tmp_local: Tracked<&mut Local>\n) -> SegmentPtr"
       },
       {
-        "id": "verus-mimalloc/segment.rs::segment_calculate_slices@L1574",
+        "id": "verus-mimalloc/segment.rs::segment_calculate_slices@L1578",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "segment_calculate_slices",
         "name": "segment_calculate_slices",
-        "line": 1574,
+        "line": 1578,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn segment_calculate_slices(required: usize) -> (usize, usize, usize)"
       },
       {
-        "id": "verus-mimalloc/segment.rs::segment_free@L1487",
+        "id": "verus-mimalloc/segment.rs::segment_free@L1491",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "segment_free",
         "name": "segment_free",
-        "line": 1487,
+        "line": 1491,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn segment_free(segment: SegmentPtr, force: bool, tld: TldPtr, verus_tmp_local: Tracked<&mut Local>)"
       },
       {
-        "id": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
+        "id": "verus-mimalloc/segment.rs::segment_os_alloc@L1344",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "segment_os_alloc",
         "name": "segment_os_alloc",
-        "line": 1332,
+        "line": 1344,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn segment_os_alloc(\n    required: usize,\n    page_alignment: usize,\n    eager_delay: bool,\n    req_arena_id: ArenaId,\n    psegment_slices: usize,\n    pre_size: usize,\n    pinfo_slices: usize,\n    pcommit_mask: &mut CommitMask,\n    pdecommit_mask: &mut CommitMask,\n    request_commit: bool,\n    tld: TldPtr,\n    verus_tmp_local: Tracked<&mut Local>\n) -> (SegmentPtr, usize, usize, usize, bool, bool, MemId, bool, bool, usize, Tracked<MemChunk>)"
@@ -1354,111 +1354,111 @@
         "detail": "pub fn segment_page_alloc(\n    heap: HeapPtr,\n    block_size: usize,\n    page_alignment: usize,\n    tld: TldPtr,\n    verus_tmp_local: Tracked<&mut Local>\n) -> PagePtr"
       },
       {
-        "id": "verus-mimalloc/segment.rs::segment_page_clear@L1780",
+        "id": "verus-mimalloc/segment.rs::segment_page_clear@L1806",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "segment_page_clear",
         "name": "segment_page_clear",
-        "line": 1780,
+        "line": 1806,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn segment_page_clear(page: PagePtr, tld: TldPtr, verus_tmp_local: Tracked<&mut Local>)"
       },
       {
-        "id": "verus-mimalloc/segment.rs::segment_page_free@L1755",
+        "id": "verus-mimalloc/segment.rs::segment_page_free@L1772",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "segment_page_free",
         "name": "segment_page_free",
-        "line": 1755,
+        "line": 1772,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn segment_page_free(page: PagePtr, force: bool, tld: TldPtr, verus_tmp_local: Tracked<&mut Local>)"
       },
       {
-        "id": "verus-mimalloc/segment.rs::segment_reclaim_or_alloc@L165",
+        "id": "verus-mimalloc/segment.rs::segment_reclaim_or_alloc@L161",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "segment_reclaim_or_alloc",
         "name": "segment_reclaim_or_alloc",
-        "line": 165,
+        "line": 161,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn segment_reclaim_or_alloc(\n    heap: HeapPtr,\n    needed_slices: usize,\n    block_size: usize,\n    tld: TldPtr,\n    verus_tmp_local: Tracked<&mut Local>\n) -> SegmentPtr"
       },
       {
-        "id": "verus-mimalloc/segment.rs::segment_slice_split@L492",
+        "id": "verus-mimalloc/segment.rs::segment_slice_split@L494",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "segment_slice_split",
         "name": "segment_slice_split",
-        "line": 492,
+        "line": 494,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn segment_slice_split(\n    slice: PagePtr,\n    current_slice_count: usize,\n    target_slice_count: usize,\n    tld_ptr: TldPtr,\n    verus_tmp_local: Tracked<&mut Local>\n)"
       },
       {
-        "id": "verus-mimalloc/segment.rs::segment_span_allocate@L691",
+        "id": "verus-mimalloc/segment.rs::segment_span_allocate@L693",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "segment_span_allocate",
         "name": "segment_span_allocate",
-        "line": 691,
+        "line": 693,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn segment_span_allocate(\n    segment: SegmentPtr,\n    slice: PagePtr,\n    slice_count: usize,\n    tld_ptr: TldPtr,\n    verus_tmp_local: Tracked<&mut Local>\n) -> bool"
       },
       {
-        "id": "verus-mimalloc/segment.rs::segment_span_free@L1603",
+        "id": "verus-mimalloc/segment.rs::segment_span_free@L1607",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "segment_span_free",
         "name": "segment_span_free",
-        "line": 1603,
+        "line": 1607,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn segment_span_free(\n    segment_ptr: SegmentPtr,\n    slice_index: usize,\n    slice_count: usize,\n    allow_decommit: bool,\n    tld_ptr: TldPtr,\n    verus_tmp_local: Tracked<&mut Local>\n)"
       },
       {
-        "id": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
+        "id": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "segment_span_free_coalesce",
         "name": "segment_span_free_coalesce",
-        "line": 1999,
+        "line": 2023,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn segment_span_free_coalesce(slice: PagePtr, tld: TldPtr, verus_tmp_local: Tracked<&mut Local>)"
       },
       {
-        "id": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
+        "id": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "segment_span_free_coalesce_before",
         "name": "segment_span_free_coalesce_before",
-        "line": 2133,
+        "line": 2156,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn segment_span_free_coalesce_before(\n    segment: SegmentPtr,\n    slice: PagePtr,\n    tld: TldPtr,\n    verus_tmp_local: Tracked<&mut Local>,\n    slice_count: u32\n) -> (PagePtr, u32)"
       },
       {
-        "id": "verus-mimalloc/segment.rs::segments_page_alloc@L80",
+        "id": "verus-mimalloc/segment.rs::segments_page_alloc@L76",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "segments_page_alloc",
         "name": "segments_page_alloc",
-        "line": 80,
+        "line": 76,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn segments_page_alloc(\n    heap: HeapPtr,\n    required: usize,\n    block_size: usize,\n    tld: TldPtr,\n    verus_tmp_local: Tracked<&mut Local>\n) -> PagePtr"
       },
       {
-        "id": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
+        "id": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "segments_page_find_and_allocate",
         "name": "segments_page_find_and_allocate",
-        "line": 190,
+        "line": 186,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn segments_page_find_and_allocate(slice_count0: usize, tld_ptr: TldPtr, verus_tmp_local: Tracked<&mut Local>, verus_tmp_block_size: Ghost<nat>) -> PagePtr"
       },
       {
-        "id": "verus-mimalloc/segment.rs::span_queue_delete@L332",
+        "id": "verus-mimalloc/segment.rs::span_queue_delete@L334",
         "file": "verus-mimalloc/segment.rs",
         "symbol": "span_queue_delete",
         "name": "span_queue_delete",
-        "line": 332,
+        "line": 334,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn span_queue_delete(\n    tld_ptr: TldPtr,\n    sbin_idx: usize,\n    slice: PagePtr,\n    verus_tmp_local: Tracked<&mut Local>,\n    verus_tmp_list_idx: Ghost<int>,\n    verus_tmp_count: Ghost<int>\n)"
@@ -1474,471 +1474,471 @@
         "detail": "pub fn thread_id() -> (ThreadId, Tracked<IsThread>)"
       },
       {
-        "id": "verus-mimalloc/types.rs::HeapPtr::get_arena_id@L1142",
+        "id": "verus-mimalloc/types.rs::HeapPtr::get_arena_id@L1144",
         "file": "verus-mimalloc/types.rs",
         "symbol": "HeapPtr::get_arena_id",
         "name": "get_arena_id",
-        "line": 1142,
+        "line": 1144,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_arena_id<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> ArenaId"
       },
       {
-        "id": "verus-mimalloc/types.rs::HeapPtr::get_page_count@L1049",
+        "id": "verus-mimalloc/types.rs::HeapPtr::get_page_count@L1051",
         "file": "verus-mimalloc/types.rs",
         "symbol": "HeapPtr::get_page_count",
         "name": "get_page_count",
-        "line": 1049,
+        "line": 1051,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_page_count<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> usize"
       },
       {
-        "id": "verus-mimalloc/types.rs::HeapPtr::get_page_empty@L1155",
+        "id": "verus-mimalloc/types.rs::HeapPtr::get_page_empty@L1157",
         "file": "verus-mimalloc/types.rs",
         "symbol": "HeapPtr::get_page_empty",
         "name": "get_page_empty",
-        "line": 1155,
+        "line": 1157,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_page_empty(&self, verus_tmp_local: Tracked<&Local>) -> (*mut Page, Tracked<Shared<PageFullAccess>>)"
       },
       {
-        "id": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_max@L1103",
+        "id": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_max@L1105",
         "file": "verus-mimalloc/types.rs",
         "symbol": "HeapPtr::get_page_retired_max",
         "name": "get_page_retired_max",
-        "line": 1103,
+        "line": 1105,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_page_retired_max<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> usize"
       },
       {
-        "id": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_min@L1076",
+        "id": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_min@L1078",
         "file": "verus-mimalloc/types.rs",
         "symbol": "HeapPtr::get_page_retired_min",
         "name": "get_page_retired_min",
-        "line": 1076,
+        "line": 1078,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_page_retired_min<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> usize"
       },
       {
-        "id": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1037",
+        "id": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1039",
         "file": "verus-mimalloc/types.rs",
         "symbol": "HeapPtr::get_pages",
         "name": "get_pages",
-        "line": 1037,
+        "line": 1039,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_pages<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> &'a [PageQueue; {const}]"
       },
       {
-        "id": "verus-mimalloc/types.rs::HeapPtr::get_pages_free_direct@L1130",
+        "id": "verus-mimalloc/types.rs::HeapPtr::get_pages_free_direct@L1132",
         "file": "verus-mimalloc/types.rs",
         "symbol": "HeapPtr::get_pages_free_direct",
         "name": "get_pages_free_direct",
-        "line": 1130,
+        "line": 1132,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_pages_free_direct<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> &'a [*mut Page; {const}]"
       },
       {
-        "id": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1023",
+        "id": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1025",
         "file": "verus-mimalloc/types.rs",
         "symbol": "HeapPtr::get_ref",
         "name": "get_ref",
-        "line": 1023,
+        "line": 1025,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_ref<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> &'a Heap"
       },
       {
-        "id": "verus-mimalloc/types.rs::HeapPtr::set_page_count@L1061",
+        "id": "verus-mimalloc/types.rs::HeapPtr::set_page_count@L1063",
         "file": "verus-mimalloc/types.rs",
         "symbol": "HeapPtr::set_page_count",
         "name": "set_page_count",
-        "line": 1061,
+        "line": 1063,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn set_page_count<'a>(&self, verus_tmp_local: Tracked<&mut Local>, page_count: usize)"
       },
       {
-        "id": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_max@L1115",
+        "id": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_max@L1117",
         "file": "verus-mimalloc/types.rs",
         "symbol": "HeapPtr::set_page_retired_max",
         "name": "set_page_retired_max",
-        "line": 1115,
+        "line": 1117,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn set_page_retired_max<'a>(&self, verus_tmp_local: Tracked<&mut Local>, page_retired_max: usize)"
       },
       {
-        "id": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_min@L1088",
+        "id": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_min@L1090",
         "file": "verus-mimalloc/types.rs",
         "symbol": "HeapPtr::set_page_retired_min",
         "name": "set_page_retired_min",
-        "line": 1088,
+        "line": 1090,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn set_page_retired_min<'a>(&self, verus_tmp_local: Tracked<&mut Local>, page_retired_min: usize)"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::add_offset@L1647",
+        "id": "verus-mimalloc/types.rs::PagePtr::add_offset@L1668",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::add_offset",
         "name": "add_offset",
-        "line": 1647,
+        "line": 1668,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn add_offset(&self, count: usize) -> Self"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::add_offset_and_check@L1745",
+        "id": "verus-mimalloc/types.rs::PagePtr::add_offset_and_check@L1766",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::add_offset_and_check",
         "name": "add_offset_and_check",
-        "line": 1745,
+        "line": 1766,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn add_offset_and_check(&self, count: usize, segment: SegmentPtr) -> (Self, bool)"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::get_block_size@L1779",
+        "id": "verus-mimalloc/types.rs::PagePtr::get_block_size@L1800",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::get_block_size",
         "name": "get_block_size",
-        "line": 1779,
+        "line": 1800,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_block_size(&self, verus_tmp_local: Tracked<&Local>) -> u32"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::get_count@L1602",
+        "id": "verus-mimalloc/types.rs::PagePtr::get_count@L1623",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::get_count",
         "name": "get_count",
-        "line": 1602,
+        "line": 1623,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_count<'a>(&self, verus_tmp_local: Tracked<&Local>) -> u32"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::get_heap@L1791",
+        "id": "verus-mimalloc/types.rs::PagePtr::get_heap@L1812",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::get_heap",
         "name": "get_heap",
-        "line": 1791,
+        "line": 1812,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_heap(&self, verus_tmp_local: Tracked<&Local>) -> HeapPtr"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::get_index@L1717",
+        "id": "verus-mimalloc/types.rs::PagePtr::get_index@L1738",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::get_index",
         "name": "get_index",
-        "line": 1717,
+        "line": 1738,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_index(&self) -> usize"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "id": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::get_inner_ref",
         "name": "get_inner_ref",
-        "line": 1554,
+        "line": 1575,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_inner_ref<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> &'a PageInner"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::get_inner_ref_maybe_empty@L1569",
+        "id": "verus-mimalloc/types.rs::PagePtr::get_inner_ref_maybe_empty@L1590",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::get_inner_ref_maybe_empty",
         "name": "get_inner_ref_maybe_empty",
-        "line": 1569,
+        "line": 1590,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_inner_ref_maybe_empty<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> &'a PageInner"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::get_next@L1617",
+        "id": "verus-mimalloc/types.rs::PagePtr::get_next@L1638",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::get_next",
         "name": "get_next",
-        "line": 1617,
+        "line": 1638,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_next<'a>(&self, verus_tmp_local: Tracked<&Local>) -> *mut Page"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::get_prev@L1632",
+        "id": "verus-mimalloc/types.rs::PagePtr::get_prev@L1653",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::get_prev",
         "name": "get_prev",
-        "line": 1632,
+        "line": 1653,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_prev<'a>(&self, verus_tmp_local: Tracked<&Local>) -> *mut Page"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::get_ref@L1531",
+        "id": "verus-mimalloc/types.rs::PagePtr::get_ref@L1552",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::get_ref",
         "name": "get_ref",
-        "line": 1531,
+        "line": 1552,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_ref<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> &'a Page"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::is_gt_0th_slice@L1705",
+        "id": "verus-mimalloc/types.rs::PagePtr::is_gt_0th_slice@L1726",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::is_gt_0th_slice",
         "name": "is_gt_0th_slice",
-        "line": 1705,
+        "line": 1726,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn is_gt_0th_slice(&self, segment: SegmentPtr) -> bool"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::is_null@L1524",
+        "id": "verus-mimalloc/types.rs::PagePtr::is_null@L1545",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::is_null",
         "name": "is_null",
-        "line": 1524,
+        "line": 1545,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn is_null(&self) -> bool"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::null@L1515",
+        "id": "verus-mimalloc/types.rs::PagePtr::null@L1536",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::null",
         "name": "null",
-        "line": 1515,
+        "line": 1536,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn null() -> Self"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::slice_start@L1728",
+        "id": "verus-mimalloc/types.rs::PagePtr::slice_start@L1749",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::slice_start",
         "name": "slice_start",
-        "line": 1728,
+        "line": 1749,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn slice_start(&self) -> usize"
       },
       {
-        "id": "verus-mimalloc/types.rs::PagePtr::sub_offset@L1673",
+        "id": "verus-mimalloc/types.rs::PagePtr::sub_offset@L1694",
         "file": "verus-mimalloc/types.rs",
         "symbol": "PagePtr::sub_offset",
         "name": "sub_offset",
-        "line": 1673,
+        "line": 1694,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn sub_offset(&self, count: usize) -> Self"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::get_abandoned@L1425",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::get_abandoned@L1427",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::get_abandoned",
         "name": "get_abandoned",
-        "line": 1425,
+        "line": 1427,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_abandoned(&self, verus_tmp_local: Tracked<&Local>) -> usize"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::get_allow_decommit@L1408",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::get_allow_decommit@L1410",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::get_allow_decommit",
         "name": "get_allow_decommit",
-        "line": 1408,
+        "line": 1410,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_allow_decommit(&self, verus_tmp_local: Tracked<&Local>) -> bool"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::get_commit_mask@L1380",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::get_commit_mask@L1382",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::get_commit_mask",
         "name": "get_commit_mask",
-        "line": 1380,
+        "line": 1382,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_commit_mask<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> &'a CommitMask"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_expire@L1398",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_expire@L1400",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::get_decommit_expire",
         "name": "get_decommit_expire",
-        "line": 1398,
+        "line": 1400,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_decommit_expire(&self, verus_tmp_local: Tracked<&Local>) -> i64"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_mask@L1389",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_mask@L1391",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::get_decommit_mask",
         "name": "get_decommit_mask",
-        "line": 1389,
+        "line": 1391,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_decommit_mask<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> &'a CommitMask"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::get_main2_ref@L1371",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::get_main2_ref@L1373",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::get_main2_ref",
         "name": "get_main2_ref",
-        "line": 1371,
+        "line": 1373,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_main2_ref<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> &'a SegmentHeaderMain2"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1351",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1353",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::get_main_ref",
         "name": "get_main_ref",
-        "line": 1351,
+        "line": 1353,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_main_ref<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> &'a SegmentHeaderMain"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::get_mem_is_pinned@L1433",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::get_mem_is_pinned@L1435",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::get_mem_is_pinned",
         "name": "get_mem_is_pinned",
-        "line": 1433,
+        "line": 1435,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_mem_is_pinned(&self, verus_tmp_local: Tracked<&Local>) -> bool"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::get_page_after_end@L1317",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::get_page_after_end@L1319",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::get_page_after_end",
         "name": "get_page_after_end",
-        "line": 1317,
+        "line": 1319,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_page_after_end(&self) -> *mut Page"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::get_page_header_ptr@L1301",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::get_page_header_ptr@L1303",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::get_page_header_ptr",
         "name": "get_page_header_ptr",
-        "line": 1301,
+        "line": 1303,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_page_header_ptr(&self, idx: usize) -> PagePtr"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::get_ref@L1330",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::get_ref@L1332",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::get_ref",
         "name": "get_ref",
-        "line": 1330,
+        "line": 1332,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_ref<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> &'a SegmentHeader"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::get_segment_kind@L1448",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::get_segment_kind@L1469",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::get_segment_kind",
         "name": "get_segment_kind",
-        "line": 1448,
+        "line": 1469,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_segment_kind(&self, verus_tmp_local: Tracked<&Local>) -> SegmentKind"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::get_used@L1417",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::get_used@L1419",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::get_used",
         "name": "get_used",
-        "line": 1417,
+        "line": 1419,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_used(&self, verus_tmp_local: Tracked<&Local>) -> usize"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::is_abandoned@L1441",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::is_abandoned@L1443",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::is_abandoned",
         "name": "is_abandoned",
-        "line": 1441,
+        "line": 1443,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn is_abandoned(&self, verus_tmp_local: Tracked<&Local>) -> bool"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::is_null@L1285",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::is_null@L1287",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::is_null",
         "name": "is_null",
-        "line": 1285,
+        "line": 1287,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn is_null(&self) -> bool"
       },
       {
-        "id": "verus-mimalloc/types.rs::SegmentPtr::null@L1292",
+        "id": "verus-mimalloc/types.rs::SegmentPtr::null@L1294",
         "file": "verus-mimalloc/types.rs",
         "symbol": "SegmentPtr::null",
         "name": "null",
-        "line": 1292,
+        "line": 1294,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn null() -> Self"
       },
       {
-        "id": "verus-mimalloc/types.rs::TldPtr::get_mut@L1235",
+        "id": "verus-mimalloc/types.rs::TldPtr::get_mut@L1237",
         "file": "verus-mimalloc/types.rs",
         "symbol": "TldPtr::get_mut",
         "name": "get_mut",
-        "line": 1235,
+        "line": 1237,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_mut<'a>(&self, verus_tmp_local: Tracked<&'a mut Local>) -> &'a mut Tld"
       },
       {
-        "id": "verus-mimalloc/types.rs::TldPtr::get_ref@L1223",
+        "id": "verus-mimalloc/types.rs::TldPtr::get_ref@L1225",
         "file": "verus-mimalloc/types.rs",
         "symbol": "TldPtr::get_ref",
         "name": "get_ref",
-        "line": 1223,
+        "line": 1225,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_ref<'a>(&self, verus_tmp_local: Tracked<&'a Local>) -> &'a Tld"
       },
       {
-        "id": "verus-mimalloc/types.rs::TldPtr::get_segments_count@L1249",
+        "id": "verus-mimalloc/types.rs::TldPtr::get_segments_count@L1251",
         "file": "verus-mimalloc/types.rs",
         "symbol": "TldPtr::get_segments_count",
         "name": "get_segments_count",
-        "line": 1249,
+        "line": 1251,
         "character": 11,
         "lsp_kind": 12,
         "detail": "pub fn get_segments_count(&self, verus_tmp_local: Tracked<&Local>) -> usize"
       },
       {
-        "id": "verus-mimalloc/types.rs::todo@L2189",
+        "id": "verus-mimalloc/types.rs::todo@L2210",
         "file": "verus-mimalloc/types.rs",
         "symbol": "todo",
         "name": "todo",
-        "line": 2189,
+        "line": 2210,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn todo()"
@@ -1972,7 +1972,7 @@
       },
       {
         "caller": "verus-mimalloc/alloc_fast.rs::heap_get_free_small_page@L102",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_pages_free_direct@L1130",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_pages_free_direct@L1132",
         "kind": "call"
       },
       {
@@ -2042,7 +2042,7 @@
       },
       {
         "caller": "verus-mimalloc/alloc_fast.rs::page_malloc@L180",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref_maybe_empty@L1569",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref_maybe_empty@L1590",
         "kind": "call"
       },
       {
@@ -2057,7 +2057,7 @@
       },
       {
         "caller": "verus-mimalloc/alloc_generic.rs::heap_delayed_free_partial@L492",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1023",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1025",
         "kind": "call"
       },
       {
@@ -2082,17 +2082,17 @@
       },
       {
         "caller": "verus-mimalloc/alloc_generic.rs::malloc_generic@L21",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_block_size@L1779",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_block_size@L1800",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/alloc_generic.rs::malloc_generic@L21",
-        "callee": "verus-mimalloc/types.rs::PagePtr::is_null@L1524",
+        "callee": "verus-mimalloc/types.rs::PagePtr::is_null@L1545",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/alloc_generic.rs::malloc_generic@L21",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
+        "callee": "verus-mimalloc/types.rs::todo@L2210",
         "kind": "call"
       },
       {
@@ -2107,7 +2107,7 @@
       },
       {
         "caller": "verus-mimalloc/alloc_generic.rs::page_extend_free@L429",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "kind": "call"
       },
       {
@@ -2122,7 +2122,7 @@
       },
       {
         "caller": "verus-mimalloc/alloc_generic.rs::page_free_collect@L64",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1531",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1552",
         "kind": "call"
       },
       {
@@ -2147,7 +2147,7 @@
       },
       {
         "caller": "verus-mimalloc/alloc_generic.rs::page_free_list_extend@L141",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "kind": "call"
       },
       {
@@ -2157,7 +2157,7 @@
       },
       {
         "caller": "verus-mimalloc/alloc_generic.rs::page_thread_free_collect@L102",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1531",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1552",
         "kind": "call"
       },
       {
@@ -2201,178 +2201,173 @@
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L131",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L143",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L131",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L143",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::all_set@L255",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L131",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L143",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::any_set@L282",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L131",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L143",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::create_intersect@L310",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L131",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L143",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::empty@L243",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L131",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L143",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::is_empty@L716",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L131",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L143",
         "callee": "verus-mimalloc/commit_segment.rs::segment_commit_mask@L23",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L131",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_allow_decommit@L1408",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L143",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_allow_decommit@L1410",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L131",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_commit_mask@L1380",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L143",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_commit_mask@L1382",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L131",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1351",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_commitx@L143",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1353",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L469",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L501",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L469",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L501",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::is_empty@L716",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L469",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L501",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::next_run@L593",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L469",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L501",
         "callee": "verus-mimalloc/commit_segment.rs::clock_now@L17",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L469",
-        "callee": "verus-mimalloc/commit_segment.rs::segment_commitx@L131",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L501",
+        "callee": "verus-mimalloc/commit_segment.rs::segment_commitx@L143",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L469",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_allow_decommit@L1408",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L501",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_allow_decommit@L1410",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L469",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_expire@L1398",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L501",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_expire@L1400",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L469",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_mask@L1389",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L501",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_mask@L1391",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L311",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L343",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L311",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L343",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::is_empty@L716",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L311",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L343",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::is_full@L742",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L311",
-        "callee": "verus-mimalloc/commit_segment.rs::segment_commitx@L131",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L343",
+        "callee": "verus-mimalloc/commit_segment.rs::segment_commitx@L143",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L311",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_commit_mask@L1380",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L343",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_commit_mask@L1382",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L311",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_mask@L1389",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L343",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_mask@L1391",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L383",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L383",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::empty@L243",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L383",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::is_empty@L716",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L383",
         "callee": "verus-mimalloc/commit_segment.rs::clock_now@L17",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L383",
         "callee": "verus-mimalloc/commit_segment.rs::segment_commit_mask@L23",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
-        "callee": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L469",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L383",
+        "callee": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L501",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
-        "callee": "verus-mimalloc/config.rs::option_decommit_delay@L126",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L383",
+        "callee": "verus-mimalloc/config.rs::option_decommit_delay@L130",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
-        "callee": "verus-mimalloc/config.rs::option_decommit_extend_delay@L127",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L383",
+        "callee": "verus-mimalloc/config.rs::option_decommit_extend_delay@L135",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_allow_decommit@L1408",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L383",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_allow_decommit@L1410",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_expire@L1398",
-        "kind": "call"
-      },
-      {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L383",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_expire@L1400",
         "kind": "call"
       },
       {
@@ -2417,7 +2412,7 @@
       },
       {
         "caller": "verus-mimalloc/free.rs::free@L53",
-        "callee": "verus-mimalloc/page.rs::page_retire@L559",
+        "callee": "verus-mimalloc/page.rs::page_retire@L561",
         "kind": "call"
       },
       {
@@ -2427,7 +2422,7 @@
       },
       {
         "caller": "verus-mimalloc/free.rs::free@L53",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "kind": "call"
       },
       {
@@ -2447,17 +2442,17 @@
       },
       {
         "caller": "verus-mimalloc/free.rs::free_block@L232",
-        "callee": "verus-mimalloc/page.rs::page_retire@L559",
+        "callee": "verus-mimalloc/page.rs::page_retire@L561",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/free.rs::free_block@L232",
-        "callee": "verus-mimalloc/page.rs::page_unfull@L636",
+        "callee": "verus-mimalloc/page.rs::page_unfull@L638",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/free.rs::free_block@L232",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "kind": "call"
       },
       {
@@ -2547,7 +2542,7 @@
       },
       {
         "caller": "verus-mimalloc/free.rs::free_delayed_block@L535",
-        "callee": "verus-mimalloc/page.rs::page_try_use_delayed_free@L679",
+        "callee": "verus-mimalloc/page.rs::page_try_use_delayed_free@L681",
         "kind": "call"
       },
       {
@@ -2587,32 +2582,32 @@
       },
       {
         "caller": "verus-mimalloc/init.rs::heap_init@L73",
-        "callee": "verus-mimalloc/init.rs::increment_thread_count@L826",
+        "callee": "verus-mimalloc/init.rs::increment_thread_count@L829",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/init.rs::heap_init@L73",
-        "callee": "verus-mimalloc/init.rs::init_empty_page_ptr@L711",
+        "callee": "verus-mimalloc/init.rs::init_empty_page_ptr@L714",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/init.rs::heap_init@L73",
-        "callee": "verus-mimalloc/init.rs::pages_free_direct_tmp@L479",
+        "callee": "verus-mimalloc/init.rs::pages_free_direct_tmp@L482",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/init.rs::heap_init@L73",
-        "callee": "verus-mimalloc/init.rs::pages_tmp@L292",
+        "callee": "verus-mimalloc/init.rs::pages_tmp@L295",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/init.rs::heap_init@L73",
-        "callee": "verus-mimalloc/init.rs::span_queue_headers_tmp@L613",
+        "callee": "verus-mimalloc/init.rs::span_queue_headers_tmp@L616",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/init.rs::heap_init@L73",
-        "callee": "verus-mimalloc/init.rs::thread_data_alloc@L650",
+        "callee": "verus-mimalloc/init.rs::thread_data_alloc@L653",
         "kind": "call"
       },
       {
@@ -2621,63 +2616,53 @@
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L711",
+        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L714",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L711",
+        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L714",
         "callee": ".verus_deps/vstd/cell/pcell.rs::new@L132",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L711",
+        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L714",
         "callee": ".verus_deps/vstd/layout.rs::layout_for_type_is_valid@L118",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L711",
+        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L714",
         "callee": ".verus_deps/vstd/raw_ptr.rs::expose_provenance@L731",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L711",
+        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L714",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_mut_write@L579",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L711",
+        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L714",
         "callee": "verus-mimalloc/linked_list.rs::LL::empty@L487",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L711",
+        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L714",
         "callee": "verus-mimalloc/os_mem.rs::mmap_prot_read_write@L143",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L711",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
+        "caller": "verus-mimalloc/init.rs::pages_tmp@L295",
+        "callee": "verus-mimalloc/init.rs::PageQueue::empty@L278",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/init.rs::pages_tmp@L292",
-        "callee": "verus-mimalloc/init.rs::PageQueue::empty@L275",
-        "kind": "call"
-      },
-      {
-        "caller": "verus-mimalloc/init.rs::thread_data_alloc@L650",
+        "caller": "verus-mimalloc/init.rs::thread_data_alloc@L653",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/init.rs::thread_data_alloc@L650",
+        "caller": "verus-mimalloc/init.rs::thread_data_alloc@L653",
         "callee": "verus-mimalloc/os_mem.rs::mmap_prot_read_write@L143",
-        "kind": "call"
-      },
-      {
-        "caller": "verus-mimalloc/init.rs::thread_data_alloc@L650",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
         "kind": "call"
       },
       {
@@ -2731,27 +2716,27 @@
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L98",
+        "caller": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L99",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L98",
+        "caller": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L99",
         "callee": "verus-mimalloc/layout.rs::align_up@L529",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L98",
-        "callee": "verus-mimalloc/os_alloc.rs::os_good_alloc_size@L60",
+        "caller": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L99",
+        "callee": "verus-mimalloc/os_alloc.rs::os_good_alloc_size@L61",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L98",
-        "callee": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L135",
+        "caller": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L99",
+        "callee": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L136",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L98",
+        "caller": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L99",
         "callee": "verus-mimalloc/os_mem.rs::get_page_size@L12",
         "kind": "call"
       },
@@ -2762,106 +2747,96 @@
       },
       {
         "caller": "verus-mimalloc/os_alloc.rs::os_alloc_aligned_offset@L11",
-        "callee": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L98",
+        "callee": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L99",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_alloc_aligned_offset@L11",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
-        "kind": "call"
-      },
-      {
-        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L278",
+        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L291",
         "callee": "verus-mimalloc/layout.rs::align_up@L529",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L278",
-        "callee": "verus-mimalloc/os_alloc.rs::aligned_base_add@L265",
+        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L291",
+        "callee": "verus-mimalloc/os_alloc.rs::aligned_base_add@L278",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L278",
-        "callee": "verus-mimalloc/os_alloc.rs::aligned_base_cas@L270",
+        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L291",
+        "callee": "verus-mimalloc/os_alloc.rs::aligned_base_cas@L283",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_good_alloc_size@L60",
+        "caller": "verus-mimalloc/os_alloc.rs::os_good_alloc_size@L61",
         "callee": "verus-mimalloc/layout.rs::align_up@L529",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_good_alloc_size@L60",
+        "caller": "verus-mimalloc/os_alloc.rs::os_good_alloc_size@L61",
         "callee": "verus-mimalloc/os_mem.rs::get_page_size@L12",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L179",
+        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L186",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L179",
-        "callee": "verus-mimalloc/os_alloc.rs::unix_mmap@L220",
+        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L186",
+        "callee": "verus-mimalloc/os_alloc.rs::unix_mmap@L239",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L135",
+        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L136",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L135",
-        "callee": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L179",
+        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L136",
+        "callee": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L186",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L135",
+        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L136",
         "callee": "verus-mimalloc/os_mem.rs::get_page_size@L12",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L135",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
-        "kind": "call"
-      },
-      {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L220",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L239",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L220",
-        "callee": "verus-mimalloc/os_alloc.rs::unix_mmapx@L312",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L239",
+        "callee": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L220",
-        "callee": "verus-mimalloc/os_alloc.rs::use_large_os_page@L216",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L239",
+        "callee": "verus-mimalloc/os_alloc.rs::use_large_os_page@L224",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L220",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
-        "kind": "call"
-      },
-      {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L312",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L312",
-        "callee": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L278",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
+        "callee": "verus-mimalloc/layout.rs::align_up@L529",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L312",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
+        "callee": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L291",
+        "kind": "call"
+      },
+      {
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
         "callee": "verus-mimalloc/os_mem.rs::mmap_prot_none@L125",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L312",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
         "callee": "verus-mimalloc/os_mem.rs::mmap_prot_read_write@L143",
         "kind": "call"
       },
@@ -2972,12 +2947,12 @@
       },
       {
         "caller": "verus-mimalloc/page.rs::find_free_page@L54",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1037",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1039",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/page.rs::find_free_page@L54",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "kind": "call"
       },
       {
@@ -2992,42 +2967,42 @@
       },
       {
         "caller": "verus-mimalloc/page.rs::find_page@L27",
-        "callee": "verus-mimalloc/types.rs::PagePtr::null@L1515",
+        "callee": "verus-mimalloc/types.rs::PagePtr::null@L1536",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/page.rs::find_page@L27",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
+        "callee": "verus-mimalloc/types.rs::todo@L2210",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_free@L597",
+        "caller": "verus-mimalloc/page.rs::page_free@L599",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_free@L597",
+        "caller": "verus-mimalloc/page.rs::page_free@L599",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_free@L597",
+        "caller": "verus-mimalloc/page.rs::page_free@L599",
         "callee": "verus-mimalloc/queues.rs::page_queue_remove@L27",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_free@L597",
-        "callee": "verus-mimalloc/segment.rs::segment_page_free@L1755",
+        "caller": "verus-mimalloc/page.rs::page_free@L599",
+        "callee": "verus-mimalloc/segment.rs::segment_page_free@L1772",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_free@L597",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1023",
+        "caller": "verus-mimalloc/page.rs::page_free@L599",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1025",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_free@L597",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_heap@L1791",
+        "caller": "verus-mimalloc/page.rs::page_free@L599",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_heap@L1812",
         "kind": "call"
       },
       {
@@ -3042,7 +3017,7 @@
       },
       {
         "caller": "verus-mimalloc/page.rs::page_fresh@L184",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1037",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1039",
         "kind": "call"
       },
       {
@@ -3057,7 +3032,7 @@
       },
       {
         "caller": "verus-mimalloc/page.rs::page_fresh_alloc@L205",
-        "callee": "verus-mimalloc/page.rs::page_init@L247",
+        "callee": "verus-mimalloc/page.rs::page_init@L249",
         "kind": "call"
       },
       {
@@ -3072,41 +3047,41 @@
       },
       {
         "caller": "verus-mimalloc/page.rs::page_fresh_alloc@L205",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1023",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1025",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_init@L247",
+        "caller": "verus-mimalloc/page.rs::page_init@L249",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_init@L247",
+        "caller": "verus-mimalloc/page.rs::page_init@L249",
         "callee": "verus-mimalloc/alloc_generic.rs::page_extend_free@L429",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_init@L247",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_count@L1602",
+        "caller": "verus-mimalloc/page.rs::page_init@L249",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_count@L1623",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_queue_enqueue_from@L654",
+        "caller": "verus-mimalloc/page.rs::page_queue_enqueue_from@L656",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_queue_enqueue_from@L654",
+        "caller": "verus-mimalloc/page.rs::page_queue_enqueue_from@L656",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_queue_enqueue_from@L654",
+        "caller": "verus-mimalloc/page.rs::page_queue_enqueue_from@L656",
         "callee": "verus-mimalloc/queues.rs::page_queue_push_back@L396",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_queue_enqueue_from@L654",
+        "caller": "verus-mimalloc/page.rs::page_queue_enqueue_from@L656",
         "callee": "verus-mimalloc/queues.rs::page_queue_remove@L27",
         "kind": "call"
       },
@@ -3147,162 +3122,162 @@
       },
       {
         "caller": "verus-mimalloc/page.rs::page_queue_find_free_ex@L89",
-        "callee": "verus-mimalloc/page.rs::page_to_full@L618",
+        "callee": "verus-mimalloc/page.rs::page_to_full@L620",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/page.rs::page_queue_find_free_ex@L89",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1037",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1039",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/page.rs::page_queue_find_free_ex@L89",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/page.rs::page_queue_find_free_ex@L89",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_next@L1617",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_next@L1638",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_queue_of@L513",
+        "caller": "verus-mimalloc/page.rs::page_queue_of@L515",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_queue_of@L513",
+        "caller": "verus-mimalloc/page.rs::page_queue_of@L515",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_queue_of@L513",
+        "caller": "verus-mimalloc/page.rs::page_queue_of@L515",
         "callee": "verus-mimalloc/bin_sizes.rs::bin@L1082",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_queue_of@L513",
+        "caller": "verus-mimalloc/page.rs::page_queue_of@L515",
         "callee": "verus-mimalloc/flags.rs::PageInner::get_in_full@L57",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_queue_of@L513",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_heap@L1791",
+        "caller": "verus-mimalloc/page.rs::page_queue_of@L515",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_heap@L1812",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_queue_of@L513",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "caller": "verus-mimalloc/page.rs::page_queue_of@L515",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_retire@L559",
+        "caller": "verus-mimalloc/page.rs::page_retire@L561",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_retire@L559",
+        "caller": "verus-mimalloc/page.rs::page_retire@L561",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_retire@L559",
-        "callee": "verus-mimalloc/page.rs::page_free@L597",
+        "caller": "verus-mimalloc/page.rs::page_retire@L561",
+        "callee": "verus-mimalloc/page.rs::page_free@L599",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_retire@L559",
-        "callee": "verus-mimalloc/page.rs::page_queue_of@L513",
+        "caller": "verus-mimalloc/page.rs::page_retire@L561",
+        "callee": "verus-mimalloc/page.rs::page_queue_of@L515",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_retire@L559",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_max@L1103",
+        "caller": "verus-mimalloc/page.rs::page_retire@L561",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_max@L1105",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_retire@L559",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_min@L1076",
+        "caller": "verus-mimalloc/page.rs::page_retire@L561",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_min@L1078",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_retire@L559",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1037",
+        "caller": "verus-mimalloc/page.rs::page_retire@L561",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1039",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_retire@L559",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_max@L1115",
+        "caller": "verus-mimalloc/page.rs::page_retire@L561",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_max@L1117",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_retire@L559",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_min@L1088",
+        "caller": "verus-mimalloc/page.rs::page_retire@L561",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_min@L1090",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_retire@L559",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "caller": "verus-mimalloc/page.rs::page_retire@L561",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_to_full@L618",
+        "caller": "verus-mimalloc/page.rs::page_to_full@L620",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_to_full@L618",
+        "caller": "verus-mimalloc/page.rs::page_to_full@L620",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_to_full@L618",
+        "caller": "verus-mimalloc/page.rs::page_to_full@L620",
         "callee": "verus-mimalloc/alloc_generic.rs::page_free_collect@L64",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_to_full@L618",
-        "callee": "verus-mimalloc/page.rs::page_queue_enqueue_from@L654",
+        "caller": "verus-mimalloc/page.rs::page_to_full@L620",
+        "callee": "verus-mimalloc/page.rs::page_queue_enqueue_from@L656",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_try_use_delayed_free@L679",
+        "caller": "verus-mimalloc/page.rs::page_try_use_delayed_free@L681",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_try_use_delayed_free@L679",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1531",
+        "caller": "verus-mimalloc/page.rs::page_try_use_delayed_free@L681",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_unfull@L636",
+        "caller": "verus-mimalloc/page.rs::page_unfull@L638",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_unfull@L636",
+        "caller": "verus-mimalloc/page.rs::page_unfull@L638",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_unfull@L636",
+        "caller": "verus-mimalloc/page.rs::page_unfull@L638",
         "callee": "verus-mimalloc/bin_sizes.rs::bin@L1082",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_unfull@L636",
-        "callee": "verus-mimalloc/page.rs::page_queue_enqueue_from@L654",
+        "caller": "verus-mimalloc/page.rs::page_unfull@L638",
+        "callee": "verus-mimalloc/page.rs::page_queue_enqueue_from@L656",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_unfull@L636",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_heap@L1791",
+        "caller": "verus-mimalloc/page.rs::page_unfull@L638",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_heap@L1812",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_unfull@L636",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "caller": "verus-mimalloc/page.rs::page_unfull@L638",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "kind": "call"
       },
       {
@@ -3317,17 +3292,17 @@
       },
       {
         "caller": "verus-mimalloc/queues.rs::heap_queue_first_update@L633",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_page_empty@L1155",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_page_empty@L1157",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/queues.rs::heap_queue_first_update@L633",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1037",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1039",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/queues.rs::heap_queue_first_update@L633",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_pages_free_direct@L1130",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_pages_free_direct@L1132",
         "kind": "call"
       },
       {
@@ -3347,12 +3322,12 @@
       },
       {
         "caller": "verus-mimalloc/queues.rs::page_queue_push@L218",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_page_count@L1049",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_page_count@L1051",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/queues.rs::page_queue_push@L218",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::set_page_count@L1061",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::set_page_count@L1063",
         "kind": "call"
       },
       {
@@ -3372,12 +3347,12 @@
       },
       {
         "caller": "verus-mimalloc/queues.rs::page_queue_push_back@L396",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_page_count@L1049",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_page_count@L1051",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/queues.rs::page_queue_push_back@L396",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::set_page_count@L1061",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::set_page_count@L1063",
         "kind": "call"
       },
       {
@@ -3397,217 +3372,207 @@
       },
       {
         "caller": "verus-mimalloc/queues.rs::page_queue_remove@L27",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_page_count@L1049",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_page_count@L1051",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/queues.rs::page_queue_remove@L27",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::set_page_count@L1061",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::set_page_count@L1063",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/queues.rs::page_queue_remove@L27",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_next@L1617",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_next@L1638",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/queues.rs::page_queue_remove@L27",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_prev@L1632",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_prev@L1653",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": ".verus_deps/vstd/atomic_ghost.rs::new@L197",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": ".verus_deps/vstd/atomic_ghost.rs::new@L67",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": ".verus_deps/vstd/cell/pcell.rs::new@L132",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": ".verus_deps/vstd/layout.rs::layout_for_type_is_valid@L118",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": ".verus_deps/vstd/raw_ptr.rs::expose_provenance@L731",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_mut_write@L579",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::empty@L243",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::is_full@L742",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": "verus-mimalloc/config.rs::option_allow_decommit@L120",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": "verus-mimalloc/config.rs::option_eager_commit@L119",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": "verus-mimalloc/config.rs::option_eager_commit_delay@L118",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
-        "callee": "verus-mimalloc/init.rs::current_thread_count@L831",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
+        "callee": "verus-mimalloc/init.rs::current_thread_count@L834",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": "verus-mimalloc/linked_list.rs::LL::empty@L487",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
-        "callee": "verus-mimalloc/segment.rs::segment_calculate_slices@L1574",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
+        "callee": "verus-mimalloc/segment.rs::segment_calculate_slices@L1578",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
-        "callee": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
+        "callee": "verus-mimalloc/segment.rs::segment_os_alloc@L1344",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
-        "callee": "verus-mimalloc/segment.rs::segment_span_allocate@L691",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
+        "callee": "verus-mimalloc/segment.rs::segment_span_allocate@L693",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
-        "callee": "verus-mimalloc/segment.rs::segment_span_free@L1603",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
+        "callee": "verus-mimalloc/segment.rs::segment_span_free@L1607",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "callee": "verus-mimalloc/thread.rs::thread_id@L90",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::is_null@L1285",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::is_null@L1287",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
-        "callee": "verus-mimalloc/types.rs::TldPtr::get_segments_count@L1249",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
+        "callee": "verus-mimalloc/types.rs::TldPtr::get_segments_count@L1251",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
-        "kind": "call"
-      },
-      {
-        "caller": "verus-mimalloc/segment.rs::segment_calculate_slices@L1574",
+        "caller": "verus-mimalloc/segment.rs::segment_calculate_slices@L1578",
         "callee": "verus-mimalloc/layout.rs::align_up@L529",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_calculate_slices@L1574",
+        "caller": "verus-mimalloc/segment.rs::segment_calculate_slices@L1578",
         "callee": "verus-mimalloc/os_mem.rs::get_page_size@L12",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_free@L1487",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
+        "caller": "verus-mimalloc/segment.rs::segment_free@L1491",
+        "callee": "verus-mimalloc/types.rs::todo@L2210",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
+        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1344",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
+        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1344",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
+        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1344",
         "callee": "verus-mimalloc/arena.rs::arena_alloc_aligned@L20",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
+        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1344",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::all_set@L255",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
+        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1344",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::create@L407",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
+        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1344",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::create_empty@L547",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
+        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1344",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::create_full@L564",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
+        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1344",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::empty@L243",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
+        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1344",
         "callee": "verus-mimalloc/commit_mask.rs::CommitMask::set@L352",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
+        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1344",
         "callee": "verus-mimalloc/os_commit.rs::os_commit@L14",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::is_null@L1285",
+        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1344",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::is_null@L1287",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::null@L1292",
-        "kind": "call"
-      },
-      {
-        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1332",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
+        "caller": "verus-mimalloc/segment.rs::segment_os_alloc@L1344",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::null@L1294",
         "kind": "call"
       },
       {
@@ -3617,457 +3582,442 @@
       },
       {
         "caller": "verus-mimalloc/segment.rs::segment_page_alloc@L36",
-        "callee": "verus-mimalloc/segment.rs::segments_page_alloc@L80",
+        "callee": "verus-mimalloc/segment.rs::segments_page_alloc@L76",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_alloc@L36",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
-        "kind": "call"
-      },
-      {
-        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1780",
+        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1806",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1780",
+        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1806",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_ref@L620",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1780",
+        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1806",
         "callee": "verus-mimalloc/config.rs::option_page_reset@L121",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1780",
+        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1806",
         "callee": "verus-mimalloc/flags.rs::PageInner::get_is_reset@L36",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1780",
+        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1806",
         "callee": "verus-mimalloc/layout.rs::SegmentPtr::ptr_segment@L587",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1780",
-        "callee": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
+        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1806",
+        "callee": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1780",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1806",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1780",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_mem_is_pinned@L1433",
+        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1806",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_mem_is_pinned@L1435",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_clear@L1780",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
-        "kind": "call"
-      },
-      {
-        "caller": "verus-mimalloc/segment.rs::segment_page_free@L1755",
+        "caller": "verus-mimalloc/segment.rs::segment_page_free@L1772",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_free@L1755",
+        "caller": "verus-mimalloc/segment.rs::segment_page_free@L1772",
         "callee": "verus-mimalloc/layout.rs::SegmentPtr::ptr_segment@L587",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_free@L1755",
-        "callee": "verus-mimalloc/segment.rs::segment_free@L1487",
+        "caller": "verus-mimalloc/segment.rs::segment_page_free@L1772",
+        "callee": "verus-mimalloc/segment.rs::segment_free@L1491",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_free@L1755",
-        "callee": "verus-mimalloc/segment.rs::segment_page_clear@L1780",
+        "caller": "verus-mimalloc/segment.rs::segment_page_free@L1772",
+        "callee": "verus-mimalloc/segment.rs::segment_page_clear@L1806",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_free@L1755",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_abandoned@L1425",
+        "caller": "verus-mimalloc/segment.rs::segment_page_free@L1772",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_abandoned@L1427",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_free@L1755",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_used@L1417",
+        "caller": "verus-mimalloc/segment.rs::segment_page_free@L1772",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_used@L1419",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_free@L1755",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
-        "kind": "call"
-      },
-      {
-        "caller": "verus-mimalloc/segment.rs::segment_reclaim_or_alloc@L165",
+        "caller": "verus-mimalloc/segment.rs::segment_reclaim_or_alloc@L161",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_reclaim_or_alloc@L165",
-        "callee": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_reclaim_or_alloc@L161",
+        "callee": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_reclaim_or_alloc@L165",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_arena_id@L1142",
+        "caller": "verus-mimalloc/segment.rs::segment_reclaim_or_alloc@L161",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_arena_id@L1144",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_slice_split@L492",
+        "caller": "verus-mimalloc/segment.rs::segment_slice_split@L494",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_slice_split@L492",
+        "caller": "verus-mimalloc/segment.rs::segment_slice_split@L494",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_slice_split@L492",
+        "caller": "verus-mimalloc/segment.rs::segment_slice_split@L494",
         "callee": "verus-mimalloc/bin_sizes.rs::slice_bin@L1317",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_slice_split@L492",
-        "callee": "verus-mimalloc/types.rs::PagePtr::add_offset@L1647",
+        "caller": "verus-mimalloc/segment.rs::segment_slice_split@L494",
+        "callee": "verus-mimalloc/types.rs::PagePtr::add_offset@L1668",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_slice_split@L492",
-        "callee": "verus-mimalloc/types.rs::TldPtr::get_mut@L1235",
+        "caller": "verus-mimalloc/segment.rs::segment_slice_split@L494",
+        "callee": "verus-mimalloc/types.rs::TldPtr::get_mut@L1237",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_allocate@L691",
+        "caller": "verus-mimalloc/segment.rs::segment_span_allocate@L693",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_allocate@L691",
+        "caller": "verus-mimalloc/segment.rs::segment_span_allocate@L693",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_mut_read@L602",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_allocate@L691",
+        "caller": "verus-mimalloc/segment.rs::segment_span_allocate@L693",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_mut_write@L579",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_allocate@L691",
-        "callee": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L311",
+        "caller": "verus-mimalloc/segment.rs::segment_span_allocate@L693",
+        "callee": "verus-mimalloc/commit_segment.rs::segment_ensure_committed@L343",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_allocate@L691",
+        "caller": "verus-mimalloc/segment.rs::segment_span_allocate@L693",
         "callee": "verus-mimalloc/layout.rs::segment_page_start_from_slice@L382",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_allocate@L691",
-        "callee": "verus-mimalloc/types.rs::PagePtr::add_offset@L1647",
+        "caller": "verus-mimalloc/segment.rs::segment_span_allocate@L693",
+        "callee": "verus-mimalloc/types.rs::PagePtr::add_offset@L1668",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1603",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1607",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1603",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1607",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1603",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1607",
         "callee": "verus-mimalloc/bin_sizes.rs::slice_bin@L1317",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1603",
-        "callee": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1607",
+        "callee": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L383",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1603",
-        "callee": "verus-mimalloc/types.rs::PagePtr::slice_start@L1728",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1607",
+        "callee": "verus-mimalloc/types.rs::PagePtr::slice_start@L1749",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1603",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_page_header_ptr@L1301",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1607",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_page_header_ptr@L1303",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1603",
-        "callee": "verus-mimalloc/types.rs::TldPtr::get_mut@L1235",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1607",
+        "callee": "verus-mimalloc/types.rs::TldPtr::get_mut@L1237",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
         "callee": "verus-mimalloc/bin_sizes.rs::slice_bin@L1317",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
         "callee": "verus-mimalloc/layout.rs::SegmentPtr::ptr_segment@L587",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
-        "callee": "verus-mimalloc/segment.rs::segment_span_free@L1603",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
+        "callee": "verus-mimalloc/segment.rs::segment_span_free@L1607",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
-        "callee": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
+        "callee": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
-        "callee": "verus-mimalloc/types.rs::PagePtr::add_offset_and_check@L1745",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
+        "callee": "verus-mimalloc/types.rs::PagePtr::add_offset_and_check@L1766",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_count@L1602",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_count@L1623",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_index@L1717",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_index@L1738",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_next@L1617",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_next@L1638",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_prev@L1632",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_prev@L1653",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_segment_kind@L1448",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_segment_kind@L1469",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::is_abandoned@L1441",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::is_abandoned@L1443",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
-        "callee": "verus-mimalloc/types.rs::TldPtr::get_mut@L1235",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
+        "callee": "verus-mimalloc/types.rs::TldPtr::get_mut@L1237",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
-        "kind": "call"
-      },
-      {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
         "callee": "verus-mimalloc/bin_sizes.rs::slice_bin@L1317",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
         "callee": "verus-mimalloc/layout.rs::calculate_page_ptr_subtract_offset@L291",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_count@L1602",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_count@L1623",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_next@L1617",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_next@L1638",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_prev@L1632",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_prev@L1653",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1531",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
-        "callee": "verus-mimalloc/types.rs::PagePtr::is_gt_0th_slice@L1705",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
+        "callee": "verus-mimalloc/types.rs::PagePtr::is_gt_0th_slice@L1726",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
-        "callee": "verus-mimalloc/types.rs::PagePtr::sub_offset@L1673",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
+        "callee": "verus-mimalloc/types.rs::PagePtr::sub_offset@L1694",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
-        "callee": "verus-mimalloc/types.rs::TldPtr::get_mut@L1235",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
+        "callee": "verus-mimalloc/types.rs::TldPtr::get_mut@L1237",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L80",
+        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L76",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L80",
+        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L76",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L80",
+        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L76",
         "callee": "verus-mimalloc/layout.rs::align_up@L529",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L80",
-        "callee": "verus-mimalloc/segment.rs::segment_reclaim_or_alloc@L165",
+        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L76",
+        "callee": "verus-mimalloc/segment.rs::segment_reclaim_or_alloc@L161",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L80",
-        "callee": "verus-mimalloc/segment.rs::segments_page_alloc@L80",
+        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L76",
+        "callee": "verus-mimalloc/segment.rs::segments_page_alloc@L76",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L80",
-        "callee": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
+        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L76",
+        "callee": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L80",
-        "callee": "verus-mimalloc/types.rs::PagePtr::null@L1515",
+        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L76",
+        "callee": "verus-mimalloc/types.rs::PagePtr::null@L1536",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
+        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
+        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
+        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_ref@L620",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
+        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
         "callee": "verus-mimalloc/bin_sizes.rs::slice_bin@L1317",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
+        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
         "callee": "verus-mimalloc/layout.rs::SegmentPtr::ptr_segment@L587",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
-        "callee": "verus-mimalloc/segment.rs::segment_slice_split@L492",
+        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
+        "callee": "verus-mimalloc/segment.rs::segment_slice_split@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
-        "callee": "verus-mimalloc/segment.rs::segment_span_allocate@L691",
+        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
+        "callee": "verus-mimalloc/segment.rs::segment_span_allocate@L693",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
-        "callee": "verus-mimalloc/segment.rs::span_queue_delete@L332",
+        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
+        "callee": "verus-mimalloc/segment.rs::segment_span_free@L1607",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_count@L1602",
+        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
+        "callee": "verus-mimalloc/segment.rs::span_queue_delete@L334",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_next@L1617",
+        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_count@L1623",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
-        "callee": "verus-mimalloc/types.rs::PagePtr::null@L1515",
+        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_index@L1738",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
-        "callee": "verus-mimalloc/types.rs::todo@L2189",
+        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_next@L1638",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::span_queue_delete@L332",
+        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
+        "callee": "verus-mimalloc/types.rs::PagePtr::null@L1536",
+        "kind": "call"
+      },
+      {
+        "caller": "verus-mimalloc/segment.rs::span_queue_delete@L334",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::span_queue_delete@L332",
+        "caller": "verus-mimalloc/segment.rs::span_queue_delete@L334",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::span_queue_delete@L332",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_next@L1617",
+        "caller": "verus-mimalloc/segment.rs::span_queue_delete@L334",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_next@L1638",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::span_queue_delete@L332",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_prev@L1632",
+        "caller": "verus-mimalloc/segment.rs::span_queue_delete@L334",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_prev@L1653",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::span_queue_delete@L332",
-        "callee": "verus-mimalloc/types.rs::TldPtr::get_mut@L1235",
+        "caller": "verus-mimalloc/segment.rs::span_queue_delete@L334",
+        "callee": "verus-mimalloc/types.rs::TldPtr::get_mut@L1237",
         "kind": "call"
       },
       {
@@ -4076,463 +4026,463 @@
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_arena_id@L1142",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_arena_id@L1144",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_arena_id@L1142",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1023",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_arena_id@L1144",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1025",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_count@L1049",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_count@L1051",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_count@L1049",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_count@L1051",
         "callee": ".verus_deps/vstd/cell/pcell.rs::borrow@L145",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_count@L1049",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1023",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_count@L1051",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1025",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_empty@L1155",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_empty@L1157",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_empty@L1155",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1023",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_empty@L1157",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1025",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_max@L1103",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_max@L1105",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_max@L1103",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_max@L1105",
         "callee": ".verus_deps/vstd/cell/pcell.rs::borrow@L145",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_max@L1103",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1023",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_max@L1105",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1025",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_min@L1076",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_min@L1078",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_min@L1076",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_min@L1078",
         "callee": ".verus_deps/vstd/cell/pcell.rs::borrow@L145",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_min@L1076",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1023",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_page_retired_min@L1078",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1025",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1037",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1039",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1037",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1039",
         "callee": ".verus_deps/vstd/cell/pcell.rs::borrow@L145",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1037",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1023",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_pages@L1039",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1025",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_pages_free_direct@L1130",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_pages_free_direct@L1132",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_pages_free_direct@L1130",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_pages_free_direct@L1132",
         "callee": ".verus_deps/vstd/cell/pcell.rs::borrow@L145",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_pages_free_direct@L1130",
-        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1023",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_pages_free_direct@L1132",
+        "callee": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1025",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1023",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1025",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1023",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::get_ref@L1025",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_ref@L620",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_count@L1061",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_count@L1063",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_count@L1061",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_count@L1063",
         "callee": ".verus_deps/vstd/cell/pcell.rs::borrow_mut@L159",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_count@L1061",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_count@L1063",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_ref@L620",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_max@L1115",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_max@L1117",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_max@L1115",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_max@L1117",
         "callee": ".verus_deps/vstd/cell/pcell.rs::borrow_mut@L159",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_max@L1115",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_max@L1117",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_ref@L620",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_min@L1088",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_min@L1090",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_min@L1088",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_min@L1090",
         "callee": ".verus_deps/vstd/cell/pcell.rs::borrow_mut@L159",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_min@L1088",
+        "caller": "verus-mimalloc/types.rs::HeapPtr::set_page_retired_min@L1090",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_ref@L620",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::add_offset@L1647",
+        "caller": "verus-mimalloc/types.rs::PagePtr::add_offset@L1668",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::add_offset_and_check@L1745",
+        "caller": "verus-mimalloc/types.rs::PagePtr::add_offset_and_check@L1766",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::add_offset_and_check@L1745",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_page_after_end@L1317",
+        "caller": "verus-mimalloc/types.rs::PagePtr::add_offset_and_check@L1766",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_page_after_end@L1319",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_block_size@L1779",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_block_size@L1800",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_block_size@L1779",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_block_size@L1800",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_count@L1602",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_count@L1623",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_count@L1602",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_count@L1623",
         "callee": ".verus_deps/vstd/cell/pcell.rs::borrow@L145",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_count@L1602",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1531",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_count@L1623",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_heap@L1791",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_heap@L1812",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_heap@L1791",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_heap@L1812",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_heap@L1791",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1531",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_heap@L1812",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_index@L1717",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_index@L1738",
         "callee": "verus-mimalloc/layout.rs::SegmentPtr::ptr_segment@L587",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
         "callee": ".verus_deps/vstd/cell/pcell.rs::borrow@L145",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1554",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1531",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_inner_ref@L1575",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_inner_ref_maybe_empty@L1569",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_inner_ref_maybe_empty@L1590",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_inner_ref_maybe_empty@L1569",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_inner_ref_maybe_empty@L1590",
         "callee": ".verus_deps/vstd/cell/pcell.rs::borrow@L145",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_inner_ref_maybe_empty@L1569",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_inner_ref_maybe_empty@L1590",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_ref@L620",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_next@L1617",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_next@L1638",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_next@L1617",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_next@L1638",
         "callee": ".verus_deps/vstd/cell/pcell.rs::borrow@L145",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_next@L1617",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1531",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_next@L1638",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_prev@L1632",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_prev@L1653",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_prev@L1632",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_prev@L1653",
         "callee": ".verus_deps/vstd/cell/pcell.rs::borrow@L145",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_prev@L1632",
-        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1531",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_prev@L1653",
+        "callee": "verus-mimalloc/types.rs::PagePtr::get_ref@L1552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_ref@L1531",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_ref@L1552",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_ref@L1531",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_ref@L1552",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_ref@L620",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::is_gt_0th_slice@L1705",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_page_header_ptr@L1301",
+        "caller": "verus-mimalloc/types.rs::PagePtr::is_gt_0th_slice@L1726",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_page_header_ptr@L1303",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::null@L1515",
+        "caller": "verus-mimalloc/types.rs::PagePtr::null@L1536",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::slice_start@L1728",
+        "caller": "verus-mimalloc/types.rs::PagePtr::slice_start@L1749",
         "callee": "verus-mimalloc/layout.rs::SegmentPtr::ptr_segment@L587",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::sub_offset@L1673",
+        "caller": "verus-mimalloc/types.rs::PagePtr::sub_offset@L1694",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_abandoned@L1425",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_abandoned@L1427",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_abandoned@L1425",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main2_ref@L1371",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_abandoned@L1427",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main2_ref@L1373",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_allow_decommit@L1408",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_allow_decommit@L1410",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_allow_decommit@L1408",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1351",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_allow_decommit@L1410",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1353",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_commit_mask@L1380",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_commit_mask@L1382",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_commit_mask@L1380",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1351",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_commit_mask@L1382",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1353",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_expire@L1398",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_expire@L1400",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_expire@L1398",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1351",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_expire@L1400",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1353",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_mask@L1389",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_mask@L1391",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_mask@L1389",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1351",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_decommit_mask@L1391",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1353",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_main2_ref@L1371",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_main2_ref@L1373",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_main2_ref@L1371",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_ref@L1330",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_main2_ref@L1373",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_ref@L1332",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1351",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1353",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1351",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_ref@L1330",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1353",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_ref@L1332",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_mem_is_pinned@L1433",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_mem_is_pinned@L1435",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_mem_is_pinned@L1433",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1351",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_mem_is_pinned@L1435",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main_ref@L1353",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_page_header_ptr@L1301",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_page_header_ptr@L1303",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_ref@L1330",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_ref@L1332",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_ref@L1330",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_ref@L1332",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_ref@L620",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_segment_kind@L1448",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_segment_kind@L1469",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_segment_kind@L1448",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main2_ref@L1371",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_segment_kind@L1469",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main2_ref@L1373",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_used@L1417",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_used@L1419",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_used@L1417",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main2_ref@L1371",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_used@L1419",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_main2_ref@L1373",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::is_abandoned@L1441",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::is_abandoned@L1443",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::is_abandoned@L1441",
-        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_ref@L1330",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::is_abandoned@L1443",
+        "callee": "verus-mimalloc/types.rs::SegmentPtr::get_ref@L1332",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::null@L1292",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::null@L1294",
         "callee": ".verus_deps/builtin/src/lib.rs::Ghost::assume_new_fallback@L494",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::TldPtr::get_mut@L1235",
+        "caller": "verus-mimalloc/types.rs::TldPtr::get_mut@L1237",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::TldPtr::get_mut@L1235",
+        "caller": "verus-mimalloc/types.rs::TldPtr::get_mut@L1237",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_mut_ref@L636",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::TldPtr::get_ref@L1223",
+        "caller": "verus-mimalloc/types.rs::TldPtr::get_ref@L1225",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::TldPtr::get_ref@L1223",
+        "caller": "verus-mimalloc/types.rs::TldPtr::get_ref@L1225",
         "callee": ".verus_deps/vstd/raw_ptr.rs::ptr_ref@L620",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::TldPtr::get_segments_count@L1249",
+        "caller": "verus-mimalloc/types.rs::TldPtr::get_segments_count@L1251",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/types.rs::TldPtr::get_segments_count@L1249",
-        "callee": "verus-mimalloc/types.rs::TldPtr::get_ref@L1223",
+        "caller": "verus-mimalloc/types.rs::TldPtr::get_segments_count@L1251",
+        "callee": "verus-mimalloc/types.rs::TldPtr::get_ref@L1225",
         "kind": "call"
       }
     ],
@@ -4670,19 +4620,19 @@
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L469",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_delayed_decommit@L501",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L383",
         "name": "wrapping_add",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/int_macros.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L349",
+        "caller": "verus-mimalloc/commit_segment.rs::segment_perhaps_decommit@L383",
         "name": "wrapping_add",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/mod.rs",
         "resolution": "resolved_external"
@@ -4724,13 +4674,13 @@
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/init.rs::PageQueue::empty@L275",
+        "caller": "verus-mimalloc/init.rs::PageQueue::empty@L278",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/init.rs::current_thread_count@L831",
+        "caller": "verus-mimalloc/init.rs::current_thread_count@L834",
         "name": "load",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/sync/atomic.rs",
         "resolution": "resolved_external"
@@ -4754,43 +4704,43 @@
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/init.rs::increment_thread_count@L826",
+        "caller": "verus-mimalloc/init.rs::increment_thread_count@L829",
         "name": "fetch_add",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/sync/atomic.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L711",
+        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L714",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L711",
+        "caller": "verus-mimalloc/init.rs::init_empty_page_ptr@L714",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/init.rs::pages_free_direct_tmp@L479",
+        "caller": "verus-mimalloc/init.rs::pages_free_direct_tmp@L482",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/init.rs::span_queue_headers_tmp@L613",
+        "caller": "verus-mimalloc/init.rs::span_queue_headers_tmp@L616",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/init.rs::thread_data_alloc@L650",
+        "caller": "verus-mimalloc/init.rs::thread_data_alloc@L653",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/init.rs::thread_data_alloc@L650",
+        "caller": "verus-mimalloc/init.rs::thread_data_alloc@L653",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
@@ -4904,19 +4854,19 @@
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::aligned_base_add@L265",
+        "caller": "verus-mimalloc/os_alloc.rs::aligned_base_add@L278",
         "name": "fetch_add",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/sync/atomic.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::aligned_base_cas@L270",
+        "caller": "verus-mimalloc/os_alloc.rs::aligned_base_cas@L283",
         "name": "compare_exchange",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/sync/atomic.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L98",
+        "caller": "verus-mimalloc/os_alloc.rs::os_alloc_aligned@L99",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
@@ -4928,61 +4878,61 @@
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L278",
+        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L291",
         "name": "wrapping_add",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L278",
+        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L291",
         "name": "wrapping_add",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_good_alloc_size@L60",
+        "caller": "verus-mimalloc/os_alloc.rs::os_good_alloc_size@L61",
         "name": "unlikely",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L179",
+        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L186",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L135",
+        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L136",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L135",
+        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L136",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L220",
-        "name": "addr",
-        "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
-        "resolution": "resolved_external"
-      },
-      {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L312",
-        "name": "addr",
-        "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
-        "resolution": "resolved_external"
-      },
-      {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L312",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L239",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L312",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
+        "name": "addr",
+        "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
+        "resolution": "resolved_external"
+      },
+      {
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
+        "name": "null_mut",
+        "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
+        "resolution": "resolved_external"
+      },
+      {
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
         "name": "with_addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
@@ -5054,13 +5004,13 @@
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_retire@L559",
+        "caller": "verus-mimalloc/page.rs::page_retire@L561",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/page.rs::page_retire@L559",
+        "caller": "verus-mimalloc/page.rs::page_retire@L561",
         "name": "likely",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs",
         "resolution": "resolved_external"
@@ -5126,67 +5076,61 @@
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_alloc@L931",
+        "caller": "verus-mimalloc/segment.rs::segment_alloc@L945",
         "name": "with_addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_page_alloc@L36",
-        "name": "unlikely",
-        "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs",
-        "resolution": "resolved_external"
-      },
-      {
-        "caller": "verus-mimalloc/segment.rs::segment_slice_split@L492",
+        "caller": "verus-mimalloc/segment.rs::segment_slice_split@L494",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1603",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free@L1607",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L1999",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce@L2023",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2133",
+        "caller": "verus-mimalloc/segment.rs::segment_span_free_coalesce_before@L2156",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L80",
+        "caller": "verus-mimalloc/segment.rs::segments_page_alloc@L76",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L190",
+        "caller": "verus-mimalloc/segment.rs::segments_page_find_and_allocate@L186",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/segment.rs::span_queue_delete@L332",
+        "caller": "verus-mimalloc/segment.rs::span_queue_delete@L334",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
@@ -5216,103 +5160,103 @@
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::add_offset@L1647",
+        "caller": "verus-mimalloc/types.rs::PagePtr::add_offset@L1668",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::add_offset@L1647",
+        "caller": "verus-mimalloc/types.rs::PagePtr::add_offset@L1668",
         "name": "with_addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::add_offset_and_check@L1745",
+        "caller": "verus-mimalloc/types.rs::PagePtr::add_offset_and_check@L1766",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::add_offset_and_check@L1745",
+        "caller": "verus-mimalloc/types.rs::PagePtr::add_offset_and_check@L1766",
         "name": "with_addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::get_index@L1717",
+        "caller": "verus-mimalloc/types.rs::PagePtr::get_index@L1738",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::is_gt_0th_slice@L1705",
+        "caller": "verus-mimalloc/types.rs::PagePtr::is_gt_0th_slice@L1726",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::is_null@L1524",
+        "caller": "verus-mimalloc/types.rs::PagePtr::is_null@L1545",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::null@L1515",
+        "caller": "verus-mimalloc/types.rs::PagePtr::null@L1536",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::slice_start@L1728",
+        "caller": "verus-mimalloc/types.rs::PagePtr::slice_start@L1749",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::sub_offset@L1673",
+        "caller": "verus-mimalloc/types.rs::PagePtr::sub_offset@L1694",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::PagePtr::sub_offset@L1673",
+        "caller": "verus-mimalloc/types.rs::PagePtr::sub_offset@L1694",
         "name": "with_addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_page_after_end@L1317",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_page_after_end@L1319",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_page_after_end@L1317",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_page_after_end@L1319",
         "name": "with_addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_page_header_ptr@L1301",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_page_header_ptr@L1303",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_page_header_ptr@L1301",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::get_page_header_ptr@L1303",
         "name": "with_addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::is_null@L1285",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::is_null@L1287",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/types.rs::SegmentPtr::null@L1292",
+        "caller": "verus-mimalloc/types.rs::SegmentPtr::null@L1294",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
@@ -5323,8 +5267,8 @@
     "summary": {
       "entries": 3,
       "reachable_functions": 192,
-      "edges": 518,
-      "external_calls": 130,
+      "edges": 508,
+      "external_calls": 129,
       "unresolved_external_calls": 0,
       "warnings": 0
     }

@@ -764,7 +764,7 @@
       ]
     },
     "verus-mimalloc/arena.rs": {
-      "sha256": "1f6f3894fec64bd1534080021d72e83dbeea83b7fa60ceb9134bb6fc9e5da92c",
+      "sha256": "401eede417598bb7b7f637c810364199aaa3537640c6d70d70032f423fdd05d2",
       "functions": [
         {
           "file": "verus-mimalloc/arena.rs",
@@ -3376,12 +3376,12 @@
       ]
     },
     "verus-mimalloc/commit_segment.rs": {
-      "sha256": "bf9b5856e4eb0e8e008b0743e14359a8735d753d1631de9908d7ed6379d92ac4",
+      "sha256": "fe3efcb6fa25c8e57abd69a8077879418fa176569c8d1c266fea5a22a7875ddc",
       "functions": [
         {
           "file": "verus-mimalloc/commit_segment.rs",
           "symbol": "segment_delayed_decommit",
-          "line": 469,
+          "line": 501,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -3394,7 +3394,7 @@
         {
           "file": "verus-mimalloc/commit_segment.rs",
           "symbol": "segment_perhaps_decommit",
-          "line": 349,
+          "line": 383,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -3407,7 +3407,7 @@
         {
           "file": "verus-mimalloc/commit_segment.rs",
           "symbol": "segment_ensure_committed",
-          "line": 311,
+          "line": 343,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -3420,13 +3420,14 @@
         {
           "file": "verus-mimalloc/commit_segment.rs",
           "symbol": "segment_commitx",
-          "line": 131,
+          "line": 143,
           "kind": "exec",
           "entered": true,
           "references": [
             "CommitMask",
             "Local",
             "SegmentPtr",
+            "Set",
             "Tracked"
           ]
         },
@@ -3461,6 +3462,8 @@
         "call\tsegment_commit_mask\tSet::<int>::empty",
         "call\tsegment_commit_mask\tSet::<int>::empty",
         "call\tsegment_commit_mask\tSet::<int>::empty",
+        "call\tsegment_commit_mask\tSet::range",
+        "call\tsegment_commit_mask\tSet::range",
         "call\tsegment_commit_mask\talign_down",
         "call\tsegment_commit_mask\talign_down",
         "call\tsegment_commit_mask\talign_up",
@@ -3470,6 +3473,7 @@
         "call\tsegment_commit_mask\tconst_facts",
         "call\tsegment_commit_mask\tcore::ptr::null_mut",
         "call\tsegment_commit_mask\tcore::ptr::null_mut",
+        "call\tsegment_commit_mask\tfinal",
         "call\tsegment_commit_mask\tfinal",
         "call\tsegment_commit_mask\tfinal",
         "call\tsegment_commit_mask\tfinal",
@@ -3485,6 +3489,7 @@
         "call\tsegment_commitx\tCommitMask::empty",
         "call\tsegment_commitx\tCommitMask::empty",
         "call\tsegment_commitx\tCommitMask::empty",
+        "call\tsegment_commitx\tSet::range",
         "call\tsegment_commitx\tTracked",
         "call\tsegment_commitx\tTracked",
         "call\tsegment_commitx\tTracked",
@@ -3508,6 +3513,8 @@
         "call\tsegment_commitx\tfinal(local).decommit_mask(segment.segment_id@).bytes",
         "call\tsegment_commitx\tfinal(local).segments[segment.segment_id@]\n            .mem.os_has_range_read_write",
         "call\tsegment_commitx\tfinal(local).wf_main",
+        "call\tsegment_commitx\tlocal.commit_mask",
+        "call\tsegment_commitx\tlocal.commit_mask",
         "call\tsegment_commitx\tlocal.commit_mask",
         "call\tsegment_commitx\tlocal.commit_mask",
         "call\tsegment_commitx\tlocal.commit_mask",
@@ -3556,6 +3563,13 @@
         "call\tsegment_commitx\tlocal2.segments[sid].mem.os_rw_bytes",
         "call\tsegment_commitx\tmask.is_empty",
         "call\tsegment_commitx\tmask@.contains",
+        "call\tsegment_commitx\tmask@.subset_of",
+        "call\tsegment_commitx\tmask@.subset_of",
+        "call\tsegment_commitx\told",
+        "call\tsegment_commitx\told",
+        "call\tsegment_commitx\told",
+        "call\tsegment_commitx\told",
+        "call\tsegment_commitx\told",
         "call\tsegment_commitx\told",
         "call\tsegment_commitx\told",
         "call\tsegment_commitx\told",
@@ -3586,9 +3600,17 @@
         "call\tsegment_commitx\told",
         "call\tsegment_commitx\told(local).commit_mask",
         "call\tsegment_commitx\told(local).commit_mask",
+        "call\tsegment_commitx\told(local).commit_mask",
+        "call\tsegment_commitx\told(local).commit_mask",
+        "call\tsegment_commitx\told(local).commit_mask",
+        "call\tsegment_commitx\told(local).commit_mask",
+        "call\tsegment_commitx\told(local).commit_mask",
+        "call\tsegment_commitx\told(local).commit_mask(segment.segment_id@)@.contains",
         "call\tsegment_commitx\told(local).commit_mask(sid).bytes",
         "call\tsegment_commitx\told(local).commit_mask(sid).bytes",
         "call\tsegment_commitx\told(local).commit_mask(sid).bytes(sid).subset_of",
+        "call\tsegment_commitx\told(local).commit_mask(sid)@.contains",
+        "call\tsegment_commitx\told(local).commit_mask(sid)@.contains",
         "call\tsegment_commitx\told(local).decommit_mask",
         "call\tsegment_commitx\told(local).decommit_mask",
         "call\tsegment_commitx\told(local).decommit_mask(segment.segment_id@).bytes",
@@ -3624,6 +3646,9 @@
         "call\tsegment_commitx\tsegment.get_main_ref",
         "call\tsegment_commitx\tsegment.get_main_ref(Tracked(&*local)).decommit_mask.any_set",
         "call\tsegment_commitx\tsegment.is_in",
+        "call\tsegment_commitx\tsegment.segment_ptr.addr",
+        "call\tsegment_commitx\tsegment.segment_ptr.addr",
+        "call\tsegment_commitx\tsegment.segment_ptr.addr",
         "call\tsegment_commitx\tsegment.segment_ptr.addr",
         "call\tsegment_commitx\tsegment.segment_ptr.addr",
         "call\tsegment_commitx\tsegment.segment_ptr.addr",
@@ -3700,6 +3725,9 @@
         "call\tsegment_ensure_committed\told",
         "call\tsegment_ensure_committed\told",
         "call\tsegment_ensure_committed\told",
+        "call\tsegment_ensure_committed\told",
+        "call\tsegment_ensure_committed\told(local).commit_mask",
+        "call\tsegment_ensure_committed\told(local).commit_mask(segment.segment_id@)@.contains",
         "call\tsegment_ensure_committed\told(local).wf_main",
         "call\tsegment_ensure_committed\treveal",
         "call\tsegment_ensure_committed\tsegment.get_commit_mask",
@@ -3707,6 +3735,7 @@
         "call\tsegment_ensure_committed\tsegment.get_decommit_mask",
         "call\tsegment_ensure_committed\tsegment.get_decommit_mask(Tracked(&*local)).is_empty",
         "call\tsegment_ensure_committed\tsegment.is_in",
+        "call\tsegment_ensure_committed\tsegment.segment_ptr.addr",
         "call\tsegment_ensure_committed\tsegment.segment_ptr.addr",
         "call\tsegment_ensure_committed\tsegment.segment_ptr.addr",
         "call\tsegment_ensure_committed\tsegment.wf",
@@ -3790,7 +3819,6 @@
         "call\tsegment_perhaps_decommit\tset_int_range",
         "call\tsegment_perhaps_decommit\tset_int_range",
         "call\tsegment_perhaps_decommit\tset_int_range(p as int, p + size).disjoint",
-        "call\tsegment_perhaps_decommit\ttodo",
         "fn\tclock_now\t()\ti64",
         "fn\tsegment_commit_mask\t(\n    segment_ptr: *mut u8,\n    conservative: bool,\n    p: usize,\n    size: usize,\n    cm: &mut CommitMask)\t(res: (*mut u8, usize))",
         "fn\tsegment_commitx\t(\n    segment: SegmentPtr,\n    commit: bool,\n    p: usize,\n    size: usize,\n    Tracked(local): Tracked<&mut Local>,\n)\t(success: bool)",
@@ -3824,12 +3852,21 @@
         "resolution\tsegment_commit_mask\ttype_cast_expression\tCOMMIT_SIZE as usize",
         "resolution\tsegment_commit_mask\ttype_cast_expression\tCOMMIT_SIZE as usize",
         "resolution\tsegment_commit_mask\ttype_cast_expression\tCOMMIT_SIZE as usize",
+        "resolution\tsegment_commit_mask\ttype_cast_expression\tCOMMIT_SIZE as usize",
+        "resolution\tsegment_commit_mask\ttype_cast_expression\tCOMMIT_SIZE as usize",
+        "resolution\tsegment_commit_mask\ttype_cast_expression\tCOMMIT_SIZE as usize",
+        "resolution\tsegment_commit_mask\ttype_cast_expression\tCOMMIT_SIZE as usize",
+        "resolution\tsegment_commit_mask\ttype_cast_expression\tCOMMIT_SIZE as usize",
         "resolution\tsegment_commit_mask\ttype_cast_expression\tSEGMENT_SIZE as int",
         "resolution\tsegment_commit_mask\ttype_cast_expression\tSEGMENT_SIZE as usize",
         "resolution\tsegment_commit_mask\ttype_cast_expression\tSEGMENT_SIZE as usize",
         "resolution\tsegment_commit_mask\ttype_cast_expression\tSLICE_SIZE as usize",
         "resolution\tsegment_commit_mask\ttype_cast_expression\tbitidx as int",
         "resolution\tsegment_commit_mask\ttype_cast_expression\tfull_size as int",
+        "resolution\tsegment_commit_mask\ttype_cast_expression\tp as int",
+        "resolution\tsegment_commit_mask\ttype_cast_expression\tp as int",
+        "resolution\tsegment_commit_mask\ttype_cast_expression\tsegment_ptr as int",
+        "resolution\tsegment_commit_mask\ttype_cast_expression\tsegment_ptr as int",
         "resolution\tsegment_commit_mask\ttype_cast_expression\tsegment_ptr as int",
         "resolution\tsegment_commit_mask\ttype_cast_expression\tsegment_ptr as int",
         "resolution\tsegment_commit_mask\ttype_cast_expression\tsegment_ptr as int",
@@ -3874,6 +3911,9 @@
         "resolution\tsegment_commitx\tlet_declaration\tlet old_cm",
         "resolution\tsegment_commitx\tlet_declaration\tlet success;",
         "resolution\tsegment_commitx\ttype_cast_expression\tCOMMIT_SIZE as int",
+        "resolution\tsegment_commitx\ttype_cast_expression\tCOMMIT_SIZE as usize",
+        "resolution\tsegment_commitx\ttype_cast_expression\tCOMMIT_SIZE as usize",
+        "resolution\tsegment_commitx\ttype_cast_expression\tCOMMIT_SIZE as usize",
         "resolution\tsegment_commitx\ttype_cast_expression\tp as int",
         "resolution\tsegment_commitx\ttype_cast_expression\tp as int",
         "resolution\tsegment_commitx\ttype_cast_expression\tp as int",
@@ -3895,8 +3935,10 @@
         "resolution\tsegment_delayed_decommit\ttype_cast_expression\tCOMMIT_SIZE as int",
         "resolution\tsegment_delayed_decommit\ttype_cast_expression\tCOMMIT_SIZE as usize",
         "resolution\tsegment_delayed_decommit\ttype_cast_expression\tCOMMIT_SIZE as usize",
+        "resolution\tsegment_ensure_committed\ttype_cast_expression\tCOMMIT_SIZE as usize",
         "resolution\tsegment_ensure_committed\ttype_cast_expression\tp as int",
         "resolution\tsegment_perhaps_decommit\tlet_declaration\tlet (start, full_size)",
+        "resolution\tsegment_perhaps_decommit\tlet_declaration\tlet decommit_delay",
         "resolution\tsegment_perhaps_decommit\tlet_declaration\tlet ded",
         "resolution\tsegment_perhaps_decommit\tlet_declaration\tlet ghost local_snap",
         "resolution\tsegment_perhaps_decommit\tlet_declaration\tlet mut cmask",
@@ -3922,12 +3964,12 @@
       ]
     },
     "verus-mimalloc/config.rs": {
-      "sha256": "7c002e97eb0a54bbf1a3df6a92554d132684ddb2d6a70eac8222d1bb00c0f58b",
+      "sha256": "e5687791a6ae8928fd0799685ca8f8cbbdcbb52ff1de4178fbd607194448faa5",
       "functions": [
         {
           "file": "verus-mimalloc/config.rs",
           "symbol": "option_decommit_extend_delay",
-          "line": 127,
+          "line": 135,
           "kind": "exec",
           "entered": true,
           "references": []
@@ -3935,7 +3977,7 @@
         {
           "file": "verus-mimalloc/config.rs",
           "symbol": "option_decommit_delay",
-          "line": 126,
+          "line": 130,
           "kind": "exec",
           "entered": true,
           "references": []
@@ -4000,11 +4042,11 @@
         "call\tconst_facts\tvstd::layout::size_of::<Tld>",
         "fn\tconst_facts\t()\t",
         "fn\toption_allow_decommit\t()\tbool",
-        "fn\toption_decommit_delay\t()\ti64",
+        "fn\toption_decommit_delay\t()\t(delay: i64)",
         "fn\toption_decommit_extend_delay\t()\ti64",
         "fn\toption_eager_commit\t()\tbool",
         "fn\toption_eager_commit_delay\t()\ti64",
-        "fn\toption_page_reset\t()\tbool",
+        "fn\toption_page_reset\t()\t(enabled: bool)",
         "resolution\t<module>\tconst_item\tpub const ALIGNMENT_MAX: u64",
         "resolution\t<module>\tconst_item\tpub const BIN_FULL: u64",
         "resolution\t<module>\tconst_item\tpub const BIN_HUGE: u64",
@@ -5096,12 +5138,12 @@
       ]
     },
     "verus-mimalloc/init.rs": {
-      "sha256": "1a2ce2de34fc62a0409a848d46392398bfef6d11dd6407179008e54c8722924f",
+      "sha256": "6f5164a177348de2379c460269cd7eba043a375c2990fb338be5ca96bbb00971",
       "functions": [
         {
           "file": "verus-mimalloc/init.rs",
           "symbol": "current_thread_count",
-          "line": 831,
+          "line": 834,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -5111,7 +5153,7 @@
         {
           "file": "verus-mimalloc/init.rs",
           "symbol": "increment_thread_count",
-          "line": 826,
+          "line": 829,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -5121,13 +5163,14 @@
         {
           "file": "verus-mimalloc/init.rs",
           "symbol": "init_empty_page_ptr",
-          "line": 711,
+          "line": 714,
           "kind": "exec",
           "entered": true,
           "references": [
             "AtomicHeapPtr",
             "EmptyPageStuff",
             "LL",
+            "Option",
             "PCell",
             "Page",
             "PageFullAccess",
@@ -5145,7 +5188,7 @@
         {
           "file": "verus-mimalloc/init.rs",
           "symbol": "EmptyPageStuff::wf",
-          "line": 698,
+          "line": 701,
           "kind": "spec",
           "entered": true,
           "references": []
@@ -5153,7 +5196,7 @@
         {
           "file": "verus-mimalloc/init.rs",
           "symbol": "thread_data_alloc",
-          "line": 650,
+          "line": 653,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -5167,7 +5210,7 @@
         {
           "file": "verus-mimalloc/init.rs",
           "symbol": "span_queue_headers_tmp",
-          "line": 613,
+          "line": 616,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -5178,7 +5221,7 @@
         {
           "file": "verus-mimalloc/init.rs",
           "symbol": "pages_free_direct_tmp",
-          "line": 479,
+          "line": 482,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -5189,7 +5232,7 @@
         {
           "file": "verus-mimalloc/init.rs",
           "symbol": "pages_tmp",
-          "line": 292,
+          "line": 295,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -5199,7 +5242,7 @@
         {
           "file": "verus-mimalloc/init.rs",
           "symbol": "PageQueue::empty",
-          "line": 275,
+          "line": 278,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -5334,6 +5377,7 @@
         "call\theap_init\tGhost",
         "call\theap_init\tGhost",
         "call\theap_init\tGhost",
+        "call\theap_init\tGhost",
         "call\theap_init\tMap::empty",
         "call\theap_init\tMap::empty",
         "call\theap_init\tMap::empty",
@@ -5352,12 +5396,15 @@
         "call\theap_init\tTracked",
         "call\theap_init\tTracked",
         "call\theap_init\tTracked",
+        "call\theap_init\tTracked",
         "call\theap_init\taddr.addr",
         "call\theap_init\taddr.addr",
         "call\theap_init\taddr.with_addr",
         "call\theap_init\tarbitrary",
+        "call\theap_init\tarbitrary",
         "call\theap_init\tbounds_for_smallest_bin_fitting_size",
         "call\theap_init\tconst_facts",
+        "call\theap_init\tcore::ptr::null_mut",
         "call\theap_init\tcore::ptr::null_mut",
         "call\theap_init\tcore::ptr::null_mut",
         "call\theap_init\tcore::ptr::null_mut",
@@ -5430,6 +5477,7 @@
         "call\tinit_empty_page_ptr\tPCell::new",
         "call\tinit_empty_page_ptr\tPCell::new",
         "call\tinit_empty_page_ptr\tShared::new",
+        "call\tinit_empty_page_ptr\tSome",
         "call\tinit_empty_page_ptr\tThreadLLWithDelayBits::empty",
         "call\tinit_empty_page_ptr\tTracked",
         "call\tinit_empty_page_ptr\tTracked",
@@ -5437,7 +5485,9 @@
         "call\tinit_empty_page_ptr\tconst_facts",
         "call\tinit_empty_page_ptr\tcore::ptr::null_mut",
         "call\tinit_empty_page_ptr\tcrate::os_mem::mmap_prot_read_write",
-        "call\tinit_empty_page_ptr\te.wf",
+        "call\tinit_empty_page_ptr\te.is_some",
+        "call\tinit_empty_page_ptr\te.unwrap",
+        "call\tinit_empty_page_ptr\te.unwrap().wf",
         "call\tinit_empty_page_ptr\texpose_provenance",
         "call\tinit_empty_page_ptr\tglobal_init",
         "call\tinit_empty_page_ptr\tmc.pointsto_has_range",
@@ -5454,7 +5504,6 @@
         "call\tinit_empty_page_ptr\tset_int_range",
         "call\tinit_empty_page_ptr\tstd::ptr::null_mut",
         "call\tinit_empty_page_ptr\tstd::ptr::null_mut",
-        "call\tinit_empty_page_ptr\ttodo",
         "call\tinit_empty_page_ptr\tvstd::layout::align_of::<Page>",
         "call\tinit_empty_page_ptr\tvstd::layout::align_of::<Page>",
         "call\tinit_empty_page_ptr\tvstd::layout::layout_for_type_is_valid::<Page>",
@@ -5889,14 +5938,15 @@
         "call\tspan_queue_headers_tmp\tcore::ptr::null_mut",
         "call\tspan_queue_headers_tmp\tcore::ptr::null_mut",
         "call\tthread_data_alloc\tTracked",
+        "call\tthread_data_alloc\tTracked",
         "call\tthread_data_alloc\taddr.addr",
+        "call\tthread_data_alloc\tcore::ptr::null_mut",
         "call\tthread_data_alloc\tcore::ptr::null_mut",
         "call\tthread_data_alloc\tcrate::os_mem::mmap_prot_read_write",
         "call\tthread_data_alloc\tmc@.points_to.provenance",
         "call\tthread_data_alloc\tmc@.pointsto_has_range",
         "call\tthread_data_alloc\tp.addr",
         "call\tthread_data_alloc\tpage_size",
-        "call\tthread_data_alloc\ttodo",
         "fn\tEmptyPageStuff::wf\t(&self)\tbool",
         "fn\tGlobal::inst\t(&self)\tMimInst",
         "fn\tGlobal::wf\t(&self)\tbool",
@@ -5906,7 +5956,7 @@
         "fn\tglobal_init\t()\t(tracked res: (Global, Map<ThreadId, Mim::right_to_use_thread>))",
         "fn\theap_init\t(Tracked(global): Tracked<Global>, // $line_count$Trusted$\n      Tracked(right): Tracked<Mim::right_to_use_thread>, // $line_count$Trusted$\n      Tracked(cur_thread): Tracked<IsThread> // $line_count$Trusted$\n)\t(res: (HeapPtr, Tracked<Option<Local>>))",
         "fn\tincrement_thread_count\t()\t",
-        "fn\tinit_empty_page_ptr\t()\t(e: EmptyPageStuff)",
+        "fn\tinit_empty_page_ptr\t()\t(e: Option<EmptyPageStuff>)",
         "fn\tpages_free_direct_tmp\t()\t[*mut Page; 129]",
         "fn\tpages_tmp\t()\t(pages: [PageQueue; 75])",
         "fn\tspan_queue_headers_tmp\t()\t[SpanQueueHeader; 32]",
@@ -10425,12 +10475,12 @@
       ]
     },
     "verus-mimalloc/os_alloc.rs": {
-      "sha256": "02eb60da95bcb6eece6c5f634bdebe746dccccba881598c7241e39048e6fa7f8",
+      "sha256": "db01966b57adc66a0ab0660417702e2ed3fdb0d77435be2bfd20544f096b56fc",
       "functions": [
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "unix_mmapx",
-          "line": 312,
+          "line": 325,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -10443,7 +10493,7 @@
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "os_get_aligned_hint",
-          "line": 278,
+          "line": 291,
           "kind": "exec",
           "entered": true,
           "references": []
@@ -10451,7 +10501,7 @@
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "aligned_base_cas",
-          "line": 270,
+          "line": 283,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -10461,7 +10511,7 @@
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "aligned_base_add",
-          "line": 265,
+          "line": 278,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -10471,19 +10521,28 @@
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "unix_mmap",
-          "line": 220,
+          "line": 239,
           "kind": "exec",
           "entered": true,
           "references": [
             "MemChunk",
             "Tracked",
+            "core",
             "usize"
           ]
         },
         {
           "file": "verus-mimalloc/os_alloc.rs",
+          "symbol": "mod_add_zero",
+          "line": 229,
+          "kind": "proof",
+          "entered": true,
+          "references": []
+        },
+        {
+          "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "use_large_os_page",
-          "line": 216,
+          "line": 224,
           "kind": "exec",
           "entered": true,
           "references": []
@@ -10491,7 +10550,7 @@
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "os_mem_alloc",
-          "line": 179,
+          "line": 186,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -10504,7 +10563,7 @@
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "os_mem_alloc_aligned",
-          "line": 135,
+          "line": 136,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -10517,7 +10576,7 @@
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "os_alloc_aligned",
-          "line": 98,
+          "line": 99,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -10530,7 +10589,7 @@
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "os_good_alloc_size",
-          "line": 60,
+          "line": 61,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -10587,7 +10646,6 @@
         "call\tos_alloc_aligned_offset\tpage_size",
         "call\tos_alloc_aligned_offset\tpage_size",
         "call\tos_alloc_aligned_offset\tpage_size",
-        "call\tos_alloc_aligned_offset\ttodo",
         "call\tos_get_aligned_hint\talign_up",
         "call\tos_get_aligned_hint\taligned_base_add",
         "call\tos_get_aligned_hint\taligned_base_add",
@@ -10635,34 +10693,49 @@
         "call\tos_mem_alloc_aligned\tos_mem_alloc",
         "call\tos_mem_alloc_aligned\tp.addr",
         "call\tos_mem_alloc_aligned\tp.addr",
+        "call\tos_mem_alloc_aligned\tp.addr",
         "call\tos_mem_alloc_aligned\tpage_size",
         "call\tos_mem_alloc_aligned\tpage_size",
-        "call\tos_mem_alloc_aligned\ttodo",
+        "call\tos_mem_alloc_aligned\tpage_size",
+        "call\tunix_mmap\tMemChunk::empty",
         "call\tunix_mmap\tTracked",
+        "call\tunix_mmap\tTracked",
+        "call\tunix_mmap\tcore::ptr::null_mut",
         "call\tunix_mmap\tmem@.os_exact_range",
         "call\tunix_mmap\tmem@.os_has_range_no_read_write",
         "call\tunix_mmap\tmem@.os_has_range_read_write",
         "call\tunix_mmap\tmem@.points_to.provenance",
         "call\tunix_mmap\tmem@.pointsto_has_range",
         "call\tunix_mmap\tmem@.wf",
-        "call\tunix_mmap\tp.addr",
         "call\tunix_mmap\tpage_size",
         "call\tunix_mmap\tpage_size",
         "call\tunix_mmap\tpage_size",
-        "call\tunix_mmap\ttodo",
-        "call\tunix_mmap\ttodo",
-        "call\tunix_mmap\ttodo",
         "call\tunix_mmap\tunix_mmapx",
         "call\tunix_mmap\tuse_large_os_page",
-        "call\tunix_mmap\tuse_large_os_page",
+        "call\tunix_mmapx\tMemChunk::empty",
         "call\tunix_mmapx\tTracked",
         "call\tunix_mmapx\tTracked",
         "call\tunix_mmapx\tTracked",
+        "call\tunix_mmapx\tTracked",
+        "call\tunix_mmapx\tTracked",
+        "call\tunix_mmapx\tTracked",
+        "call\tunix_mmapx\talign_up",
+        "call\tunix_mmapx\taligned_mem.os.dom",
+        "call\tunix_mmapx\taligned_mem.os_exact_range",
+        "call\tunix_mmapx\taligned_mem.os_has_range_no_read_write",
+        "call\tunix_mmapx\taligned_mem.os_has_range_read_write",
+        "call\tunix_mmapx\taligned_mem.points_to.provenance",
+        "call\tunix_mmapx\taligned_mem.pointsto_has_range",
+        "call\tunix_mmapx\taligned_range.contains",
         "call\tunix_mmapx\tconst_facts",
+        "call\tunix_mmapx\tcore::ptr::null_mut",
+        "call\tunix_mmapx\tcore::ptr::null_mut",
         "call\tunix_mmapx\tcore::ptr::null_mut",
         "call\tunix_mmapx\thint.addr",
         "call\tunix_mmapx\thint.addr",
         "call\tunix_mmapx\thint.with_addr",
+        "call\tunix_mmapx\tmapped_range.contains",
+        "call\tunix_mmapx\tmem.split",
         "call\tunix_mmapx\tmem@.os_exact_range",
         "call\tunix_mmapx\tmem@.os_has_range_no_read_write",
         "call\tunix_mmapx\tmem@.os_has_range_read_write",
@@ -10671,18 +10744,30 @@
         "call\tunix_mmapx\tmem@.wf",
         "call\tunix_mmapx\tmmap_prot_none",
         "call\tunix_mmapx\tmmap_prot_none",
+        "call\tunix_mmapx\tmmap_prot_none",
         "call\tunix_mmapx\tmmap_prot_read_write",
         "call\tunix_mmapx\tmmap_prot_read_write",
+        "call\tunix_mmapx\tmmap_prot_read_write",
+        "call\tunix_mmapx\tmod_add_zero",
         "call\tunix_mmapx\tmod_trans",
         "call\tunix_mmapx\tos_get_aligned_hint",
         "call\tunix_mmapx\tp.addr",
         "call\tunix_mmapx\tp.addr",
+        "call\tunix_mmapx\tp.addr",
+        "call\tunix_mmapx\tp.addr",
+        "call\tunix_mmapx\tp.with_addr",
         "call\tunix_mmapx\tpage_size",
         "call\tunix_mmapx\tpage_size",
         "call\tunix_mmapx\tpage_size",
         "call\tunix_mmapx\tpage_size",
+        "call\tunix_mmapx\tpage_size",
+        "call\tunix_mmapx\tpage_size",
+        "call\tunix_mmapx\tpage_size",
+        "call\tunix_mmapx\tset_int_range",
+        "call\tunix_mmapx\tset_int_range",
         "fn\taligned_base_add\t(s: usize)\tusize",
         "fn\taligned_base_cas\t(s: usize, t: usize)\t",
+        "fn\tmod_add_zero\t(a: int, b: int, c: int)\t",
         "fn\tos_alloc_aligned\t(\n    size: usize,\n    alignment: usize,\n    request_commit: bool,\n    allow_large: bool\n)\t(res: (*mut u8, bool, Tracked<MemChunk>))",
         "fn\tos_alloc_aligned_offset\t(\n    size: usize,\n    alignment: usize,\n    offset: usize,\n    request_commit: bool,\n    allow_large: bool,\n)\t(res: (*mut u8, bool, Tracked<MemChunk>))",
         "fn\tos_get_aligned_hint\t(try_alignment: usize, size: usize)\t(hint: usize)",
@@ -10760,14 +10845,17 @@
         "resolution\tos_mem_alloc\ttype_cast_expression\taddr as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\taddr as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\taddr as int",
+        "resolution\tos_mem_alloc\ttype_cast_expression\taddr as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\tsize as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\tsize as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\tsize as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\tsize as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\tsize as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\ttry_alignment as int",
+        "resolution\tos_mem_alloc\ttype_cast_expression\ttry_alignment as int",
         "resolution\tos_mem_alloc_aligned\tlet_declaration\tlet (addr, is_large, mem)",
         "resolution\tos_mem_alloc_aligned\tlet_declaration\tlet (p, is_large, Tracked(mem))",
+        "resolution\tos_mem_alloc_aligned\tlet_declaration\tlet min_alignment",
         "resolution\tos_mem_alloc_aligned\tlet_declaration\tlet mut allow_large",
         "resolution\tos_mem_alloc_aligned\ttype_cast_expression\taddr as int",
         "resolution\tos_mem_alloc_aligned\ttype_cast_expression\taddr as int",
@@ -10794,38 +10882,100 @@
         "resolution\tunix_mmap\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmap\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmap\ttype_cast_expression\taddr as int",
+        "resolution\tunix_mmap\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmap\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmap\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmap\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmap\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmap\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmap\ttype_cast_expression\ttry_alignment as int",
+        "resolution\tunix_mmap\ttype_cast_expression\ttry_alignment as int",
+        "resolution\tunix_mmapx\tclosure_parameters\t|addr: int|",
         "resolution\tunix_mmapx\tlet_declaration\tlet (addr, mem)",
         "resolution\tunix_mmapx\tlet_declaration\tlet (p, Tracked(mem))",
         "resolution\tunix_mmapx\tlet_declaration\tlet (p, Tracked(mem))",
+        "resolution\tunix_mmapx\tlet_declaration\tlet (p, Tracked(mut mem))",
+        "resolution\tunix_mmapx\tlet_declaration\tlet aligned",
+        "resolution\tunix_mmapx\tlet_declaration\tlet aligned_addr",
+        "resolution\tunix_mmapx\tlet_declaration\tlet ghost aligned_range",
+        "resolution\tunix_mmapx\tlet_declaration\tlet ghost mapped_range",
         "resolution\tunix_mmapx\tlet_declaration\tlet hint",
         "resolution\tunix_mmapx\tlet_declaration\tlet hinti",
+        "resolution\tunix_mmapx\tlet_declaration\tlet over_size",
+        "resolution\tunix_mmapx\tlet_declaration\tlet tracked aligned_mem;",
         "resolution\tunix_mmapx\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmapx\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmapx\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmapx\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmapx\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmapx\ttype_cast_expression\taddr as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taddr as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\taligned_addr as int",
         "resolution\tunix_mmapx\ttype_cast_expression\thint as int",
         "resolution\tunix_mmapx\ttype_cast_expression\thint as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tover_size as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tover_size as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tover_size as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tover_size as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tover_size as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tover_size as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tover_size as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
         "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
+        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
         "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
         "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
         "use\tuse core::intrinsics::{unlikely, likely};",
         "use\tuse crate::config::*;",
         "use\tuse crate::layout::*;",
         "use\tuse crate::os_mem::*;",
-        "use\tuse crate::types::todo;",
-        "use\tuse vstd::prelude::*;"
+        "use\tuse vstd::prelude::*;",
+        "use\tuse vstd::set_lib::set_int_range;"
       ]
     },
     "verus-mimalloc/os_commit.rs": {
@@ -13266,12 +13416,12 @@
       ]
     },
     "verus-mimalloc/page.rs": {
-      "sha256": "15655fcfa3fc155474676c4e65a1dbf7636595e52f3ae237686e61c0c73fa7a6",
+      "sha256": "24e5bae6fd6a4a6b4fc301ab305ef631703cf41f63f2d7e720bf82a743f5f168",
       "functions": [
         {
           "file": "verus-mimalloc/page.rs",
           "symbol": "page_try_use_delayed_free",
-          "line": 679,
+          "line": 681,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -13283,7 +13433,7 @@
         {
           "file": "verus-mimalloc/page.rs",
           "symbol": "page_queue_enqueue_from",
-          "line": 654,
+          "line": 656,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -13299,7 +13449,7 @@
         {
           "file": "verus-mimalloc/page.rs",
           "symbol": "page_unfull",
-          "line": 636,
+          "line": 638,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -13311,7 +13461,7 @@
         {
           "file": "verus-mimalloc/page.rs",
           "symbol": "page_to_full",
-          "line": 618,
+          "line": 620,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -13327,7 +13477,7 @@
         {
           "file": "verus-mimalloc/page.rs",
           "symbol": "page_free",
-          "line": 597,
+          "line": 599,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -13341,7 +13491,7 @@
         {
           "file": "verus-mimalloc/page.rs",
           "symbol": "page_retire",
-          "line": 559,
+          "line": 561,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -13353,7 +13503,7 @@
         {
           "file": "verus-mimalloc/page.rs",
           "symbol": "page_queue_of",
-          "line": 513,
+          "line": 515,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -13367,7 +13517,7 @@
         {
           "file": "verus-mimalloc/page.rs",
           "symbol": "page_init",
-          "line": 247,
+          "line": 249,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -13586,6 +13736,7 @@
         "call\tpage_fresh_alloc\tTracked",
         "call\tpage_fresh_alloc\tTracked",
         "call\tpage_fresh_alloc\tcommon_preserves",
+        "call\tpage_fresh_alloc\tconst_facts",
         "call\tpage_fresh_alloc\tcrate::segment::segment_page_alloc",
         "call\tpage_fresh_alloc\tfinal",
         "call\tpage_fresh_alloc\tfinal",
@@ -15033,12 +15184,12 @@
       ]
     },
     "verus-mimalloc/segment.rs": {
-      "sha256": "62b1200a445fdfde3ea7bf82348df23b9be06415dccc94f8e13003b9b22aa370",
+      "sha256": "3a18ba391340bd88d72748ed36e35c64da02ba559348cf1d52a303e6dc428ef3",
       "functions": [
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segment_span_free_coalesce_before",
-          "line": 2133,
+          "line": 2156,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15055,7 +15206,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segment_span_free_coalesce",
-          "line": 1999,
+          "line": 2023,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15063,6 +15214,7 @@
             "PageOrg",
             "PagePtr",
             "Popped",
+            "SegmentKind",
             "SegmentPtr",
             "TldPtr",
             "Tracked"
@@ -15071,7 +15223,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segment_page_clear",
-          "line": 1780,
+          "line": 1806,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15091,7 +15243,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segment_page_free",
-          "line": 1755,
+          "line": 1772,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15106,7 +15258,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segment_span_free",
-          "line": 1603,
+          "line": 1607,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15122,7 +15274,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segment_calculate_slices",
-          "line": 1574,
+          "line": 1578,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15132,7 +15284,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segment_os_free",
-          "line": 1544,
+          "line": 1548,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15145,7 +15297,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segment_free",
-          "line": 1487,
+          "line": 1491,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15158,7 +15310,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segment_os_alloc",
-          "line": 1332,
+          "line": 1344,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15178,7 +15330,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segment_alloc",
-          "line": 931,
+          "line": 945,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15218,7 +15370,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segment_span_allocate",
-          "line": 691,
+          "line": 693,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15236,7 +15388,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segment_slice_split",
-          "line": 492,
+          "line": 494,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15251,7 +15403,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "span_queue_delete",
-          "line": 332,
+          "line": 334,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15267,7 +15419,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segments_page_find_and_allocate",
-          "line": 190,
+          "line": 186,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15285,7 +15437,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segment_reclaim_or_alloc",
-          "line": 165,
+          "line": 161,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15299,7 +15451,7 @@
         {
           "file": "verus-mimalloc/segment.rs",
           "symbol": "segments_page_alloc",
-          "line": 80,
+          "line": 76,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -15392,7 +15544,9 @@
         "call\tsegment_alloc\tfinal(local).wf",
         "call\tsegment_alloc\tis_page_ptr",
         "call\tsegment_alloc\tlocal.commit_mask",
+        "call\tsegment_alloc\tlocal.commit_mask",
         "call\tsegment_alloc\tlocal.commit_mask(segment_id).bytes",
+        "call\tsegment_alloc\tlocal.commit_mask(segment_id)@.contains",
         "call\tsegment_alloc\tlocal.decommit_mask",
         "call\tsegment_alloc\tlocal.decommit_mask(segment_id).bytes",
         "call\tsegment_alloc\tlocal.instance.clone",
@@ -15485,6 +15639,7 @@
         "call\tsegment_alloc\tsegment_os_alloc",
         "call\tsegment_alloc\tsegment_ptr.segment_ptr.addr",
         "call\tsegment_alloc\tsegment_ptr.segment_ptr.addr",
+        "call\tsegment_alloc\tsegment_ptr.segment_ptr.addr",
         "call\tsegment_alloc\tsegment_ptr.segment_ptr.with_addr",
         "call\tsegment_alloc\tsegment_ptr.segment_ptr.with_addr",
         "call\tsegment_alloc\tsegment_ptr.wf",
@@ -15506,8 +15661,6 @@
         "call\tsegment_alloc\ttld.get_segments_count",
         "call\tsegment_alloc\ttld.is_in",
         "call\tsegment_alloc\ttld.wf",
-        "call\tsegment_alloc\ttodo",
-        "call\tsegment_alloc\ttodo",
         "call\tsegment_alloc\tvstd::layout::layout_for_type_is_valid::<Page>",
         "call\tsegment_alloc\tvstd::layout::layout_for_type_is_valid::<SegmentHeader>",
         "call\tsegment_calculate_slices\talign_up",
@@ -15553,10 +15706,12 @@
         "call\tsegment_os_alloc\tfinal",
         "call\tsegment_os_alloc\tfinal",
         "call\tsegment_os_alloc\tfinal",
+        "call\tsegment_os_alloc\tfinal",
         "call\tsegment_os_alloc\tfinal(local).wf",
         "call\tsegment_os_alloc\tfinal(pcommit_mask).bytes",
         "call\tsegment_os_alloc\tfinal(pcommit_mask).bytes",
         "call\tsegment_os_alloc\tfinal(pcommit_mask).bytes(segment_ptr.segment_id@).subset_of",
+        "call\tsegment_os_alloc\tfinal(pcommit_mask)@.contains",
         "call\tsegment_os_alloc\tmem.os_rw_bytes",
         "call\tsegment_os_alloc\tmem.os_rw_bytes",
         "call\tsegment_os_alloc\tmem.os_rw_bytes().subset_of",
@@ -15592,7 +15747,6 @@
         "call\tsegment_os_alloc\tset_int_range(segment_start(segment_ptr.segment_id@),\n                    segment_start(segment_ptr.segment_id@) + COMMIT_SIZE).subset_of",
         "call\tsegment_os_alloc\ttld.is_in",
         "call\tsegment_os_alloc\ttld.wf",
-        "call\tsegment_os_alloc\ttodo",
         "call\tsegment_os_free\told",
         "call\tsegment_os_free\told",
         "call\tsegment_os_free\told",
@@ -15636,9 +15790,6 @@
         "call\tsegment_page_alloc\tsegments_page_alloc",
         "call\tsegment_page_alloc\ttld.is_in",
         "call\tsegment_page_alloc\ttld.wf",
-        "call\tsegment_page_alloc\ttodo",
-        "call\tsegment_page_alloc\ttodo",
-        "call\tsegment_page_alloc\tunlikely",
         "call\tsegment_page_clear\tMap::new",
         "call\tsegment_page_clear\tMim::block_map::from_map",
         "call\tsegment_page_clear\tPageOrg::take_step::clear_ec",
@@ -15711,7 +15862,6 @@
         "call\tsegment_page_clear\tthread_state_tok.value().pages.dom().contains",
         "call\tsegment_page_clear\ttld.is_in",
         "call\tsegment_page_clear\ttld.wf",
-        "call\tsegment_page_clear\ttodo",
         "call\tsegment_page_free\tPopped::Used",
         "call\tsegment_page_free\tSegmentPtr::ptr_segment",
         "call\tsegment_page_free\tTracked",
@@ -15722,6 +15872,8 @@
         "call\tsegment_page_free\tfinal",
         "call\tsegment_page_free\tfinal",
         "call\tsegment_page_free\tfinal(local).wf",
+        "call\tsegment_page_free\tlocal.segments[segment.segment_id@].wf",
+        "call\tsegment_page_free\tlocal.thread_token.value",
         "call\tsegment_page_free\told",
         "call\tsegment_page_free\told",
         "call\tsegment_page_free\told",
@@ -15738,7 +15890,6 @@
         "call\tsegment_page_free\tsegment_page_clear",
         "call\tsegment_page_free\ttld.is_in",
         "call\tsegment_page_free\ttld.wf",
-        "call\tsegment_page_free\ttodo",
         "call\tsegment_reclaim_or_alloc\tTracked",
         "call\tsegment_reclaim_or_alloc\tTracked",
         "call\tsegment_reclaim_or_alloc\tcommon_preserves",
@@ -15818,6 +15969,7 @@
         "call\tsegment_span_allocate\tfinal",
         "call\tsegment_span_allocate\tfinal",
         "call\tsegment_span_allocate\tfinal",
+        "call\tsegment_span_allocate\tfinal",
         "call\tsegment_span_allocate\tfinal(local).page_organization.pages.dom",
         "call\tsegment_span_allocate\tfinal(local).page_organization.pages.dom().contains",
         "call\tsegment_span_allocate\tfinal(local).wf_main",
@@ -15872,6 +16024,13 @@
         "call\tsegment_span_allocate\told",
         "call\tsegment_span_allocate\told",
         "call\tsegment_span_allocate\told",
+        "call\tsegment_span_allocate\told",
+        "call\tsegment_span_allocate\told",
+        "call\tsegment_span_allocate\told",
+        "call\tsegment_span_allocate\told(local).commit_mask",
+        "call\tsegment_span_allocate\told(local).commit_mask",
+        "call\tsegment_span_allocate\told(local).commit_mask(segment.segment_id@)@.contains",
+        "call\tsegment_span_allocate\told(local).commit_mask(segment.segment_id@)@.contains",
         "call\tsegment_span_allocate\told(local).page_organization.pages.dom",
         "call\tsegment_span_allocate\told(local).page_organization.pages.dom().contains",
         "call\tsegment_span_allocate\told(local).page_organization.popped.is_SegmentCreating",
@@ -15887,6 +16046,7 @@
         "call\tsegment_span_allocate\trange.contains",
         "call\tsegment_span_allocate\tsegment.is_in",
         "call\tsegment_span_allocate\tsegment.is_in",
+        "call\tsegment_span_allocate\tsegment.segment_ptr.addr",
         "call\tsegment_span_allocate\tsegment.wf",
         "call\tsegment_span_allocate\tsegment_ensure_committed",
         "call\tsegment_span_allocate\tsegment_page_start_from_slice",
@@ -15934,7 +16094,11 @@
         "call\tsegment_span_free\tsegment_ptr.get_page_header_ptr",
         "call\tsegment_span_free\tsegment_ptr.is_in",
         "call\tsegment_span_free\tsegment_ptr.is_in",
+        "call\tsegment_span_free\tsegment_ptr.segment_ptr.addr",
+        "call\tsegment_span_free\tsegment_ptr.segment_ptr.addr",
         "call\tsegment_span_free\tsegment_ptr.wf",
+        "call\tsegment_span_free\tsegment_start",
+        "call\tsegment_span_free\tsegment_start",
         "call\tsegment_span_free\tslice.slice_start",
         "call\tsegment_span_free\tslice_bin",
         "call\tsegment_span_free\ttld_ptr.get_mut",
@@ -16003,8 +16167,6 @@
         "call\tsegment_span_free_coalesce\ttld.get_mut",
         "call\tsegment_span_free_coalesce\ttld.is_in",
         "call\tsegment_span_free_coalesce\ttld.wf",
-        "call\tsegment_span_free_coalesce\ttodo",
-        "call\tsegment_span_free_coalesce\ttodo",
         "call\tsegment_span_free_coalesce_before\tGhost",
         "call\tsegment_span_free_coalesce_before\tGhost",
         "call\tsegment_span_free_coalesce_before\tGhost",
@@ -16111,9 +16273,11 @@
         "call\tsegments_page_find_and_allocate\tGhost",
         "call\tsegments_page_find_and_allocate\tGhost",
         "call\tsegments_page_find_and_allocate\tPagePtr::null",
+        "call\tsegments_page_find_and_allocate\tPagePtr::null",
         "call\tsegments_page_find_and_allocate\tPopped::Ready",
         "call\tsegments_page_find_and_allocate\tSegmentPtr::ptr_segment",
         "call\tsegments_page_find_and_allocate\tSome",
+        "call\tsegments_page_find_and_allocate\tTracked",
         "call\tsegments_page_find_and_allocate\tTracked",
         "call\tsegments_page_find_and_allocate\tTracked",
         "call\tsegments_page_find_and_allocate\tTracked",
@@ -16134,6 +16298,7 @@
         "call\tsegments_page_find_and_allocate\tfinal(local).wf_main",
         "call\tsegments_page_find_and_allocate\tis_page_ptr_opt",
         "call\tsegments_page_find_and_allocate\tlocal.page_organization.first_is_in",
+        "call\tsegments_page_find_and_allocate\tlocal.page_organization.get_count_bound_very_unready",
         "call\tsegments_page_find_and_allocate\tlocal.page_organization.next_is_in",
         "call\tsegments_page_find_and_allocate\tlocal.page_organization.pages[slice_page_id.unwrap()]\n                    .dlist_entry.unwrap",
         "call\tsegments_page_find_and_allocate\tlocal.page_organization.valid_unused_page",
@@ -16155,7 +16320,9 @@
         "call\tsegments_page_find_and_allocate\tptr_ref",
         "call\tsegments_page_find_and_allocate\tsegment_slice_split",
         "call\tsegments_page_find_and_allocate\tsegment_span_allocate",
+        "call\tsegments_page_find_and_allocate\tsegment_span_free",
         "call\tsegments_page_find_and_allocate\tslice.get_count",
+        "call\tsegments_page_find_and_allocate\tslice.get_index",
         "call\tsegments_page_find_and_allocate\tslice.get_next",
         "call\tsegments_page_find_and_allocate\tslice.wf",
         "call\tsegments_page_find_and_allocate\tslice_bin",
@@ -16175,7 +16342,6 @@
         "call\tsegments_page_find_and_allocate\ttld_ptr.wf",
         "call\tsegments_page_find_and_allocate\ttld_ptr.wf",
         "call\tsegments_page_find_and_allocate\ttld_ptr.wf",
-        "call\tsegments_page_find_and_allocate\ttodo",
         "call\tspan_queue_delete\tGhost",
         "call\tspan_queue_delete\tGhost",
         "call\tspan_queue_delete\tPageOrg::take_step::take_page_from_unused_queue",
@@ -16343,8 +16509,6 @@
         "resolution\tsegment_os_alloc\ttype_cast_expression\tpsegment_slices as int",
         "resolution\tsegment_os_alloc\ttype_cast_expression\tsegment.segment_ptr as *mut u8",
         "resolution\tsegment_os_alloc\ttype_cast_expression\tsegment_ptr.segment_ptr as int",
-        "resolution\tsegment_page_alloc\ttype_cast_expression\tALIGNMENT_MAX as usize",
-        "resolution\tsegment_page_alloc\ttype_cast_expression\tLARGE_OBJ_SIZE_MAX as usize",
         "resolution\tsegment_page_alloc\ttype_cast_expression\tMEDIUM_OBJ_SIZE_MAX as usize",
         "resolution\tsegment_page_alloc\ttype_cast_expression\tMEDIUM_PAGE_SIZE as usize",
         "resolution\tsegment_page_alloc\ttype_cast_expression\tSMALL_OBJ_SIZE_MAX as usize",
@@ -16380,6 +16544,7 @@
         "resolution\tsegment_page_clear\tlet_declaration\tlet tracked thread_state_tok",
         "resolution\tsegment_page_clear\tlet_declaration\tlet tracked thread_tok",
         "resolution\tsegment_page_clear\ttype_cast_expression\tn_slices as int",
+        "resolution\tsegment_page_free\tlet_declaration\tlet abandoned",
         "resolution\tsegment_page_free\tlet_declaration\tlet segment",
         "resolution\tsegment_page_free\tlet_declaration\tlet used",
         "resolution\tsegment_reclaim_or_alloc\tlet_declaration\tlet arena_id",
@@ -16419,9 +16584,11 @@
         "resolution\tsegment_span_allocate\tlet_declaration\tlet tracked mut first_psa",
         "resolution\tsegment_span_allocate\tlet_declaration\tlet tracked mut this_psa",
         "resolution\tsegment_span_allocate\ttype_cast_expression\t(first_page_id.idx + i) as nat",
+        "resolution\tsegment_span_allocate\ttype_cast_expression\tCOMMIT_SIZE as usize",
         "resolution\tsegment_span_allocate\ttype_cast_expression\tSIZEOF_PAGE_HEADER as u32",
         "resolution\tsegment_span_allocate\ttype_cast_expression\tSIZEOF_PAGE_HEADER as u32",
         "resolution\tsegment_span_allocate\ttype_cast_expression\tSIZEOF_PAGE_HEADER as u32",
+        "resolution\tsegment_span_allocate\ttype_cast_expression\tSLICE_SIZE as usize",
         "resolution\tsegment_span_allocate\ttype_cast_expression\tSLICE_SIZE as usize",
         "resolution\tsegment_span_allocate\ttype_cast_expression\ti as int",
         "resolution\tsegment_span_allocate\ttype_cast_expression\ti as u32",
@@ -16444,11 +16611,15 @@
         "resolution\tsegment_span_free\tlet_declaration\tlet last",
         "resolution\tsegment_span_free\tlet_declaration\tlet old_state",
         "resolution\tsegment_span_free\tlet_declaration\tlet slice",
+        "resolution\tsegment_span_free\tlet_declaration\tlet slice_bytes",
+        "resolution\tsegment_span_free\tlet_declaration\tlet slice_start",
         "resolution\tsegment_span_free\ttype_cast_expression\tSLICE_SIZE as usize",
         "resolution\tsegment_span_free\ttype_cast_expression\tbin_idx as int",
         "resolution\tsegment_span_free\ttype_cast_expression\tbin_idx as int",
+        "resolution\tsegment_span_free\ttype_cast_expression\tsegment_ptr.segment_ptr.addr() as int",
         "resolution\tsegment_span_free\ttype_cast_expression\tslice_count as int",
         "resolution\tsegment_span_free\ttype_cast_expression\tslice_index as int",
+        "resolution\tsegment_span_free\ttype_cast_expression\tslice_start as int",
         "resolution\tsegment_span_free_coalesce\tlet_declaration\tlet (page, less_than_end)",
         "resolution\tsegment_span_free_coalesce\tlet_declaration\tlet (slice, slice_count)",
         "resolution\tsegment_span_free_coalesce\tlet_declaration\tlet cq",
@@ -16533,6 +16704,7 @@
         "resolution\tsegments_page_find_and_allocate\tlet_declaration\tlet segment",
         "resolution\tsegments_page_find_and_allocate\tlet_declaration\tlet slice",
         "resolution\tsegments_page_find_and_allocate\tlet_declaration\tlet slice_count",
+        "resolution\tsegments_page_find_and_allocate\tlet_declaration\tlet slice_index",
         "resolution\tsegments_page_find_and_allocate\tlet_declaration\tlet suc",
         "resolution\tsegments_page_find_and_allocate\ttype_cast_expression\tfound_slice_count as int",
         "resolution\tsegments_page_find_and_allocate\ttype_cast_expression\tsbin_idx as int",
@@ -16834,7 +17006,7 @@
       ]
     },
     "verus-mimalloc/tokens.rs": {
-      "sha256": "adad31788d92bdede902a7fec29df426c28c54912c66b5209bfca95b0113bdff",
+      "sha256": "97ad7b7fd1c091b4d97768921fd79fcfe2745a3b6322009981e23a459c7341e8",
       "functions": [
         {
           "file": "verus-mimalloc/tokens.rs",
@@ -17146,12 +17318,12 @@
       ]
     },
     "verus-mimalloc/types.rs": {
-      "sha256": "b467fc496602ea70a37075d9d52b4b0713985ad8572c3fb4efd5998706d86180",
+      "sha256": "baf97cfdef19623fd9d56271a84db3f134fdd843e2fca85249d19c367d89a70f",
       "functions": [
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "todo",
-          "line": 2189,
+          "line": 2210,
           "kind": "exec",
           "entered": true,
           "references": []
@@ -17159,7 +17331,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "todo",
-          "line": 2180,
+          "line": 2201,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17169,7 +17341,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "print_hex",
-          "line": 2173,
+          "line": 2194,
           "kind": "exec",
           "entered": true,
           "references": []
@@ -17177,7 +17349,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::get_heap",
-          "line": 1791,
+          "line": 1812,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17189,7 +17361,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::get_block_size",
-          "line": 1779,
+          "line": 1800,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17200,7 +17372,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::add_offset_and_check",
-          "line": 1745,
+          "line": 1766,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17213,7 +17385,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::slice_start",
-          "line": 1728,
+          "line": 1749,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17224,7 +17396,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::get_index",
-          "line": 1717,
+          "line": 1738,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17234,7 +17406,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::is_gt_0th_slice",
-          "line": 1705,
+          "line": 1726,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17244,7 +17416,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::sub_offset",
-          "line": 1673,
+          "line": 1694,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17257,7 +17429,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::add_offset",
-          "line": 1647,
+          "line": 1668,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17269,7 +17441,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::get_prev",
-          "line": 1632,
+          "line": 1653,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17281,7 +17453,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::get_next",
-          "line": 1617,
+          "line": 1638,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17293,7 +17465,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::get_count",
-          "line": 1602,
+          "line": 1623,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17304,7 +17476,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::get_inner_ref_maybe_empty",
-          "line": 1569,
+          "line": 1590,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17316,7 +17488,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::get_inner_ref",
-          "line": 1554,
+          "line": 1575,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17328,7 +17500,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::get_ref",
-          "line": 1531,
+          "line": 1552,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17341,7 +17513,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::is_null",
-          "line": 1524,
+          "line": 1545,
           "kind": "exec",
           "entered": true,
           "references": []
@@ -17349,7 +17521,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::null",
-          "line": 1515,
+          "line": 1536,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17362,7 +17534,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::is_used",
-          "line": 1509,
+          "line": 1530,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17372,7 +17544,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::is_in_unused",
-          "line": 1504,
+          "line": 1525,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17382,7 +17554,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::is_used_and_primary",
-          "line": 1497,
+          "line": 1518,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17392,7 +17564,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::is_empty_global",
-          "line": 1492,
+          "line": 1513,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17402,7 +17574,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::is_in",
-          "line": 1488,
+          "line": 1509,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17412,7 +17584,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::wf",
-          "line": 1482,
+          "line": 1503,
           "kind": "spec",
           "entered": true,
           "references": []
@@ -17420,7 +17592,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PagePtr::clone",
-          "line": 1472,
+          "line": 1493,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17431,7 +17603,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::is_kind_huge",
-          "line": 1456,
+          "line": 1477,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17443,7 +17615,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::get_segment_kind",
-          "line": 1448,
+          "line": 1469,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17455,7 +17627,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::is_abandoned",
-          "line": 1441,
+          "line": 1443,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17466,7 +17638,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::get_mem_is_pinned",
-          "line": 1433,
+          "line": 1435,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17477,7 +17649,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::get_abandoned",
-          "line": 1425,
+          "line": 1427,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17488,7 +17660,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::get_used",
-          "line": 1417,
+          "line": 1419,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17499,7 +17671,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::get_allow_decommit",
-          "line": 1408,
+          "line": 1410,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17510,7 +17682,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::get_decommit_expire",
-          "line": 1398,
+          "line": 1400,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17521,7 +17693,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::get_decommit_mask",
-          "line": 1389,
+          "line": 1391,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17533,7 +17705,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::get_commit_mask",
-          "line": 1380,
+          "line": 1382,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17545,7 +17717,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::get_main2_ref",
-          "line": 1371,
+          "line": 1373,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17557,7 +17729,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::get_main_ref",
-          "line": 1351,
+          "line": 1353,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17569,7 +17741,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::get_ref",
-          "line": 1330,
+          "line": 1332,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17582,7 +17754,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::get_page_after_end",
-          "line": 1317,
+          "line": 1319,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17594,7 +17766,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::get_page_header_ptr",
-          "line": 1301,
+          "line": 1303,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17606,7 +17778,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::null",
-          "line": 1292,
+          "line": 1294,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17618,7 +17790,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::is_null",
-          "line": 1285,
+          "line": 1287,
           "kind": "exec",
           "entered": true,
           "references": []
@@ -17626,7 +17798,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::is_in",
-          "line": 1280,
+          "line": 1282,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17636,7 +17808,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::wf",
-          "line": 1275,
+          "line": 1277,
           "kind": "spec",
           "entered": true,
           "references": []
@@ -17644,7 +17816,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SegmentPtr::clone",
-          "line": 1265,
+          "line": 1267,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17655,7 +17827,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "TldPtr::get_segments_count",
-          "line": 1249,
+          "line": 1251,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17666,7 +17838,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "TldPtr::get_mut",
-          "line": 1235,
+          "line": 1237,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17679,7 +17851,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "TldPtr::get_ref",
-          "line": 1223,
+          "line": 1225,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17692,7 +17864,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "TldPtr::is_in",
-          "line": 1218,
+          "line": 1220,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17702,7 +17874,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "TldPtr::wf",
-          "line": 1213,
+          "line": 1215,
           "kind": "spec",
           "entered": true,
           "references": []
@@ -17710,7 +17882,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "TldPtr::clone",
-          "line": 1202,
+          "line": 1204,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17721,7 +17893,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "local_page_retired_max_update",
-          "line": 1187,
+          "line": 1189,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17732,7 +17904,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "local_page_retired_min_update",
-          "line": 1181,
+          "line": 1183,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17743,7 +17915,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "local_page_count_update",
-          "line": 1175,
+          "line": 1177,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17754,7 +17926,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapPtr::get_page_empty",
-          "line": 1155,
+          "line": 1157,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17768,7 +17940,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapPtr::get_arena_id",
-          "line": 1142,
+          "line": 1144,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17780,7 +17952,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapPtr::get_pages_free_direct",
-          "line": 1130,
+          "line": 1132,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17792,7 +17964,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapPtr::set_page_retired_max",
-          "line": 1115,
+          "line": 1117,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17803,7 +17975,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapPtr::get_page_retired_max",
-          "line": 1103,
+          "line": 1105,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17814,7 +17986,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapPtr::set_page_retired_min",
-          "line": 1088,
+          "line": 1090,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17825,7 +17997,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapPtr::get_page_retired_min",
-          "line": 1076,
+          "line": 1078,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17836,7 +18008,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapPtr::set_page_count",
-          "line": 1061,
+          "line": 1063,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17847,7 +18019,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapPtr::get_page_count",
-          "line": 1049,
+          "line": 1051,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17858,7 +18030,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapPtr::get_pages",
-          "line": 1037,
+          "line": 1039,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17870,7 +18042,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapPtr::get_ref",
-          "line": 1023,
+          "line": 1025,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17883,7 +18055,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapPtr::is_in",
-          "line": 1018,
+          "line": 1020,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17893,7 +18065,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapPtr::wf",
-          "line": 1013,
+          "line": 1015,
           "kind": "spec",
           "entered": true,
           "references": []
@@ -17901,7 +18073,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapPtr::clone",
-          "line": 1003,
+          "line": 1005,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -17912,7 +18084,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "page_organization_matches_token_page",
-          "line": 974,
+          "line": 976,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17923,7 +18095,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "page_organization_segments_match",
-          "line": 965,
+          "line": 967,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17936,7 +18108,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "page_organization_pages_match_data",
-          "line": 904,
+          "line": 906,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17951,7 +18123,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "page_organization_pages_match",
-          "line": 885,
+          "line": 887,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17966,7 +18138,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "page_organization_used_queues_match",
-          "line": 873,
+          "line": 875,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17978,7 +18150,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "page_organization_queues_match",
-          "line": 862,
+          "line": 864,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -17990,7 +18162,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::block_size",
-          "line": 857,
+          "line": 859,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18000,7 +18172,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::page_capacity",
-          "line": 853,
+          "line": 855,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18010,7 +18182,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::page_count",
-          "line": 849,
+          "line": 851,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18020,7 +18192,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::page_reserved",
-          "line": 845,
+          "line": 847,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18030,7 +18202,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::is_used_primary",
-          "line": 839,
+          "line": 841,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18040,7 +18212,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::decommit_mask",
-          "line": 835,
+          "line": 837,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18051,7 +18223,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::commit_mask",
-          "line": 831,
+          "line": 833,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18062,7 +18234,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::take_checked_token",
-          "line": 819,
+          "line": 821,
           "kind": "proof",
           "entered": true,
           "references": [
@@ -18074,7 +18246,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::take_thread_token",
-          "line": 807,
+          "line": 809,
           "kind": "proof",
           "entered": true,
           "references": [
@@ -18086,7 +18258,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::page_inner",
-          "line": 796,
+          "line": 798,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18097,7 +18269,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::page_state",
-          "line": 790,
+          "line": 792,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18108,7 +18280,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::page_organization_valid",
-          "line": 748,
+          "line": 750,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18118,7 +18290,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::wf_main",
-          "line": 684,
+          "line": 686,
           "kind": "spec",
           "entered": true,
           "references": []
@@ -18126,7 +18298,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::wf_basic",
-          "line": 669,
+          "line": 671,
           "kind": "spec",
           "entered": true,
           "references": []
@@ -18134,7 +18306,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::wf",
-          "line": 664,
+          "line": 666,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18144,7 +18316,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Local::inst",
-          "line": 660,
+          "line": 662,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18155,7 +18327,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "common_preserves",
-          "line": 653,
+          "line": 655,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18165,7 +18337,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "SpanQueueHeader::clone",
-          "line": 608,
+          "line": 610,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -18176,7 +18348,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapLocalAccess::wf_basic",
-          "line": 563,
+          "line": 565,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18189,7 +18361,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapLocalAccess::wf",
-          "line": 553,
+          "line": 555,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18203,7 +18375,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "pages_free_direct_is_correct",
-          "line": 540,
+          "line": 542,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18215,7 +18387,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "pages_free_direct_match",
-          "line": 535,
+          "line": 537,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18225,7 +18397,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapSharedAccess::wf2",
-          "line": 529,
+          "line": 531,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18236,7 +18408,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "HeapSharedAccess::wf",
-          "line": 523,
+          "line": 525,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18248,7 +18420,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "Heap::wf",
-          "line": 513,
+          "line": 515,
           "kind": "spec",
           "entered": true,
           "references": [
@@ -18260,7 +18432,7 @@
         {
           "file": "verus-mimalloc/types.rs",
           "symbol": "PageQueue::clone",
-          "line": 469,
+          "line": 471,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -18278,6 +18450,7 @@
             "Instance",
             "Mim",
             "SegmentId",
+            "SegmentKind",
             "SegmentState"
           ]
         },
@@ -18500,12 +18673,12 @@
           "marker": "external_body",
           "file": "verus-mimalloc/types.rs",
           "symbol": "print_hex",
-          "line": 2172,
+          "line": 2193,
           "content_sha": "5e4f3691adeaa741456188f7e237b69e8987d862469e855474f5b1c9042f832e",
           "target_nodes": [
             {
               "symbol": "print_hex",
-              "line": 2173
+              "line": 2194
             }
           ]
         },
@@ -18513,12 +18686,12 @@
           "marker": "external_body",
           "file": "verus-mimalloc/types.rs",
           "symbol": "todo",
-          "line": 2179,
+          "line": 2200,
           "content_sha": "5e4f3691adeaa741456188f7e237b69e8987d862469e855474f5b1c9042f832e",
           "target_nodes": [
             {
               "symbol": "todo",
-              "line": 2180
+              "line": 2201
             }
           ]
         },
@@ -18526,12 +18699,12 @@
           "marker": "external_body",
           "file": "verus-mimalloc/types.rs",
           "symbol": "todo",
-          "line": 2188,
+          "line": 2209,
           "content_sha": "5e4f3691adeaa741456188f7e237b69e8987d862469e855474f5b1c9042f832e",
           "target_nodes": [
             {
               "symbol": "todo",
-              "line": 2189
+              "line": 2210
             }
           ]
         }
@@ -19113,6 +19286,8 @@
         "call\tSegmentLocalAccess::wf\tsegment_state.shared_access.wf",
         "call\tSegmentLocalAccess::wf\tself.main.id",
         "call\tSegmentLocalAccess::wf\tself.main2.id",
+        "call\tSegmentLocalAccess::wf\tself.main2.value",
+        "call\tSegmentLocalAccess::wf\tself.main2.value",
         "call\tSegmentPtr::clone\tGhost",
         "call\tSegmentPtr::get_abandoned\tTracked",
         "call\tSegmentPtr::get_abandoned\tlocal.segments[self.segment_id@].main2.value",
@@ -19234,7 +19409,6 @@
         "call\tSegmentPtr::is_abandoned\tTracked",
         "call\tSegmentPtr::is_abandoned\tlocal.wf_main",
         "call\tSegmentPtr::is_abandoned\tself.get_ref",
-        "call\tSegmentPtr::is_abandoned\tself.get_ref(Tracked(local)).thread_id.load",
         "call\tSegmentPtr::is_abandoned\tself.is_in",
         "call\tSegmentPtr::is_abandoned\tself.wf",
         "call\tSegmentPtr::is_in\tlocal.segments.dom",
@@ -19700,6 +19874,8 @@
         "resolution\tSegmentPtr::get_page_header_ptr\ttype_cast_expression\tself.segment_ptr.with_addr(j) as *mut Page",
         "resolution\tSegmentPtr::get_ref\tlet_declaration\tlet tracked perm",
         "resolution\tSegmentPtr::get_ref\ttype_parameters\t<'a>",
+        "resolution\tSegmentPtr::is_abandoned\tlet_declaration\tlet segment",
+        "resolution\tSegmentPtr::is_abandoned\tlet_declaration\tlet thread_id",
         "resolution\tSegmentPtr::is_kind_huge\tlet_declaration\tlet kind",
         "resolution\tSegmentPtr::is_null\ttype_cast_expression\tself.segment_ptr as int",
         "resolution\tSegmentPtr::null\ttype_cast_expression\ts.segment_ptr as int",
