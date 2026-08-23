@@ -1,5 +1,6 @@
 use core::intrinsics::{unlikely, likely};
 use vstd::prelude::*;
+use vstd::set_lib::set_int_range;
 use crate::config::*;
 use crate::os_mem::*;
 use crate::layout::*;
@@ -164,6 +165,9 @@ pub fn os_mem_alloc_aligned(
     if (!(alignment >= get_page_size() && ((alignment & (alignment - 1)) == 0))) {
         return (core::ptr::null_mut(), allow_large, Tracked(MemChunk::empty()));
     }
+    if size == 0 {
+        return (core::ptr::null_mut(), allow_large, Tracked(MemChunk::empty()));
+    }
 
     let (p, is_large, Tracked(mem)) = os_mem_alloc(size, alignment, request_commit, allow_large);
     if p.addr() == 0 {
@@ -171,7 +175,133 @@ pub fn os_mem_alloc_aligned(
     }
 
     if p.addr() % alignment != 0 {
-        todo();
+        if p.addr() % get_page_size() != 0 {
+            return (core::ptr::null_mut(), is_large, Tracked(mem));
+        }
+        proof {
+            if request_commit {
+                assert forall |addr: int| mem.range_os_rw().contains(addr)
+                    implies mem.range_points_to().contains(addr)
+                by {
+                    assert(mem.range_os().contains(addr));
+                    assert(set_int_range(p as int, p as int + size as int).contains(addr));
+                    assert(mem.range_points_to().contains(addr));
+                }
+            } else {
+                assert forall |addr: int| mem.range_os_rw().contains(addr)
+                    implies mem.range_points_to().contains(addr)
+                by {
+                    assert(mem.range_os().contains(addr));
+                    assert(set_int_range(p as int, p as int + size as int).contains(addr));
+                    assert(mem.range_os_none().contains(addr));
+                    assert(mem.os[addr]@.mem_protect == MemProtect { read: true, write: true });
+                    assert(mem.os[addr]@.mem_protect == MemProtect { read: false, write: false });
+                }
+            }
+            assert(mem.has_pointsto_for_all_read_write());
+        }
+        munmap_release(p, size, Tracked(mem));
+
+        if size > usize::MAX - alignment {
+            return (core::ptr::null_mut(), is_large, Tracked(MemChunk::empty()));
+        }
+        let over_size = size + alignment;
+        proof {
+            assert(page_size() > 0) by(compute);
+            vstd::arithmetic::div_mod::lemma_add_mod_noop(
+                size as int, alignment as int, page_size());
+            assert(over_size as int == size as int + alignment as int);
+            assert(over_size as int % page_size() == 0);
+        }
+        let (q, Tracked(mut over_mem)) = mmap_prot_read_write(core::ptr::null_mut(), over_size);
+        if q.addr() == MAP_FAILED {
+            return (core::ptr::null_mut(), is_large, Tracked(over_mem));
+        }
+
+        let aligned_addr = align_up(q.addr(), alignment);
+        let aligned = q.with_addr(aligned_addr);
+        let head_size = aligned_addr - q.addr();
+        proof {
+            mod_trans(aligned as int, alignment as int, page_size());
+            assert(aligned as int % page_size() == 0);
+            assert(head_size as int == aligned as int - q as int);
+            vstd::arithmetic::div_mod::lemma_sub_mod_noop(
+                aligned as int, q as int, page_size());
+            assert(head_size as int % page_size() == 0);
+            assert(aligned as int <= q as int + alignment as int - 1);
+            assert(head_size as int <= alignment as int - 1) by(nonlinear_arith)
+                requires
+                    head_size as int == aligned as int - q as int,
+                    aligned as int <= q as int + alignment as int - 1;
+            assert(head_size as int + size as int <= over_size as int) by(nonlinear_arith)
+                requires
+                    head_size as int <= alignment as int - 1,
+                    over_size as int == size as int + alignment as int;
+        }
+        let tail_start = aligned_addr + size;
+        let tail_ptr = q.with_addr(tail_start);
+        let tail_size = over_size - head_size - size;
+        proof {
+            assert(tail_start as int == aligned as int + size as int);
+            assert(tail_size as int == over_size as int - head_size as int - size as int);
+            assert(tail_size as int == q as int + over_size as int - tail_start as int)
+                by(nonlinear_arith)
+                requires
+                    head_size as int == aligned as int - q as int,
+                    tail_start as int == aligned as int + size as int,
+                    tail_size as int == over_size as int - head_size as int - size as int;
+            vstd::arithmetic::div_mod::lemma_add_mod_noop(
+                aligned as int, size as int, page_size());
+            assert(tail_start as int % page_size() == 0);
+            vstd::arithmetic::div_mod::lemma_add_mod_noop(
+                q as int, over_size as int, page_size());
+            assert((q as int + over_size as int) % page_size() == 0);
+            vstd::arithmetic::div_mod::lemma_sub_mod_noop(
+                q as int + over_size as int, tail_start as int, page_size());
+            assert(tail_size as int % page_size() == 0);
+        }
+
+        if head_size > 0 {
+            let tracked head_mem;
+            proof {
+                head_mem = over_mem.split(q as int, head_size as int);
+                assert(head_mem.os.dom() =~= set_int_range(q as int, q as int + head_size as int));
+                assert(head_mem.os_exact_range(q as int, head_size as int));
+                assert(head_mem.wf());
+                assert(head_mem.has_pointsto_for_all_read_write());
+                assert(over_mem.os.dom() =~= set_int_range(aligned as int, q as int + over_size as int));
+                assert(over_mem.os_exact_range(aligned as int, over_size as int - head_size as int));
+                assert(over_mem.wf());
+                assert(over_mem.has_pointsto_for_all_read_write());
+            }
+            munmap_release(q, head_size, Tracked(head_mem));
+        }
+
+        let tracked mut aligned_mem;
+        proof {
+            aligned_mem = over_mem.split(aligned as int, size as int);
+            assert(aligned_mem.os.dom() =~= set_int_range(aligned as int, aligned as int + size as int));
+            assert(aligned_mem.os_exact_range(aligned as int, size as int));
+            assert(aligned_mem.wf());
+            assert(over_mem.os.dom() =~= set_int_range(tail_start as int, tail_start as int + tail_size as int));
+            assert(over_mem.os_exact_range(tail_start as int, tail_size as int));
+            assert(over_mem.wf());
+            if request_commit {
+                assert(aligned_mem.os_has_range_read_write(aligned as int, size as int));
+                assert(aligned_mem.pointsto_has_range(aligned as int, size as int));
+            }
+            assert(aligned_mem.has_pointsto_for_all_read_write());
+            assert(over_mem.has_pointsto_for_all_read_write());
+            assert(aligned_mem.points_to.provenance() == aligned@.provenance);
+            assert(over_mem.points_to.provenance() == tail_ptr@.provenance);
+        }
+        if tail_size > 0 {
+            munmap_release(tail_ptr, tail_size, Tracked(over_mem));
+        }
+        if !request_commit {
+            mprotect_prot_none(aligned, size, Tracked(&mut aligned_mem));
+        }
+        return (aligned, is_large, Tracked(aligned_mem));
     }
 
     (p, is_large, Tracked(mem))
