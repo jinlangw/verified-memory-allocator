@@ -223,9 +223,7 @@ pub fn page_queue_push(heap: HeapPtr, pq: usize, page: PagePtr, Tracked(local): 
         (match old(local).page_organization.pages[page.page_id@].page_header_kind.unwrap() {
               PageHeaderKind::Normal(b, bsize) => {
                   (pq == BIN_FULL || pq as int == b)
-                  && valid_bin_idx(b as int)
-                  && bsize == crate::bin_sizes::size_of_bin(b)
-                  && bsize <= MEDIUM_OBJ_SIZE_MAX
+                  && valid_normal_page_header(b, bsize)
               }
           }),
         heap.wf(),
@@ -401,9 +399,7 @@ pub fn page_queue_push_back(heap: HeapPtr, pq: usize, page: PagePtr, Tracked(loc
         (match old(local).page_organization.pages[page.page_id@].page_header_kind.unwrap() {
               PageHeaderKind::Normal(b, bsize) => {
                   (pq == BIN_FULL || b == pq as int)
-                  && valid_bin_idx(b as int)
-                  && bsize == crate::bin_sizes::size_of_bin(b)
-                  && bsize <= MEDIUM_OBJ_SIZE_MAX
+                  && valid_normal_page_header(b, bsize)
               }
           }),
         heap.wf(),

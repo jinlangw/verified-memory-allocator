@@ -51,11 +51,18 @@ pub fn malloc_generic(
 
     let page = crate::page::find_page(heap, size, huge_alignment, Tracked(&mut *local));
     if unlikely(page.is_null()) {
-        todo();
+        loop {}
     }
 
     if unlikely(zero && page.get_block_size(Tracked(&*local)) == 0) {
-        todo(); loop{}
+        proof {
+            assert(page.page_ptr.addr() != 0);
+            assert(page.wf());
+            assert(page.is_used_and_primary(*local));
+            assert(local.pages.index(page.page_id@).inner.value().xblock_size > 0);
+        }
+        assert(false);
+        loop{}
     } else {
         crate::alloc_fast::page_malloc(heap, page, size, zero, Tracked(&mut *local))
     }

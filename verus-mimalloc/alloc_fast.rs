@@ -17,6 +17,7 @@ use crate::alloc_generic::*;
 use crate::os_mem_util::*;
 use crate::config::*;
 use crate::bin_sizes::*;
+use crate::page_organization::*;
 
 verus!{
 
@@ -163,9 +164,33 @@ pub fn heap_malloc_small_zero(
     let page = heap_get_free_small_page(heap, size, Tracked(&*local));
 
     proof {
+        const_facts();
         let bin_idx = smallest_bin_fitting_size((size + 7) / 8 * 8);
         bounds_for_smallest_bin_fitting_size((size + 7) / 8 * 8);
         local.page_organization.used_first_is_in(bin_idx);
+        if !page.is_empty_global(*local) {
+            assert(page.wf());
+            assert(Some(page.page_id@) == local.page_organization.used_dlist_headers[bin_idx].first);
+            assert(local.page_organization.valid_used_page(page.page_id@, bin_idx, 0));
+            assert(page.is_used_and_primary(*local));
+            match local.page_organization.pages[page.page_id@].page_header_kind {
+                Some(PageHeaderKind::Normal(bin, bsize)) => {
+                    reveal(valid_normal_page_header);
+                    assert(bin == bin_idx);
+                    assert(valid_normal_page_header(bin, bsize));
+                    if bin == BIN_HUGE {
+                        assert(bsize > MEDIUM_OBJ_SIZE_MAX);
+                        assert(size <= bsize) by(nonlinear_arith)
+                            requires size <= SMALL_SIZE_MAX, SMALL_SIZE_MAX <= MEDIUM_OBJ_SIZE_MAX, bsize > MEDIUM_OBJ_SIZE_MAX;
+                    } else {
+                        assert(bsize == size_of_bin(bin_idx));
+                        assert(size <= bsize);
+                    }
+                    assert(local.page_state(page.page_id@).block_size == bsize);
+                }
+                None => { assert(false); }
+            }
+        }
 
         //assert(local.page_organization.used_dlist_headers[bin_idx].first == Some(page.page_id@));
         //assert(local.page_organization.pages.dom().contains(page.page_id@));

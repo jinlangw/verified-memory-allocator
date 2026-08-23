@@ -24,6 +24,56 @@ use crate::queues::*;
 
 verus!{
 
+proof fn medium_bin_not_huge(pq: int)
+    requires
+        valid_bin_idx(pq),
+        size_of_bin(pq) <= MEDIUM_OBJ_SIZE_MAX,
+    ensures
+        pq != BIN_HUGE as int,
+{
+    const_facts();
+    lemma_bin_sizes_constants();
+    if pq == BIN_HUGE as int {
+        assert(size_of_bin(pq) == size_of_bin(BIN_HUGE as int));
+        assert(size_of_bin(BIN_HUGE as int) == 4194312);
+        assert(MEDIUM_OBJ_SIZE_MAX == 131072);
+        assert(false) by(nonlinear_arith)
+            requires
+                size_of_bin(pq) <= MEDIUM_OBJ_SIZE_MAX,
+                size_of_bin(pq) == 4194312,
+                MEDIUM_OBJ_SIZE_MAX == 131072;
+    }
+}
+
+proof fn medium_used_page_has_bin_block_size(local: Local, page: PagePtr, pq: int, list_idx: int)
+    requires
+        local.wf(),
+        page.wf(),
+        page.is_in(local),
+        valid_bin_idx(pq),
+        size_of_bin(pq) <= MEDIUM_OBJ_SIZE_MAX,
+        local.page_organization.valid_used_page(page.page_id@, pq, list_idx),
+    ensures
+        local.pages.index(page.page_id@).inner.value().xblock_size == size_of_bin(pq),
+{
+    reveal(valid_normal_page_header);
+    medium_bin_not_huge(pq);
+    match local.page_organization.pages[page.page_id@].page_header_kind {
+        Some(PageHeaderKind::Normal(bin, bsize)) => {
+            assert(bin == pq);
+            assert(valid_normal_page_header(bin, bsize));
+            assert(bsize == size_of_bin(bin));
+            assert(page_organization_pages_match_data(
+                local.page_organization.pages[page.page_id@],
+                local.pages[page.page_id@],
+                local.psa[page.page_id@],
+                page.page_id@,
+                local.page_organization.popped));
+        }
+        None => { assert(false); }
+    }
+}
+
 pub fn find_page(heap_ptr: HeapPtr, size: usize, huge_alignment: usize, Tracked(local): Tracked<&mut Local>) -> (page: PagePtr)
     requires
         old(local).wf(),
@@ -41,13 +91,58 @@ pub fn find_page(heap_ptr: HeapPtr, size: usize, huge_alignment: usize, Tracked(
 
     let req_size = size;
     if unlikely(req_size > MEDIUM_OBJ_SIZE_MAX as usize || huge_alignment > 0) {
-        if unlikely(req_size > MAX_ALLOC_SIZE) {
+        if unlikely(req_size > LARGE_OBJ_SIZE_MAX as usize || huge_alignment > ALIGNMENT_MAX as usize) {
             return PagePtr::null();
+        }
+
+        if req_size <= MEDIUM_OBJ_SIZE_MAX as usize {
+            let pq = bin(req_size) as usize;
+            let block_size = heap_ptr.get_pages(Tracked(&*local))[pq].block_size;
+            proof {
+                bin_size_result(req_size);
+                lemma_bin_sizes_constants();
+                assert(block_size as int == size_of_bin(pq as int));
+                size_of_bin_mult_word_size(pq as int);
+                size_of_bin_bounds(pq as int);
+                medium_bin_not_huge(pq as int);
+                assert(block_size as int <= MEDIUM_OBJ_SIZE_MAX);
+                assert(block_size as int <= LARGE_OBJ_SIZE_MAX);
+                reveal(valid_normal_page_header);
+                assert(valid_normal_page_header(pq as int, block_size as int));
+            }
+            return page_fresh_alloc(heap_ptr, pq, block_size, huge_alignment, Tracked(&mut *local));
         } else {
-            todo(); loop { }
+            let block_size = align_up(req_size, INTPTR_SIZE as usize);
+            proof {
+                assert(INTPTR_SIZE == 8);
+                assert(LARGE_OBJ_SIZE_MAX == 16777216);
+                assert(LARGE_OBJ_SIZE_MAX % INTPTR_SIZE == 0) by (compute);
+                if block_size > LARGE_OBJ_SIZE_MAX {
+                    assert(block_size % (INTPTR_SIZE as usize) == 0);
+                    assert(block_size >= LARGE_OBJ_SIZE_MAX + INTPTR_SIZE) by(nonlinear_arith)
+                        requires
+                            block_size > LARGE_OBJ_SIZE_MAX,
+                            block_size % (INTPTR_SIZE as usize) == 0,
+                            LARGE_OBJ_SIZE_MAX % INTPTR_SIZE == 0,
+                            INTPTR_SIZE > 0;
+                    assert(block_size <= req_size + INTPTR_SIZE - 1);
+                    assert(false) by(nonlinear_arith)
+                        requires
+                            req_size <= LARGE_OBJ_SIZE_MAX,
+                            block_size <= req_size + INTPTR_SIZE - 1,
+                            block_size >= LARGE_OBJ_SIZE_MAX + INTPTR_SIZE;
+                }
+                reveal(valid_normal_page_header);
+                assert(valid_bin_idx(BIN_HUGE as int));
+                assert(block_size as int > MEDIUM_OBJ_SIZE_MAX);
+                assert(block_size as int <= LARGE_OBJ_SIZE_MAX);
+                assert(block_size as int % (INTPTR_SIZE as int) == 0);
+                assert(valid_normal_page_header(BIN_HUGE as int, block_size as int));
+            }
+            return page_fresh_alloc(heap_ptr, BIN_HUGE as usize, block_size, huge_alignment, Tracked(&mut *local));
         }
     } else {
-        return find_free_page(heap_ptr, size, Tracked(&mut *local));
+        find_free_page(heap_ptr, size, Tracked(&mut *local))
     }
 }
 
@@ -79,6 +174,10 @@ fn find_free_page(heap_ptr: HeapPtr, size: usize, Tracked(local): Tracked<&mut L
         crate::alloc_generic::page_free_collect(page, false, Tracked(&mut *local));
 
         if !page.get_inner_ref(Tracked(&*local)).free.is_empty() {
+            proof {
+                medium_used_page_has_bin_block_size(*local, page, pq as int, 0);
+                bin_size_result(size);
+            }
             return page;
         }
     }
@@ -147,6 +246,10 @@ fn page_queue_find_free_ex(heap_ptr: HeapPtr, pq: usize, first_try: bool, Tracke
         if page.get_inner_ref(Tracked(&*local)).capacity < page.get_inner_ref(Tracked(&*local)).reserved {
             //let tld_ptr = heap_ptr.get_ref(Tracked(&*local)).tld_ptr;
             //assert(local.is_used_primary(page.page_id@));
+            proof {
+                medium_used_page_has_bin_block_size(*local, page, pq as int, list_idx);
+                size_of_bin_mult_word_size(pq as int);
+            }
             crate::alloc_generic::page_extend_free(page, Tracked(&mut *local));
             break;
         }
@@ -177,6 +280,9 @@ fn page_queue_find_free_ex(heap_ptr: HeapPtr, pq: usize, first_try: bool, Tracke
             inner.set_retire_expire(0);
         });
         proof { preserves_mem_chunk_good(old_local, *local); }
+        proof {
+            medium_used_page_has_bin_block_size(*local, page, pq as int, list_idx);
+        }
         return page;
     }
 }
@@ -199,7 +305,26 @@ fn page_fresh(heap_ptr: HeapPtr, pq: usize, Tracked(local): Tracked<&mut Local>)
 {
     proof { size_of_bin_bounds(pq as int); }
     let block_size = heap_ptr.get_pages(Tracked(&*local))[pq].block_size;
-    page_fresh_alloc(heap_ptr, pq, block_size, 0, Tracked(&mut *local))
+    proof {
+        const_facts();
+        lemma_bin_sizes_constants();
+        assert(block_size as int == size_of_bin(pq as int));
+        size_of_bin_mult_word_size(pq as int);
+        size_of_bin_bounds(pq as int);
+        medium_bin_not_huge(pq as int);
+        assert(block_size as int <= MEDIUM_OBJ_SIZE_MAX);
+        assert(block_size as int <= LARGE_OBJ_SIZE_MAX);
+        reveal(valid_normal_page_header);
+        assert(valid_normal_page_header(pq as int, block_size as int));
+    }
+    let page = page_fresh_alloc(heap_ptr, pq, block_size, 0, Tracked(&mut *local));
+    proof {
+        if page.page_ptr.addr() != 0 {
+            assert(final(local).pages.index(page.page_id@).inner.value().xblock_size == block_size);
+            assert(block_size as int == size_of_bin(pq as int));
+        }
+    }
+    page
 }
 
 fn page_fresh_alloc(heap_ptr: HeapPtr, pq: usize, block_size: usize, page_alignment: usize, Tracked(local): Tracked<&mut Local>) -> (page: PagePtr)
@@ -207,11 +332,8 @@ fn page_fresh_alloc(heap_ptr: HeapPtr, pq: usize, block_size: usize, page_alignm
         old(local).wf(),
         heap_ptr.wf(),
         heap_ptr.is_in(*old(local)),
-        2 <= block_size,
-        valid_bin_idx(pq as int),
-        block_size == size_of_bin(pq as int),
+        valid_normal_page_header(pq as int, block_size as int),
         page_alignment <= ALIGNMENT_MAX,
-        block_size <= MEDIUM_OBJ_SIZE_MAX,
     ensures
         final(local).wf(),
         common_preserves(*old(local), *final(local)),
@@ -222,16 +344,23 @@ fn page_fresh_alloc(heap_ptr: HeapPtr, pq: usize, block_size: usize, page_alignm
 {
     proof { const_facts(); }
     let tld_ptr = heap_ptr.get_ref(Tracked(&*local)).tld_ptr;
+    proof {
+        reveal(valid_normal_page_header);
+        assert(2 <= block_size);
+        assert(block_size <= LARGE_OBJ_SIZE_MAX);
+    }
     let page_ptr = crate::segment::segment_page_alloc(heap_ptr, block_size, page_alignment, tld_ptr, Tracked(&mut *local));
     if page_ptr.page_ptr.addr() == 0 {
         return page_ptr;
     }
 
-    let full_block_size: usize = block_size; // TODO handle pq == NULL or huge pages
+    let full_block_size: usize = block_size;
     let tld_ptr = heap_ptr.get_ref(Tracked(&*local)).tld_ptr;
 
     proof {
-        smallest_bin_fitting_size_size_of_bin(pq as int);
+        if block_size <= MEDIUM_OBJ_SIZE_MAX {
+            smallest_bin_fitting_size_size_of_bin(pq as int);
+        }
         size_of_bin_mult_word_size(pq as int);
         if pq != BIN_HUGE {
             size_of_bin_bounds_not_huge(pq as int);
@@ -257,8 +386,7 @@ fn page_init(heap_ptr: HeapPtr, page_ptr: PagePtr, block_size: usize, tld_ptr: T
         block_size != 0,
         block_size % 8 == 0,
         block_size <= u32::MAX,
-        valid_bin_idx(pq),
-        size_of_bin(pq) == block_size,
+        valid_normal_page_header(pq, block_size as int),
         //old(local).page_organization[page_ptr.page_id@].block_size == Some(block_
         //old(local).page_inner(page_ptr.page_id@).xblock_size == block_size
         //old(local).segments[page_ptr.page_id@.segment_id]
@@ -546,11 +674,41 @@ fn page_queue_of(page: PagePtr, Tracked(local): Tracked<&Local>) -> (res: (HeapP
         const_facts();
     }
 
+    let block_size = page.get_inner_ref(Tracked(&*local)).xblock_size as usize;
     let bin = if is_in_full {
         BIN_FULL as usize
+    } else if block_size > MEDIUM_OBJ_SIZE_MAX as usize {
+        BIN_HUGE as usize
     } else {
-        bin(page.get_inner_ref(Tracked(&*local)).xblock_size as usize) as usize
+        bin(block_size) as usize
     };
+    proof {
+        if !is_in_full {
+            match local.page_organization.pages[page.page_id@].page_header_kind {
+                Some(PageHeaderKind::Normal(header_bin, bsize)) => {
+                    reveal(valid_normal_page_header);
+                    assert(page_organization_pages_match_data(
+                        local.page_organization.pages[page.page_id@],
+                        local.pages[page.page_id@],
+                        local.psa[page.page_id@],
+                        page.page_id@,
+                        local.page_organization.popped));
+                    assert(block_size as int == bsize);
+                    if bsize > MEDIUM_OBJ_SIZE_MAX {
+                        assert(header_bin == BIN_HUGE as int);
+                        assert(bin == BIN_HUGE as usize);
+                    } else {
+                        assert(header_bin != BIN_HUGE as int);
+                        assert(bsize == size_of_bin(header_bin));
+                        assert(header_bin == smallest_bin_fitting_size(bsize));
+                        assert(bin as int == header_bin);
+                    }
+                    assert(local.page_organization.valid_used_page(page.page_id@, bin as int, list_idx));
+                }
+                None => { assert(false); }
+            }
+        }
+    }
 
     let heap = page.get_heap(Tracked(&*local));
     (heap, bin, Ghost(list_idx))
@@ -647,8 +805,37 @@ pub fn page_unfull(page: PagePtr, Tracked(local): Tracked<&mut Local>)
         local.page_organization.marked_full_is_in(page.page_id@);
         const_facts();
     }
-    let pq = bin(page.get_inner_ref(Tracked(&mut *local)).xblock_size as usize);
+    let block_size = page.get_inner_ref(Tracked(&mut *local)).xblock_size as usize;
+    let pq = if block_size > MEDIUM_OBJ_SIZE_MAX as usize {
+        BIN_HUGE as usize
+    } else {
+        bin(block_size) as usize
+    };
     let ghost list_idx = local.page_organization.marked_full_is_in(page.page_id@);
+    proof {
+        match local.page_organization.pages[page.page_id@].page_header_kind {
+            Some(PageHeaderKind::Normal(header_bin, bsize)) => {
+                reveal(valid_normal_page_header);
+                assert(page_organization_pages_match_data(
+                    local.page_organization.pages[page.page_id@],
+                    local.pages[page.page_id@],
+                    local.psa[page.page_id@],
+                    page.page_id@,
+                    local.page_organization.popped));
+                assert(block_size as int == bsize);
+                if bsize > MEDIUM_OBJ_SIZE_MAX {
+                    assert(header_bin == BIN_HUGE as int);
+                    assert(pq == BIN_HUGE as usize);
+                } else {
+                    assert(header_bin != BIN_HUGE as int);
+                    assert(bsize == size_of_bin(header_bin));
+                    assert(header_bin == smallest_bin_fitting_size(bsize));
+                    assert(pq as int == header_bin);
+                }
+            }
+            None => { assert(false); }
+        }
+    }
     page_queue_enqueue_from(heap, pq as usize, BIN_FULL as usize, page,
         Tracked(&mut *local), Ghost(list_idx), Ghost(arbitrary()));
 }
@@ -657,6 +844,7 @@ fn page_queue_enqueue_from(heap: HeapPtr, to: usize, from: usize, page: PagePtr,
     requires old(local).wf(), page.wf(), page.is_in(*old(local)),
         heap.wf(), heap.is_in(*old(local)),
         page.is_used_and_primary(*old(local)),
+        to == BIN_FULL || valid_bin_idx(to as int),
         old(local).page_organization.valid_used_page(page.page_id@, from as int, list_idx),
         (valid_bin_idx(from as int) && to == BIN_FULL)
           || (match old(local).page_organization.pages[page.page_id@].page_header_kind {

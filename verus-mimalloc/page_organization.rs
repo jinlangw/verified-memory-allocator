@@ -25,6 +25,18 @@ pub ghost enum PageHeaderKind {
     Normal(int, int),
 }
 
+#[verifier::opaque]
+pub open spec fn valid_normal_page_header(bin: int, bsize: int) -> bool {
+    valid_bin_idx(bin)
+        && bsize % (INTPTR_SIZE as int) == 0
+        && 2 <= bsize <= LARGE_OBJ_SIZE_MAX
+        && if bin == BIN_HUGE {
+            bsize > MEDIUM_OBJ_SIZE_MAX
+        } else {
+            bsize == size_of_bin(bin) && bsize <= MEDIUM_OBJ_SIZE_MAX
+        }
+}
+
 pub ghost struct PageData {
     // Option means unspecified (i.e., does not constrain the physical value)
     pub dlist_entry: Option<DlistEntry>,
@@ -321,11 +333,9 @@ state_machine!{ PageOrg {
               && (match self.pages[self.used_lists[i][j]].page_header_kind {
                   None => false,
                   Some(PageHeaderKind::Normal(bin, bsize)) =>
-                      valid_bin_idx(bin)
-                        && bsize == crate::bin_sizes::size_of_bin(bin)
-                        && (i != BIN_FULL ==> i == bin)
-                        && bsize <= MEDIUM_OBJ_SIZE_MAX,
-              })
+                          valid_normal_page_header(bin, bsize)
+                            && (i != BIN_FULL ==> i == bin),
+                  })
     }
 
     #[invariant]
@@ -554,9 +564,8 @@ state_machine!{ PageOrg {
             self.valid_used_page(page_id, BIN_FULL as int, list_idx),
             (match self.pages[page_id].page_header_kind {
                 Some(PageHeaderKind::Normal(bin, size)) =>
-                  size == size_of_bin(bin)
-                  && bin == smallest_bin_fitting_size(size)
-                  && size <= MEDIUM_OBJ_SIZE_MAX,
+                      valid_normal_page_header(bin, size)
+                      && (size <= MEDIUM_OBJ_SIZE_MAX ==> bin == smallest_bin_fitting_size(size)),
                 None => false,
             }),
 
@@ -571,7 +580,10 @@ state_machine!{ PageOrg {
 
         match self.pages[page_id].page_header_kind {
             Some(PageHeaderKind::Normal(bin_idx, size)) => {
-                crate::bin_sizes::smallest_bin_fitting_size_size_of_bin(bin_idx);
+                reveal(valid_normal_page_header);
+                if size <= MEDIUM_OBJ_SIZE_MAX {
+                    crate::bin_sizes::smallest_bin_fitting_size_size_of_bin(bin_idx);
+                }
             }
             _ => { }
         }
@@ -589,16 +601,16 @@ state_machine!{ PageOrg {
         ensures
             (match self.pages[page_id].page_header_kind {
                 Some(PageHeaderKind::Normal(bin, size)) =>
-                  size == size_of_bin(bin)
+                  valid_normal_page_header(bin, size)
                   && self.valid_used_page(page_id, bin, list_idx)
-                  && bin == smallest_bin_fitting_size(size)
-                  && size <= MEDIUM_OBJ_SIZE_MAX,
+                  && (size <= MEDIUM_OBJ_SIZE_MAX ==> bin == smallest_bin_fitting_size(size)),
                 None => false,
             }),
     {
         assert(is_in_lls(page_id, self.used_lists) || is_in_lls(page_id, self.unused_lists)) by { reveal(State::ll_inv_exists_in_some_list); };
         match self.pages[page_id].page_header_kind {
-            Some(PageHeaderKind::Normal(_, size)) => {
+            Some(PageHeaderKind::Normal(bin, size)) => {
+                reveal(valid_normal_page_header);
                 assert(is_in_lls(page_id, self.used_lists));
                 //let bin_idx = smallest_bin_fitting_size(size);
                 //crate::bin_sizes::bounds_for_smallest_bin_fitting_size(size);
@@ -606,7 +618,9 @@ state_machine!{ PageOrg {
                 assert(self.used_lists[bin_idx][list_idx] == page_id);
                 assert(valid_ll_i(self.pages, self.used_lists[bin_idx], list_idx));
                 assert(bin_idx != BIN_FULL);
-                crate::bin_sizes::smallest_bin_fitting_size_size_of_bin(bin_idx);
+                if size <= MEDIUM_OBJ_SIZE_MAX {
+                    crate::bin_sizes::smallest_bin_fitting_size_size_of_bin(bin_idx);
+                }
                 return list_idx;
             }
             None => {
@@ -789,10 +803,9 @@ state_machine!{ PageOrg {
           && self.used_lists[bin_idx][list_idx] == page_id
           && (match self.pages[page_id].page_header_kind {
               None => false,
-              Some(PageHeaderKind::Normal(bin, bsize)) =>
-                  valid_bin_idx(bin)
-                  && size_of_bin(bin) == bsize
-                  && (bin_idx != BIN_FULL ==> bin_idx == bin)
+             Some(PageHeaderKind::Normal(bin, bsize)) =>
+                 valid_normal_page_header(bin, bsize)
+                 && (bin_idx != BIN_FULL ==> bin_idx == bin)
           })
     }
 
@@ -810,6 +823,16 @@ state_machine!{ PageOrg {
                 self.first_last_ll_stuff_used(bin_idx);
                 self.lemma_range_used(page_id);
                 assert(self.pages[page_id].dlist_entry.is_some());
+                match self.pages[page_id].page_header_kind {
+                    Some(PageHeaderKind::Normal(bin, bsize)) => {
+                        reveal(valid_normal_page_header);
+                        assert(valid_normal_page_header(bin, bsize));
+                        assert(bin_idx != BIN_FULL as int);
+                        assert(bin_idx == bin);
+                        assert(valid_bin_idx(bin_idx));
+                    }
+                    None => { assert(false); }
+                }
             }
             None => { }
         }
@@ -1503,9 +1526,7 @@ state_machine!{ PageOrg {
             match pre.pages[page_id].page_header_kind.unwrap() {
                 PageHeaderKind::Normal(i, bsize) => {
                     require((bin_idx != BIN_FULL ==> bin_idx == i)
-                        && valid_bin_idx(i)
-                        && bsize == crate::bin_sizes::size_of_bin(i)
-                        && bsize <= MEDIUM_OBJ_SIZE_MAX);
+                        && valid_normal_page_header(i, bsize));
                 }
             }
 
@@ -1564,9 +1585,7 @@ state_machine!{ PageOrg {
             match pre.pages[page_id].page_header_kind.unwrap() {
                 PageHeaderKind::Normal(i, bsize) => {
                     require((bin_idx != BIN_FULL ==> bin_idx == i)
-                        && valid_bin_idx(i)
-                        && bsize == crate::bin_sizes::size_of_bin(i)
-                        && bsize <= MEDIUM_OBJ_SIZE_MAX);
+                        && valid_normal_page_header(i, bsize));
                 }
             }
 
