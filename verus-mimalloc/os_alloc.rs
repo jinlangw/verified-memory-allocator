@@ -53,7 +53,6 @@ pub fn os_alloc_aligned_offset(
 
         let p = start + extra;
         if commited && extra > get_page_size() {
-            todo();
         }
         */
     }

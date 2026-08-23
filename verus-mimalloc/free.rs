@@ -223,7 +223,6 @@ fn free_generic(segment: *mut SegmentHeader, page: PagePtr, is_local: bool, p: *
 {
     // this has_aligned check could be a data race??
     //if page.get_inner_ref(Tracked(&*local)).get_has_aligned() {
-    //    todo();
     //}
 
     free_block(page, is_local, p, Tracked(perm), Tracked(dealloc), Tracked(&mut *local));

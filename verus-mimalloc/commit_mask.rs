@@ -587,7 +587,48 @@ impl CommitMask {
 
     pub fn committed_size(&self, total: usize) -> usize
     {
-        todo(); loop { }
+        proof { const_facts(); }
+        let mut count: usize = 0;
+        let mut i: usize = 0;
+        while i < COMMIT_MASK_FIELD_COUNT as usize
+            invariant
+                i <= 8,
+                count <= i * 64,
+                COMMIT_MASK_FIELD_COUNT == 8,
+                COMMIT_MASK_BITS == 512,
+        {
+            let mask = self.mask[i];
+            let mut bit: usize = 0;
+            while bit < 64
+                invariant
+                    i < 8,
+                    bit <= 64,
+                    count <= i * 64 + bit,
+                    i * 64 + bit <= COMMIT_MASK_BITS as usize,
+                    COMMIT_MASK_BITS == 512,
+            {
+                if ((mask >> bit) & 1usize) != 0 {
+                    assert(count + 1 <= i * 64 + (bit + 1)) by (nonlinear_arith)
+                        requires count <= i * 64 + bit;
+                    count += 1;
+                }
+                bit += 1;
+            }
+            assert(bit == 64);
+            assert(count <= (i + 1) * 64) by (nonlinear_arith)
+                requires count <= i * 64 + bit, bit == 64;
+            i += 1;
+        }
+        let unit = total / COMMIT_MASK_BITS as usize;
+        proof {
+            assert(count <= COMMIT_MASK_BITS as usize);
+            assert((unit as int) * (COMMIT_MASK_BITS as int) <= total as int) by (nonlinear_arith)
+                requires unit == total / COMMIT_MASK_BITS as usize, COMMIT_MASK_BITS == 512;
+            assert((unit as int) * (count as int) <= (unit as int) * (COMMIT_MASK_BITS as int)) by (nonlinear_arith)
+                requires count <= COMMIT_MASK_BITS as usize;
+            assert((unit as int) * (count as int) <= usize::MAX as int);
+        }
+        unit * count
     }
 
     pub fn next_run(&self, idx: usize) -> (res: (usize, usize))

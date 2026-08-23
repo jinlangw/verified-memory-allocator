@@ -315,7 +315,6 @@ pub fn calculate_page_ptr_add_offset(
     ensures
         is_page_ptr(result as int, PageId { idx: (page_id.idx + offset) as nat, ..page_id }),
 {
-    todo(); loop { }
 }
 */
 

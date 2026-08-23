@@ -1811,33 +1811,6 @@ fn segment_free(segment: SegmentPtr, force: bool, tld: TldPtr, Tracked(local): T
     }
 }
 
-fn segment_os_free(segment: SegmentPtr, tld: TldPtr, Tracked(local): Tracked<&mut Local>)
-    requires 
-        old(local).wf_main(),
-        segment.wf(), segment.is_in(*old(local)),
-        tld.wf(), tld.is_in(*old(local)),
-{
-    // TODO segment_map_freed_at(segment);
-
-    //let size = segment_size(segment, Tracked(&*local)) as isize;
-    //segments_track_size(-size, tld, Tracked(&mut *local));
-    todo();
-
-    /*
-    let skip_cache_push = size != SEGMENT_SIZE
-        || segment.get_mem_align_offset(Tracked(&*local)) != 0
-        || segment.is_kind_huge(Tracked(&*local));
-
-    let mut try_arena_free = skip_cache_push;
-    if !skip_cache_push {
-        // TODO implement segment cache
-        // !_mi_segment_cache_push(segment, size, segment->memid, &segment->commit_mask, &segment->decommit_mask, segment->mem_is_large, segment->mem_is_pinned, tld->os)) 
-    }
-    */
-
-    
-}
-
 // segment_slices = # of slices in the segment
 // pre_size = size of the pages that contain the segment metadata
 // info_slices = # of slices needed to contain the pages of the segment metadata
