@@ -1,6 +1,6 @@
 {
-  "git_sha": "1ccf01387963f83a3defe0c8109037999ab4c843",
+  "git_sha": "47e8db9acdaf923c04b2643358f9a30fa6ede1c3",
   "ref_input": "HEAD",
-  "captured_at": "2026-08-22T15:59:47.286497+00:00",
+  "captured_at": "2026-08-23T03:29:38.695453+00:00",
   "crate_root": "/users/jinlang/verified-memory-allocator"
 }

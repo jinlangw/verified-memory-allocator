@@ -259,6 +259,13 @@
     },
     {
       "marker": "external",
+      "file": "verus-mimalloc/os_mem.rs",
+      "symbol": "_munmap_release",
+      "line": "#[verifier::external]",
+      "count": 1
+    },
+    {
+      "marker": "external",
       "file": "verus-mimalloc/thread.rs",
       "symbol": "impl IsThread",
       "line": "#[verifier(external)]",
@@ -317,6 +324,13 @@
       "marker": "external_body",
       "file": "verus-mimalloc/os_mem.rs",
       "symbol": "mprotect_prot_read_write",
+      "line": "#[verifier::external_body]",
+      "count": 1
+    },
+    {
+      "marker": "external_body",
+      "file": "verus-mimalloc/os_mem.rs",
+      "symbol": "munmap_release",
       "line": "#[verifier::external_body]",
       "count": 1
     },

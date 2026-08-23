@@ -1,16 +1,16 @@
 {
   "schema_version": 6,
-  "fingerprint": "ecf236ec39e6cd42238764ee75d7bbd0f1fcd4f56c62f853e49a505b5a8949ea",
+  "fingerprint": "69175cef5d4ffef1e246525e32d63aaa7b256b004e5620cf6ca2db56e4ea90be",
   "components": {
     "schema_version": 6,
-    "baseline_sha": "1ccf01387963f83a3defe0c8109037999ab4c843",
+    "baseline_sha": "47e8db9acdaf923c04b2643358f9a30fa6ede1c3",
     "goal_sha": "1f257dad51ca1f147210ef9de5006b1bda51688669fde189ff587a7f946985de",
     "entries": [
       "/users/jinlang/verified-memory-allocator/verus-mimalloc/init.rs:heap_init",
       "/users/jinlang/verified-memory-allocator/verus-mimalloc/alloc_fast.rs:heap_malloc",
       "/users/jinlang/verified-memory-allocator/verus-mimalloc/free.rs:free"
     ],
-    "call_shape_sha": "75997ad7881d872d26c782b862ac6e7c0d58db9d56becb1467e98ad3fd64055d",
+    "call_shape_sha": "d1a8aa0905df7edf9d1d0ebb9c2c44a2b2dc28e4129470e0b4b21371708bafb1",
     "cargo_sha": "fcdfc96962a9bdbbfed3dab7245b0dc605041b3bdc5297ef35679d6657b3697a",
     "rust_analyzer": "rust-analyzer 1.96.0 (ac68faa 2026-05-25)"
   },
@@ -894,21 +894,21 @@
         "detail": "pub fn masked_ptr_delay_set_ptr(v: *mut Node, new_ptr: *mut Node, verus_tmp_expected_delay: Ghost<DelayState>, verus_tmp_expected_ptr: Ghost<*mut Node>) -> *mut Node"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::aligned_base_add@L278",
+        "id": "verus-mimalloc/os_alloc.rs::aligned_base_add@L259",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "aligned_base_add",
         "name": "aligned_base_add",
-        "line": 278,
+        "line": 259,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn aligned_base_add(s: usize) -> usize"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::aligned_base_cas@L283",
+        "id": "verus-mimalloc/os_alloc.rs::aligned_base_cas@L264",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "aligned_base_cas",
         "name": "aligned_base_cas",
-        "line": 283,
+        "line": 264,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn aligned_base_cas(s: usize, t: usize)"
@@ -934,11 +934,11 @@
         "detail": "pub fn os_alloc_aligned_offset(\n    size: usize,\n    alignment: usize,\n    offset: usize,\n    request_commit: bool,\n    allow_large: bool\n) -> (*mut u8, bool, Tracked<MemChunk>)"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L291",
+        "id": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L272",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "os_get_aligned_hint",
         "name": "os_get_aligned_hint",
-        "line": 291,
+        "line": 272,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn os_get_aligned_hint(try_alignment: usize, size: usize) -> usize"
@@ -954,11 +954,11 @@
         "detail": "pub fn os_good_alloc_size(size: usize) -> usize"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L186",
+        "id": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L180",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "os_mem_alloc",
         "name": "os_mem_alloc",
-        "line": 186,
+        "line": 180,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn os_mem_alloc(size: usize, try_alignment: usize, request_commit: bool, allow_large: bool) -> (*mut u8, bool, Tracked<MemChunk>)"
@@ -974,31 +974,31 @@
         "detail": "pub fn os_mem_alloc_aligned(size: usize, alignment: usize, request_commit: bool, allow_large: bool) -> (*mut u8, bool, Tracked<MemChunk>)"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::unix_mmap@L239",
+        "id": "verus-mimalloc/os_alloc.rs::unix_mmap@L221",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "unix_mmap",
         "name": "unix_mmap",
-        "line": 239,
+        "line": 221,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn unix_mmap(\n    addr: *mut u8,\n    size: usize,\n    try_alignment: usize,\n    prot_rw: bool,\n    large_only: bool,\n    allow_large: bool\n) -> (*mut u8, bool, Tracked<MemChunk>)"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
+        "id": "verus-mimalloc/os_alloc.rs::unix_mmapx@L306",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "unix_mmapx",
         "name": "unix_mmapx",
-        "line": 325,
+        "line": 306,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn unix_mmapx(hint: *mut u8, size: usize, try_alignment: usize, prot_rw: bool) -> (*mut u8, Tracked<MemChunk>)"
       },
       {
-        "id": "verus-mimalloc/os_alloc.rs::use_large_os_page@L224",
+        "id": "verus-mimalloc/os_alloc.rs::use_large_os_page@L217",
         "file": "verus-mimalloc/os_alloc.rs",
         "symbol": "use_large_os_page",
         "name": "use_large_os_page",
-        "line": 224,
+        "line": 217,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn use_large_os_page(size: usize, alignment: usize) -> bool"
@@ -1034,51 +1034,51 @@
         "detail": "fn os_page_align_areax(conservative: bool, addr: usize, size: usize) -> (usize, usize)"
       },
       {
-        "id": "verus-mimalloc/os_mem.rs::_mmap_prot_none@L222",
+        "id": "verus-mimalloc/os_mem.rs::_mmap_prot_none@L246",
         "file": "verus-mimalloc/os_mem.rs",
         "symbol": "_mmap_prot_none",
         "name": "_mmap_prot_none",
-        "line": 222,
+        "line": 246,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn _mmap_prot_none(hint_addr: *mut libc::c_void, len: usize) -> *mut libc::c_void"
       },
       {
-        "id": "verus-mimalloc/os_mem.rs::_mmap_prot_read_write@L207",
+        "id": "verus-mimalloc/os_mem.rs::_mmap_prot_read_write@L231",
         "file": "verus-mimalloc/os_mem.rs",
         "symbol": "_mmap_prot_read_write",
         "name": "_mmap_prot_read_write",
-        "line": 207,
+        "line": 231,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn _mmap_prot_read_write(hint_addr: *mut libc::c_void, len: usize) -> *mut libc::c_void"
       },
       {
-        "id": "verus-mimalloc/os_mem.rs::_mprotect_prot_none@L252",
+        "id": "verus-mimalloc/os_mem.rs::_mprotect_prot_none@L276",
         "file": "verus-mimalloc/os_mem.rs",
         "symbol": "_mprotect_prot_none",
         "name": "_mprotect_prot_none",
-        "line": 252,
+        "line": 276,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn _mprotect_prot_none(addr: *mut libc::c_void, len: usize)"
       },
       {
-        "id": "verus-mimalloc/os_mem.rs::_mprotect_prot_read_write@L238",
+        "id": "verus-mimalloc/os_mem.rs::_mprotect_prot_read_write@L262",
         "file": "verus-mimalloc/os_mem.rs",
         "symbol": "_mprotect_prot_read_write",
         "name": "_mprotect_prot_read_write",
-        "line": 238,
+        "line": 262,
         "character": 3,
         "lsp_kind": 12,
         "detail": "fn _mprotect_prot_read_write(addr: *mut libc::c_void, len: usize)"
       },
       {
-        "id": "verus-mimalloc/os_mem.rs::clock_gettime_monotonic@L273",
+        "id": "verus-mimalloc/os_mem.rs::clock_gettime_monotonic@L308",
         "file": "verus-mimalloc/os_mem.rs",
         "symbol": "clock_gettime_monotonic",
         "name": "clock_gettime_monotonic",
-        "line": 273,
+        "line": 308,
         "character": 7,
         "lsp_kind": 12,
         "detail": "pub fn clock_gettime_monotonic() -> libc::timespec"
@@ -2182,7 +2182,7 @@
       },
       {
         "caller": "verus-mimalloc/commit_segment.rs::clock_now@L17",
-        "callee": "verus-mimalloc/os_mem.rs::clock_gettime_monotonic@L273",
+        "callee": "verus-mimalloc/os_mem.rs::clock_gettime_monotonic@L308",
         "kind": "call"
       },
       {
@@ -2751,18 +2751,18 @@
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L291",
+        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L272",
         "callee": "verus-mimalloc/layout.rs::align_up@L529",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L291",
-        "callee": "verus-mimalloc/os_alloc.rs::aligned_base_add@L278",
+        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L272",
+        "callee": "verus-mimalloc/os_alloc.rs::aligned_base_add@L259",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L291",
-        "callee": "verus-mimalloc/os_alloc.rs::aligned_base_cas@L283",
+        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L272",
+        "callee": "verus-mimalloc/os_alloc.rs::aligned_base_cas@L264",
         "kind": "call"
       },
       {
@@ -2776,13 +2776,13 @@
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L186",
+        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L180",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L186",
-        "callee": "verus-mimalloc/os_alloc.rs::unix_mmap@L239",
+        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L180",
+        "callee": "verus-mimalloc/os_alloc.rs::unix_mmap@L221",
         "kind": "call"
       },
       {
@@ -2792,7 +2792,7 @@
       },
       {
         "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L136",
-        "callee": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L186",
+        "callee": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L180",
         "kind": "call"
       },
       {
@@ -2801,42 +2801,42 @@
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L239",
+        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc_aligned@L136",
+        "callee": "verus-mimalloc/types.rs::todo@L2210",
+        "kind": "call"
+      },
+      {
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L221",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L239",
-        "callee": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L221",
+        "callee": "verus-mimalloc/os_alloc.rs::unix_mmapx@L306",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L239",
-        "callee": "verus-mimalloc/os_alloc.rs::use_large_os_page@L224",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L221",
+        "callee": "verus-mimalloc/os_alloc.rs::use_large_os_page@L217",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L306",
         "callee": ".verus_deps/builtin/src/lib.rs::Tracked::assume_new_fallback@L552",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
-        "callee": "verus-mimalloc/layout.rs::align_up@L529",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L306",
+        "callee": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L272",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
-        "callee": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L291",
-        "kind": "call"
-      },
-      {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L306",
         "callee": "verus-mimalloc/os_mem.rs::mmap_prot_none@L125",
         "kind": "call"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L306",
         "callee": "verus-mimalloc/os_mem.rs::mmap_prot_read_write@L143",
         "kind": "call"
       },
@@ -2892,7 +2892,7 @@
       },
       {
         "caller": "verus-mimalloc/os_mem.rs::mmap_prot_none@L125",
-        "callee": "verus-mimalloc/os_mem.rs::_mmap_prot_none@L222",
+        "callee": "verus-mimalloc/os_mem.rs::_mmap_prot_none@L246",
         "kind": "call"
       },
       {
@@ -2902,17 +2902,17 @@
       },
       {
         "caller": "verus-mimalloc/os_mem.rs::mmap_prot_read_write@L143",
-        "callee": "verus-mimalloc/os_mem.rs::_mmap_prot_read_write@L207",
+        "callee": "verus-mimalloc/os_mem.rs::_mmap_prot_read_write@L231",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/os_mem.rs::mprotect_prot_none@L163",
-        "callee": "verus-mimalloc/os_mem.rs::_mprotect_prot_none@L252",
+        "callee": "verus-mimalloc/os_mem.rs::_mprotect_prot_none@L276",
         "kind": "call"
       },
       {
         "caller": "verus-mimalloc/os_mem.rs::mprotect_prot_read_write@L184",
-        "callee": "verus-mimalloc/os_mem.rs::_mprotect_prot_read_write@L238",
+        "callee": "verus-mimalloc/os_mem.rs::_mprotect_prot_read_write@L262",
         "kind": "call"
       },
       {
@@ -4854,13 +4854,13 @@
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::aligned_base_add@L278",
+        "caller": "verus-mimalloc/os_alloc.rs::aligned_base_add@L259",
         "name": "fetch_add",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/sync/atomic.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::aligned_base_cas@L283",
+        "caller": "verus-mimalloc/os_alloc.rs::aligned_base_cas@L264",
         "name": "compare_exchange",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/sync/atomic.rs",
         "resolution": "resolved_external"
@@ -4878,13 +4878,13 @@
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L291",
+        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L272",
         "name": "wrapping_add",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L291",
+        "caller": "verus-mimalloc/os_alloc.rs::os_get_aligned_hint@L272",
         "name": "wrapping_add",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs",
         "resolution": "resolved_external"
@@ -4896,7 +4896,7 @@
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L186",
+        "caller": "verus-mimalloc/os_alloc.rs::os_mem_alloc@L180",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
@@ -4914,25 +4914,25 @@
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L239",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmap@L221",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L306",
         "name": "addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L306",
         "name": "null_mut",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L325",
+        "caller": "verus-mimalloc/os_alloc.rs::unix_mmapx@L306",
         "name": "with_addr",
         "uri": "file:///users/jinlang/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs",
         "resolution": "resolved_external"
@@ -4950,31 +4950,31 @@
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_mem.rs::_mmap_prot_none@L222",
+        "caller": "verus-mimalloc/os_mem.rs::_mmap_prot_none@L246",
         "name": "mmap",
         "uri": "file:///users/jinlang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.189/src/unix/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_mem.rs::_mmap_prot_read_write@L207",
+        "caller": "verus-mimalloc/os_mem.rs::_mmap_prot_read_write@L231",
         "name": "mmap",
         "uri": "file:///users/jinlang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.189/src/unix/mod.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_mem.rs::_mprotect_prot_none@L252",
+        "caller": "verus-mimalloc/os_mem.rs::_mprotect_prot_none@L276",
         "name": "mprotect",
         "uri": "file:///users/jinlang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.189/src/unix/linux_like/linux_l4re_shared.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_mem.rs::_mprotect_prot_read_write@L238",
+        "caller": "verus-mimalloc/os_mem.rs::_mprotect_prot_read_write@L262",
         "name": "mprotect",
         "uri": "file:///users/jinlang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.189/src/unix/linux_like/linux_l4re_shared.rs",
         "resolution": "resolved_external"
       },
       {
-        "caller": "verus-mimalloc/os_mem.rs::clock_gettime_monotonic@L273",
+        "caller": "verus-mimalloc/os_mem.rs::clock_gettime_monotonic@L308",
         "name": "clock_gettime",
         "uri": "file:///users/jinlang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.189/src/unix/linux_like/mod.rs",
         "resolution": "resolved_external"

@@ -1,0 +1,43 @@
+diff --git a/verus-mimalloc/os_mem.rs b/verus-mimalloc/os_mem.rs
+index 0000000..0000000 100644
+--- a/verus-mimalloc/os_mem.rs
++++ b/verus-mimalloc/os_mem.rs
+@@
+ pub fn mprotect_prot_read_write(addr: *mut u8, len: usize, Tracked(mem): Tracked<&mut MemChunk>)
+@@
+ {
+     _mprotect_prot_read_write(addr as *mut libc::c_void, len);
+ }
++
++#[verus::trusted]
++#[verifier::external_body]
++pub fn munmap_release(addr: *mut u8, len: usize, Tracked(mem): Tracked<MemChunk>)
++    requires
++        len > 0,
++        addr as int % page_size() == 0,
++        len as int % page_size() == 0,
++        mem.wf(),
++        mem.os_exact_range(addr as int, len as int),
++        mem.points_to.provenance() == addr@.provenance,
++{
++    _munmap_release(addr as *mut libc::c_void, len);
++}
+ 
+ //// Tested for macOS / Linux
+@@
+ fn _mprotect_prot_none(addr: *mut libc::c_void, len: usize) {
+@@
+ }
++
++#[verus::trusted]
++#[verifier::external]
++fn _munmap_release(addr: *mut libc::c_void, len: usize) {
++    unsafe {
++        let res = libc::munmap(addr, len);
++        if res != 0 {
++            panic!("munmap failed");
++        }
++    }
++}
+ 
+ //// Misc utilities

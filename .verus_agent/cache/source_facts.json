@@ -10475,12 +10475,12 @@
       ]
     },
     "verus-mimalloc/os_alloc.rs": {
-      "sha256": "db01966b57adc66a0ab0660417702e2ed3fdb0d77435be2bfd20544f096b56fc",
+      "sha256": "783310b6edc8a5ebd075a2a8c6ebbe12362fc3b5a49f6b1fd571a97ba6e0074d",
       "functions": [
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "unix_mmapx",
-          "line": 325,
+          "line": 306,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -10493,7 +10493,7 @@
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "os_get_aligned_hint",
-          "line": 291,
+          "line": 272,
           "kind": "exec",
           "entered": true,
           "references": []
@@ -10501,7 +10501,7 @@
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "aligned_base_cas",
-          "line": 283,
+          "line": 264,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -10511,7 +10511,7 @@
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "aligned_base_add",
-          "line": 278,
+          "line": 259,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -10521,7 +10521,7 @@
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "unix_mmap",
-          "line": 239,
+          "line": 221,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -10533,16 +10533,8 @@
         },
         {
           "file": "verus-mimalloc/os_alloc.rs",
-          "symbol": "mod_add_zero",
-          "line": 229,
-          "kind": "proof",
-          "entered": true,
-          "references": []
-        },
-        {
-          "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "use_large_os_page",
-          "line": 224,
+          "line": 217,
           "kind": "exec",
           "entered": true,
           "references": []
@@ -10550,7 +10542,7 @@
         {
           "file": "verus-mimalloc/os_alloc.rs",
           "symbol": "os_mem_alloc",
-          "line": 186,
+          "line": 180,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -10693,10 +10685,9 @@
         "call\tos_mem_alloc_aligned\tos_mem_alloc",
         "call\tos_mem_alloc_aligned\tp.addr",
         "call\tos_mem_alloc_aligned\tp.addr",
-        "call\tos_mem_alloc_aligned\tp.addr",
         "call\tos_mem_alloc_aligned\tpage_size",
         "call\tos_mem_alloc_aligned\tpage_size",
-        "call\tos_mem_alloc_aligned\tpage_size",
+        "call\tos_mem_alloc_aligned\ttodo",
         "call\tunix_mmap\tMemChunk::empty",
         "call\tunix_mmap\tTracked",
         "call\tunix_mmap\tTracked",
@@ -10712,30 +10703,14 @@
         "call\tunix_mmap\tpage_size",
         "call\tunix_mmap\tunix_mmapx",
         "call\tunix_mmap\tuse_large_os_page",
-        "call\tunix_mmapx\tMemChunk::empty",
         "call\tunix_mmapx\tTracked",
         "call\tunix_mmapx\tTracked",
         "call\tunix_mmapx\tTracked",
-        "call\tunix_mmapx\tTracked",
-        "call\tunix_mmapx\tTracked",
-        "call\tunix_mmapx\tTracked",
-        "call\tunix_mmapx\talign_up",
-        "call\tunix_mmapx\taligned_mem.os.dom",
-        "call\tunix_mmapx\taligned_mem.os_exact_range",
-        "call\tunix_mmapx\taligned_mem.os_has_range_no_read_write",
-        "call\tunix_mmapx\taligned_mem.os_has_range_read_write",
-        "call\tunix_mmapx\taligned_mem.points_to.provenance",
-        "call\tunix_mmapx\taligned_mem.pointsto_has_range",
-        "call\tunix_mmapx\taligned_range.contains",
         "call\tunix_mmapx\tconst_facts",
-        "call\tunix_mmapx\tcore::ptr::null_mut",
-        "call\tunix_mmapx\tcore::ptr::null_mut",
         "call\tunix_mmapx\tcore::ptr::null_mut",
         "call\tunix_mmapx\thint.addr",
         "call\tunix_mmapx\thint.addr",
         "call\tunix_mmapx\thint.with_addr",
-        "call\tunix_mmapx\tmapped_range.contains",
-        "call\tunix_mmapx\tmem.split",
         "call\tunix_mmapx\tmem@.os_exact_range",
         "call\tunix_mmapx\tmem@.os_has_range_no_read_write",
         "call\tunix_mmapx\tmem@.os_has_range_read_write",
@@ -10744,30 +10719,18 @@
         "call\tunix_mmapx\tmem@.wf",
         "call\tunix_mmapx\tmmap_prot_none",
         "call\tunix_mmapx\tmmap_prot_none",
-        "call\tunix_mmapx\tmmap_prot_none",
         "call\tunix_mmapx\tmmap_prot_read_write",
         "call\tunix_mmapx\tmmap_prot_read_write",
-        "call\tunix_mmapx\tmmap_prot_read_write",
-        "call\tunix_mmapx\tmod_add_zero",
         "call\tunix_mmapx\tmod_trans",
         "call\tunix_mmapx\tos_get_aligned_hint",
         "call\tunix_mmapx\tp.addr",
         "call\tunix_mmapx\tp.addr",
-        "call\tunix_mmapx\tp.addr",
-        "call\tunix_mmapx\tp.addr",
-        "call\tunix_mmapx\tp.with_addr",
         "call\tunix_mmapx\tpage_size",
         "call\tunix_mmapx\tpage_size",
         "call\tunix_mmapx\tpage_size",
         "call\tunix_mmapx\tpage_size",
-        "call\tunix_mmapx\tpage_size",
-        "call\tunix_mmapx\tpage_size",
-        "call\tunix_mmapx\tpage_size",
-        "call\tunix_mmapx\tset_int_range",
-        "call\tunix_mmapx\tset_int_range",
         "fn\taligned_base_add\t(s: usize)\tusize",
         "fn\taligned_base_cas\t(s: usize, t: usize)\t",
-        "fn\tmod_add_zero\t(a: int, b: int, c: int)\t",
         "fn\tos_alloc_aligned\t(\n    size: usize,\n    alignment: usize,\n    request_commit: bool,\n    allow_large: bool\n)\t(res: (*mut u8, bool, Tracked<MemChunk>))",
         "fn\tos_alloc_aligned_offset\t(\n    size: usize,\n    alignment: usize,\n    offset: usize,\n    request_commit: bool,\n    allow_large: bool,\n)\t(res: (*mut u8, bool, Tracked<MemChunk>))",
         "fn\tos_get_aligned_hint\t(try_alignment: usize, size: usize)\t(hint: usize)",
@@ -10845,17 +10808,14 @@
         "resolution\tos_mem_alloc\ttype_cast_expression\taddr as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\taddr as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\taddr as int",
-        "resolution\tos_mem_alloc\ttype_cast_expression\taddr as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\tsize as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\tsize as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\tsize as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\tsize as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\tsize as int",
-        "resolution\tos_mem_alloc\ttype_cast_expression\ttry_alignment as int",
         "resolution\tos_mem_alloc\ttype_cast_expression\ttry_alignment as int",
         "resolution\tos_mem_alloc_aligned\tlet_declaration\tlet (addr, is_large, mem)",
         "resolution\tos_mem_alloc_aligned\tlet_declaration\tlet (p, is_large, Tracked(mem))",
-        "resolution\tos_mem_alloc_aligned\tlet_declaration\tlet min_alignment",
         "resolution\tos_mem_alloc_aligned\tlet_declaration\tlet mut allow_large",
         "resolution\tos_mem_alloc_aligned\ttype_cast_expression\taddr as int",
         "resolution\tos_mem_alloc_aligned\ttype_cast_expression\taddr as int",
@@ -10882,100 +10842,38 @@
         "resolution\tunix_mmap\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmap\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmap\ttype_cast_expression\taddr as int",
-        "resolution\tunix_mmap\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmap\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmap\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmap\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmap\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmap\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmap\ttype_cast_expression\ttry_alignment as int",
-        "resolution\tunix_mmap\ttype_cast_expression\ttry_alignment as int",
-        "resolution\tunix_mmapx\tclosure_parameters\t|addr: int|",
         "resolution\tunix_mmapx\tlet_declaration\tlet (addr, mem)",
         "resolution\tunix_mmapx\tlet_declaration\tlet (p, Tracked(mem))",
         "resolution\tunix_mmapx\tlet_declaration\tlet (p, Tracked(mem))",
-        "resolution\tunix_mmapx\tlet_declaration\tlet (p, Tracked(mut mem))",
-        "resolution\tunix_mmapx\tlet_declaration\tlet aligned",
-        "resolution\tunix_mmapx\tlet_declaration\tlet aligned_addr",
-        "resolution\tunix_mmapx\tlet_declaration\tlet ghost aligned_range",
-        "resolution\tunix_mmapx\tlet_declaration\tlet ghost mapped_range",
         "resolution\tunix_mmapx\tlet_declaration\tlet hint",
         "resolution\tunix_mmapx\tlet_declaration\tlet hinti",
-        "resolution\tunix_mmapx\tlet_declaration\tlet over_size",
-        "resolution\tunix_mmapx\tlet_declaration\tlet tracked aligned_mem;",
         "resolution\tunix_mmapx\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmapx\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmapx\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmapx\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmapx\ttype_cast_expression\taddr as int",
         "resolution\tunix_mmapx\ttype_cast_expression\taddr as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taddr as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\taligned_addr as int",
         "resolution\tunix_mmapx\ttype_cast_expression\thint as int",
         "resolution\tunix_mmapx\ttype_cast_expression\thint as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tover_size as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tover_size as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tover_size as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tover_size as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tover_size as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tover_size as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tover_size as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tp as int",
         "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
         "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\tsize as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
-        "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
         "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
         "resolution\tunix_mmapx\ttype_cast_expression\ttry_alignment as int",
         "use\tuse core::intrinsics::{unlikely, likely};",
         "use\tuse crate::config::*;",
         "use\tuse crate::layout::*;",
         "use\tuse crate::os_mem::*;",
-        "use\tuse vstd::prelude::*;",
-        "use\tuse vstd::set_lib::set_int_range;"
+        "use\tuse crate::types::todo;",
+        "use\tuse vstd::prelude::*;"
       ]
     },
     "verus-mimalloc/os_commit.rs": {
@@ -11268,12 +11166,12 @@
       ]
     },
     "verus-mimalloc/os_mem.rs": {
-      "sha256": "eb5be2a27804a0bde6326643e36f34159953e8e746c837e63f209751c9fb5e62",
+      "sha256": "3f6bcb306bd6cc02ff0e8626a58d2592c1f851383a8b81e34e92464e6f119b47",
       "functions": [
         {
           "file": "verus-mimalloc/os_mem.rs",
           "symbol": "clock_gettime_monotonic",
-          "line": 273,
+          "line": 308,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -11283,8 +11181,19 @@
         },
         {
           "file": "verus-mimalloc/os_mem.rs",
+          "symbol": "_munmap_release",
+          "line": 290,
+          "kind": "exec",
+          "entered": true,
+          "references": [
+            "c_void",
+            "libc"
+          ]
+        },
+        {
+          "file": "verus-mimalloc/os_mem.rs",
           "symbol": "_mprotect_prot_none",
-          "line": 252,
+          "line": 276,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -11295,7 +11204,7 @@
         {
           "file": "verus-mimalloc/os_mem.rs",
           "symbol": "_mprotect_prot_read_write",
-          "line": 238,
+          "line": 262,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -11306,7 +11215,7 @@
         {
           "file": "verus-mimalloc/os_mem.rs",
           "symbol": "_mmap_prot_none",
-          "line": 222,
+          "line": 246,
           "kind": "exec",
           "entered": true,
           "references": [
@@ -11317,10 +11226,23 @@
         {
           "file": "verus-mimalloc/os_mem.rs",
           "symbol": "_mmap_prot_read_write",
-          "line": 207,
+          "line": 231,
           "kind": "exec",
           "entered": true,
           "references": [
+            "c_void",
+            "libc"
+          ]
+        },
+        {
+          "file": "verus-mimalloc/os_mem.rs",
+          "symbol": "munmap_release",
+          "line": 214,
+          "kind": "exec",
+          "entered": true,
+          "references": [
+            "MemChunk",
+            "Tracked",
             "c_void",
             "libc"
           ]
@@ -11591,15 +11513,28 @@
           ]
         },
         {
+          "marker": "external_body",
+          "file": "verus-mimalloc/os_mem.rs",
+          "symbol": "munmap_release",
+          "line": 213,
+          "content_sha": "5e4f3691adeaa741456188f7e237b69e8987d862469e855474f5b1c9042f832e",
+          "target_nodes": [
+            {
+              "symbol": "munmap_release",
+              "line": 214
+            }
+          ]
+        },
+        {
           "marker": "external",
           "file": "verus-mimalloc/os_mem.rs",
           "symbol": "_mmap_prot_read_write",
-          "line": 206,
+          "line": 230,
           "content_sha": "3c4623849a49a53911c4a3e48d8cead8a1858960bccdea7a1b978d73ec2f06d7",
           "target_nodes": [
             {
               "symbol": "_mmap_prot_read_write",
-              "line": 207
+              "line": 231
             }
           ]
         },
@@ -11607,12 +11542,12 @@
           "marker": "external",
           "file": "verus-mimalloc/os_mem.rs",
           "symbol": "_mmap_prot_none",
-          "line": 221,
+          "line": 245,
           "content_sha": "3c4623849a49a53911c4a3e48d8cead8a1858960bccdea7a1b978d73ec2f06d7",
           "target_nodes": [
             {
               "symbol": "_mmap_prot_none",
-              "line": 222
+              "line": 246
             }
           ]
         },
@@ -11620,12 +11555,12 @@
           "marker": "external",
           "file": "verus-mimalloc/os_mem.rs",
           "symbol": "_mprotect_prot_read_write",
-          "line": 237,
+          "line": 261,
           "content_sha": "3c4623849a49a53911c4a3e48d8cead8a1858960bccdea7a1b978d73ec2f06d7",
           "target_nodes": [
             {
               "symbol": "_mprotect_prot_read_write",
-              "line": 238
+              "line": 262
             }
           ]
         },
@@ -11633,12 +11568,25 @@
           "marker": "external",
           "file": "verus-mimalloc/os_mem.rs",
           "symbol": "_mprotect_prot_none",
-          "line": 251,
+          "line": 275,
           "content_sha": "3c4623849a49a53911c4a3e48d8cead8a1858960bccdea7a1b978d73ec2f06d7",
           "target_nodes": [
             {
               "symbol": "_mprotect_prot_none",
-              "line": 252
+              "line": 276
+            }
+          ]
+        },
+        {
+          "marker": "external",
+          "file": "verus-mimalloc/os_mem.rs",
+          "symbol": "_munmap_release",
+          "line": 289,
+          "content_sha": "3c4623849a49a53911c4a3e48d8cead8a1858960bccdea7a1b978d73ec2f06d7",
+          "target_nodes": [
+            {
+              "symbol": "_munmap_release",
+              "line": 290
             }
           ]
         },
@@ -11646,12 +11594,12 @@
           "marker": "external_body",
           "file": "verus-mimalloc/os_mem.rs",
           "symbol": "clock_gettime_monotonic",
-          "line": 272,
+          "line": 307,
           "content_sha": "5e4f3691adeaa741456188f7e237b69e8987d862469e855474f5b1c9042f832e",
           "target_nodes": [
             {
               "symbol": "clock_gettime_monotonic",
-              "line": 273
+              "line": 308
             }
           ]
         }
@@ -11691,6 +11639,7 @@
         "call\t_mmap_prot_read_write\tlibc::mmap",
         "call\t_mprotect_prot_none\tlibc::mprotect",
         "call\t_mprotect_prot_read_write\tlibc::mprotect",
+        "call\t_munmap_release\tlibc::munmap",
         "call\tclock_gettime_monotonic\tlibc::clock_gettime",
         "call\tget_page_size\tpage_size",
         "call\tmmap_prot_none\tTracked::assume_new",
@@ -11775,6 +11724,13 @@
         "call\tmprotect_prot_read_write\told(mem).wf",
         "call\tmprotect_prot_read_write\tpage_size",
         "call\tmprotect_prot_read_write\tpage_size",
+        "call\tmunmap_release\t_munmap_release",
+        "call\tmunmap_release\tmem.has_pointsto_for_all_read_write",
+        "call\tmunmap_release\tmem.os_exact_range",
+        "call\tmunmap_release\tmem.points_to.provenance",
+        "call\tmunmap_release\tmem.wf",
+        "call\tmunmap_release\tpage_size",
+        "call\tmunmap_release\tpage_size",
         "fn\tMemChunk::has_new_pointsto\t(&self, the_old: &MemChunk)\tbool",
         "fn\tMemChunk::has_pointsto_for_all_read_write\t(&self)\tbool",
         "fn\tMemChunk::os_exact_range\t(&self, start: int, len: int)\tbool",
@@ -11792,12 +11748,14 @@
         "fn\t_mmap_prot_read_write\t(hint_addr: *mut libc::c_void, len: usize)\t*mut libc::c_void",
         "fn\t_mprotect_prot_none\t(addr: *mut libc::c_void, len: usize)\t",
         "fn\t_mprotect_prot_read_write\t(addr: *mut libc::c_void, len: usize)\t",
+        "fn\t_munmap_release\t(addr: *mut libc::c_void, len: usize)\t",
         "fn\tclock_gettime_monotonic\t()\tlibc::timespec",
         "fn\tget_page_size\t()\t(u: usize)",
         "fn\tmmap_prot_none\t(hint: *mut u8, len: usize)\t(pt: (*mut u8, Tracked<MemChunk>))",
         "fn\tmmap_prot_read_write\t(hint: *mut u8, len: usize)\t(pt: (*mut u8, Tracked<MemChunk>))",
         "fn\tmprotect_prot_none\t(addr: *mut u8, len: usize, Tracked(mem): Tracked<&mut MemChunk>)\t",
         "fn\tmprotect_prot_read_write\t(addr: *mut u8, len: usize, Tracked(mem): Tracked<&mut MemChunk>)\t",
+        "fn\tmunmap_release\t(addr: *mut u8, len: usize, Tracked(mem): Tracked<MemChunk>)\t",
         "fn\tpage_size\t()\tint",
         "impl\timpl MemChunk",
         "impl\timpl OsMem",
@@ -11818,6 +11776,7 @@
         "resolution\t_mprotect_prot_none\ttype_cast_expression\taddr as *mut libc::c_void",
         "resolution\t_mprotect_prot_read_write\tlet_declaration\tlet res",
         "resolution\t_mprotect_prot_read_write\ttype_cast_expression\taddr as *mut libc::c_void",
+        "resolution\t_munmap_release\tlet_declaration\tlet res",
         "resolution\tclock_gettime_monotonic\tlet_declaration\tlet mut ts",
         "resolution\tmmap_prot_none\tlet_declaration\tlet p",
         "resolution\tmmap_prot_none\tlet_declaration\tlet p",
@@ -11860,6 +11819,11 @@
         "resolution\tmprotect_prot_read_write\ttype_cast_expression\tlen as int",
         "resolution\tmprotect_prot_read_write\ttype_cast_expression\tlen as int",
         "resolution\tmprotect_prot_read_write\ttype_cast_expression\tlen as int",
+        "resolution\tmunmap_release\ttype_cast_expression\taddr as *mut libc::c_void",
+        "resolution\tmunmap_release\ttype_cast_expression\taddr as int",
+        "resolution\tmunmap_release\ttype_cast_expression\taddr as int",
+        "resolution\tmunmap_release\ttype_cast_expression\tlen as int",
+        "resolution\tmunmap_release\ttype_cast_expression\tlen as int",
         "use\tuse libc::{PROT_NONE, PROT_READ, PROT_WRITE, MAP_PRIVATE, MAP_ANONYMOUS, MAP_NORESERVE};",
         "use\tuse vstd::prelude::*;",
         "use\tuse vstd::raw_ptr::*;",
