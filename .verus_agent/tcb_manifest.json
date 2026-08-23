@@ -19,6 +19,16 @@
       "kind": "symbol",
       "value": "print_hex",
       "marker": null
+    },
+    {
+      "kind": "path",
+      "value": ".verus_deps/builtin",
+      "marker": null
+    },
+    {
+      "kind": "path",
+      "value": ".verus_deps/vstd",
+      "marker": null
     }
   ]
 }
