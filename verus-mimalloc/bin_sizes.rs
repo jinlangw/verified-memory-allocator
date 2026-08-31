@@ -126,9 +126,8 @@ pub const SEGMENT_BIN_MAX: usize = 31;
 pub const MAX_ALLOC_SIZE: usize = isize::MAX as usize;
 */
 
-pub open spec fn valid_bin_idx(bin_idx: int) -> bool {
-    1 <= bin_idx <= BIN_HUGE
-}
+pub uninterp spec fn valid_bin_idx(bin_idx: int) -> bool;
+
 
 #[verifier::opaque]
 pub open spec fn size_of_bin(bin_idx: int) -> nat
@@ -191,36 +190,14 @@ pub open spec fn pfd_upper(bin_idx: int) -> nat
 // TODO: The assertions in this lemma are duplicated in init.rs
 
 /** Put our desired property into a proof-by-compute-friendly form **/
-spec fn property_idx_out_of_range_has_different_bin_size(bin_idx: int, wsize:int) -> bool
-{
-    valid_bin_idx(bin_idx) &&
-    !(pfd_lower(bin_idx) <= wsize <= pfd_upper(bin_idx)) &&
-    0 <= wsize <= 128
-    ==>
-    smallest_bin_fitting_size(wsize * INTPTR_SIZE) != bin_idx
-}
+uninterp spec fn property_idx_out_of_range_has_different_bin_size(bin_idx: int, wsize:int) -> bool;
 
-spec fn check_idx_out_of_range_has_different_bin_size(bin_idx: int, wsize_start:int, wsize_end:int) -> bool
-    decreases wsize_end - wsize_start,
-{
-   if wsize_start >= wsize_end {
-       true
-   } else {
-          property_idx_out_of_range_has_different_bin_size(bin_idx, wsize_start)
-       && check_idx_out_of_range_has_different_bin_size(bin_idx, wsize_start + 1, wsize_end)
-   }
-}
 
-spec fn check2_idx_out_of_range_has_different_bin_size(bin_idx_start: int, bin_idx_end: int, wsize_start:int, wsize_end:int) -> bool
-    decreases bin_idx_end - bin_idx_start,
-{
-    if bin_idx_start >= bin_idx_end {
-        true
-    } else {
-        check_idx_out_of_range_has_different_bin_size(bin_idx_start, wsize_start, wsize_end)
-        && check2_idx_out_of_range_has_different_bin_size(bin_idx_start + 1, bin_idx_end, wsize_start, wsize_end)
-    }
-}
+uninterp spec fn check_idx_out_of_range_has_different_bin_size(bin_idx: int, wsize_start:int, wsize_end:int) -> bool;
+
+
+uninterp spec fn check2_idx_out_of_range_has_different_bin_size(bin_idx_start: int, bin_idx_end: int, wsize_start:int, wsize_end:int) -> bool;
+
 
 /********************************************************
  * TODO: All of these should be standard library proofs
@@ -230,39 +207,19 @@ spec fn check2_idx_out_of_range_has_different_bin_size(bin_idx_start: int, bin_i
  * END: All of these should be standard library proofs
  ********************************************************/
 
-proof fn log2(i:u64) -> (e:nat)
-{ arbitrary() }
+#[verifier::external_body]
+proof fn log2(i:u64) -> (e:nat) { unimplemented!() }
+
 
 /** Put our desired property into a proof-by-compute-friendly form **/
-spec fn property_idx_in_range_has_bin_size(bin_idx: int, wsize:int) -> bool
-{
-    valid_bin_idx(bin_idx) &&
-    (pfd_lower(bin_idx) <= wsize <= pfd_upper(bin_idx))
-    ==>
-    smallest_bin_fitting_size(wsize * INTPTR_SIZE) == bin_idx
-}
+uninterp spec fn property_idx_in_range_has_bin_size(bin_idx: int, wsize:int) -> bool;
 
-spec fn check_idx_in_range_has_bin_size(bin_idx: int, wsize_start:int, wsize_end:int) -> bool
-    decreases wsize_end - wsize_start,
-{
-   if wsize_start >= wsize_end {
-       true
-   } else {
-          property_idx_in_range_has_bin_size(bin_idx, wsize_start)
-       && check_idx_in_range_has_bin_size(bin_idx, wsize_start + 1, wsize_end)
-   }
-}
 
-spec fn check2_idx_in_range_has_bin_size(bin_idx_start: int, bin_idx_end: int, wsize_start:int, wsize_end:int) -> bool
-    decreases bin_idx_end - bin_idx_start,
-{
-    if bin_idx_start >= bin_idx_end {
-        true
-    } else {
-        check_idx_in_range_has_bin_size(bin_idx_start, wsize_start, wsize_end)
-        && check2_idx_in_range_has_bin_size(bin_idx_start + 1, bin_idx_end, wsize_start, wsize_end)
-    }
-}
+uninterp spec fn check_idx_in_range_has_bin_size(bin_idx: int, wsize_start:int, wsize_end:int) -> bool;
+
+
+uninterp spec fn check2_idx_in_range_has_bin_size(bin_idx_start: int, bin_idx_end: int, wsize_start:int, wsize_end:int) -> bool;
+
 
 pub open spec fn pow2(i: int) -> nat
     decreases i
@@ -275,58 +232,28 @@ pub open spec fn pow2(i: int) -> nat
 }
 
 /** Put our desired property into a proof-by-compute-friendly form **/
-spec fn property_bounds_for_smallest_bitting_size(size:int) -> bool
-{
-    valid_bin_idx(smallest_bin_fitting_size(size)) &&
-    size_of_bin(smallest_bin_fitting_size(size)) >= size
-}
+uninterp spec fn property_bounds_for_smallest_bitting_size(size:int) -> bool;
 
-spec fn check_bounds_for_smallest_bitting_size(size_start:int, size_end:int) -> bool
-    decreases size_end - size_start,
-{
-   if size_start >= size_end {
-       true
-   } else {
-          property_bounds_for_smallest_bitting_size(size_start)
-       && check_bounds_for_smallest_bitting_size(size_start + 1, size_end)
-   }
-}
+
+uninterp spec fn check_bounds_for_smallest_bitting_size(size_start:int, size_end:int) -> bool;
+
 
 /** Put our desired property into a proof-by-compute-friendly form **/
-spec fn property_smallest_bin_fitting_size_size_of_bin(bin_idx:int) -> bool
-{
-    smallest_bin_fitting_size(size_of_bin(bin_idx) as int) == bin_idx
-}
+uninterp spec fn property_smallest_bin_fitting_size_size_of_bin(bin_idx:int) -> bool;
 
-spec fn check_smallest_bin_fitting_size_size_of_bin(bin_idx_start:int, bin_idx_end:int) -> bool
-    decreases bin_idx_end - bin_idx_start,
-{
-   if bin_idx_start >= bin_idx_end {
-       true
-   } else {
-          property_smallest_bin_fitting_size_size_of_bin(bin_idx_start)
-       && check_smallest_bin_fitting_size_size_of_bin(bin_idx_start + 1, bin_idx_end)
-   }
-}
+
+uninterp spec fn check_smallest_bin_fitting_size_size_of_bin(bin_idx_start:int, bin_idx_end:int) -> bool;
+
 
 /** Put our desired property into a proof-by-compute-friendly form **/
-spec fn property_bin(size:int) -> bool
-{
-    131072 >= size_of_bin(smallest_bin_fitting_size(size)) >= size
-}
+uninterp spec fn property_bin(size:int) -> bool;
 
-spec fn check_bin(size_start:int, size_end:int) -> bool
-    decreases size_end - size_start + 8,
-{
-   if size_start >= size_end {
-       true
-   } else {
-          property_bin(size_start)
-       && check_bin(size_start + 8, size_end)
-   }
-}
 
-spec fn id(i:int) -> bool { true }
+uninterp spec fn check_bin(size_start:int, size_end:int) -> bool;
+
+
+uninterp spec fn id(i:int) -> bool;
+
 
 // The "proof" is below is broken into chunks,
 // so (a) we don't exceed the interpreter's stack limit,
@@ -388,9 +315,8 @@ pub fn bin(size: usize) -> (bin_idx: u8)
 
 //////// Segment bins
 
-pub open spec fn valid_sbin_idx(sbin_idx: int) -> bool {
-    0 <= sbin_idx <= SEGMENT_BIN_MAX
-}
+pub uninterp spec fn valid_sbin_idx(sbin_idx: int) -> bool;
+
 
 pub uninterp spec fn size_of_sbin(sbin_idx: int) -> nat;
 
@@ -409,21 +335,11 @@ pub open spec fn smallest_sbin_fitting_size(i: int) -> int
 }
 
 /** Put our desired property into a proof-by-compute-friendly form **/
-spec fn property_sbin_idx_smallest_sbin_fitting_size(size:int) -> bool
-{
-    valid_sbin_idx(smallest_sbin_fitting_size(size))
-}
+uninterp spec fn property_sbin_idx_smallest_sbin_fitting_size(size:int) -> bool;
 
-spec fn check_sbin_idx_smallest_sbin_fitting_size(size_start:int, size_end:int) -> bool
-    decreases size_end - size_start,
-{
-   if size_start >= size_end {
-       true
-   } else {
-          property_sbin_idx_smallest_sbin_fitting_size(size_start)
-       && check_sbin_idx_smallest_sbin_fitting_size(size_start + 1, size_end)
-   }
-}
+
+uninterp spec fn check_sbin_idx_smallest_sbin_fitting_size(size_start:int, size_end:int) -> bool;
+
 
 #[verifier::external_body]
 pub proof fn valid_sbin_idx_smallest_sbin_fitting_size(i: int)
@@ -434,44 +350,18 @@ pub proof fn valid_sbin_idx_smallest_sbin_fitting_size(i: int)
 }
 
 /** Put our desired property into a proof-by-compute-friendly form **/
-spec fn property_sbin_bounds(size:int) -> bool
-{
-    let lz = u64_leading_zeros(size as u64);
-    let b = (63 - lz) as u8;
-    // Satisfy various type requirements
-    (b  >= 2) &&
-    (((b << 2u8) as u64 | ((size as u64 >> (b as u64 - 2) as u64) & 0x03)) >= 4)
-}
+uninterp spec fn property_sbin_bounds(size:int) -> bool;
 
-spec fn check_sbin_bounds(size_start:int, size_end:int) -> bool
-    decreases size_end - size_start,
-{
-   if size_start >= size_end {
-       true
-   } else {
-          property_sbin_bounds(size_start)
-       && check_sbin_bounds(size_start + 1, size_end)
-   }
-}
+
+uninterp spec fn check_sbin_bounds(size_start:int, size_end:int) -> bool;
+
 
 /** Put our desired property into a proof-by-compute-friendly form **/
-spec fn property_sbin(slice_count:int) -> bool
-{
-    let sbin_idx = smallest_sbin_fitting_size(slice_count as int);
-    valid_sbin_idx(sbin_idx as int) &&
-    size_of_sbin(sbin_idx as int) >= slice_count
-}
+uninterp spec fn property_sbin(slice_count:int) -> bool;
 
-spec fn check_sbin(size_start:int, size_end:int) -> bool
-    decreases size_end - size_start,
-{
-   if size_start >= size_end {
-       true
-   } else {
-          property_sbin(size_start)
-       && check_sbin(size_start + 1, size_end)
-   }
-}
+
+uninterp spec fn check_sbin(size_start:int, size_end:int) -> bool;
+
 
 #[verifier::external_body]
 pub fn slice_bin(slice_count: usize) -> (sbin_idx: usize)

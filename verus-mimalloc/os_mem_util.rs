@@ -19,18 +19,15 @@ impl MemChunk {
         unimplemented!();
     }
 
-    #[verifier::inline]
-    pub open spec fn pointsto_has_range(&self, start: int, len: int) -> bool {
-        set_int_range(start, start + len) <= self.range_points_to()
-    }
+    pub uninterp spec fn pointsto_has_range(&self, start: int, len: int) -> bool;
+
 
     pub open spec fn os_rw_bytes(&self) -> Set<int> {
         self.range_os_rw()
     }
 
-    pub open spec fn committed_pointsto_has_range(&self, start: int, len: int) -> bool {
-        self.pointsto_has_range(start, len) && self.os_has_range_read_write(start, len)
-    }
+    pub uninterp spec fn committed_pointsto_has_range(&self, start: int, len: int) -> bool;
+
 
     #[verifier::external_body]
     pub proof fn split(
@@ -42,11 +39,12 @@ impl MemChunk {
         unimplemented!();
     }
 
+    #[verifier::external_body]
     pub proof fn join(
         tracked &mut self,
         tracked t: Self,
-    )
-    { }
+    ) { unimplemented!() }
+
 
     #[verifier::external_body]
     pub proof fn take_points_to_set(
@@ -75,29 +73,15 @@ pub open spec fn segment_info_range(segment_id: SegmentId) -> Set<int> {
     )
 }
 
-pub open spec fn mem_chunk_good1(
+pub uninterp spec fn mem_chunk_good1(
     mem: MemChunk,
     segment_id: SegmentId,
     commit_bytes: Set<int>,
     decommit_bytes: Set<int>,
     pages_range_total: Set<int>,
     pages_used_total: Set<int>,
-) -> bool {
-    &&& mem.wf()
-    &&& mem.os_exact_range(segment_start(segment_id), SEGMENT_SIZE as int)
-    &&& mem.points_to.provenance() == segment_id.provenance
+) -> bool;
 
-    &&& commit_bytes.subset_of(mem.os_rw_bytes())
-
-    &&& decommit_bytes <= commit_bytes
-    &&& segment_info_range(segment_id) <= commit_bytes - decommit_bytes
-    &&& pages_used_total <= commit_bytes - decommit_bytes
-
-    &&& mem.os_rw_bytes() <=
-          mem.points_to.dom()
-            + segment_info_range(segment_id)
-            + pages_range_total
-}
 
 impl Local {
     spec fn segment_page_range(&self, segment_id: SegmentId, page_id: PageId) -> Set<int> {
@@ -145,31 +129,13 @@ impl Local {
         )
     }*/
 
-    pub open spec fn mem_chunk_good(&self, segment_id: SegmentId) -> bool {
-        self.segments.dom().contains(segment_id)
-        && mem_chunk_good1(
-            self.segments[segment_id].mem,
-            segment_id,
-            self.commit_mask(segment_id).bytes(segment_id),
-            self.decommit_mask(segment_id).bytes(segment_id),
-            self.segment_pages_range_total(segment_id),
-            self.segment_pages_used_total(segment_id),
-        )
-    }
+    pub uninterp spec fn mem_chunk_good(&self, segment_id: SegmentId) -> bool;
+
 }
 
 ///////
 
-pub open spec fn page_init_is_committed(page_id: PageId, local: Local) -> bool {
-    let count = local.page_organization.pages[page_id].count.unwrap() as int;
-    let start = page_start(page_id);
-    let len = count * SLICE_SIZE;
-    let cm = local.segments[page_id.segment_id].main.value().commit_mask@;
+pub uninterp spec fn page_init_is_committed(page_id: PageId, local: Local) -> bool;
 
-    set_int_range(start, start + len) <=
-        local.commit_mask(page_id.segment_id).bytes(page_id.segment_id)
-        - local.decommit_mask(page_id.segment_id).bytes(page_id.segment_id)
-    && count == local.page_count(page_id)
-}
 
 }

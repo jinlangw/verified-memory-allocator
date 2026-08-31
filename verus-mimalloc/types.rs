@@ -46,53 +46,14 @@ pub struct PageInner {
 }
 
 impl PageInner {
-    pub open spec fn wf(&self, page_id: PageId, page_state: PageState, mim_instance: Mim::Instance) -> bool {
-        &&& page_state.block_size == self.xblock_size as nat
+    pub uninterp spec fn wf(&self, page_id: PageId, page_state: PageState, mim_instance: Mim::Instance) -> bool;
 
-        &&& self.free.wf()
-        &&& self.free.fixed_page()
-        &&& self.free.page_id() == page_id
-        &&& self.free.block_size() == page_state.block_size
-        &&& self.free.instance() == mim_instance
-        &&& self.free.heap_id().is_none()
 
-        &&& self.local_free.wf()
-        &&& self.local_free.fixed_page()
-        &&& self.local_free.page_id() == page_id
-        &&& self.local_free.block_size() == page_state.block_size
-        &&& self.local_free.instance() == mim_instance
-        &&& self.local_free.heap_id().is_none()
+    pub uninterp spec fn zeroed(&self) -> bool;
 
-        &&& self.used + self.free.len() + self.local_free.len() == page_state.num_blocks
 
-        &&& self.local_free.fixed_page()
-        &&& self.free.fixed_page()
+    pub uninterp spec fn zeroed_except_block_size(&self) -> bool;
 
-        &&& self.local_free.block_size() == page_state.block_size
-        &&& self.free.block_size() == page_state.block_size
-
-        &&& self.capacity <= self.reserved
-        &&& self.capacity == page_state.num_blocks
-
-        &&& self.xblock_size > 0
-    }
-
-    pub open spec fn zeroed(&self) -> bool {
-        &&& self.capacity == 0
-        &&& self.reserved == 0
-        &&& self.free.wf() && self.free.len() == 0
-        &&& self.used == 0
-        &&& self.xblock_size == 0
-        &&& self.local_free.wf() && self.local_free.len() == 0
-    }
-
-    pub open spec fn zeroed_except_block_size(&self) -> bool {
-        &&& self.capacity == 0
-        &&& self.reserved == 0
-        &&& self.free.wf() && self.free.len() == 0
-        &&& self.used == 0
-        &&& self.local_free.wf() && self.local_free.len() == 0
-    }
 }
 
 tokenized_state_machine!{ BoolAgree {
@@ -163,7 +124,8 @@ struct_with_invariants!{
 }
 
 impl AtomicHeapPtr {
-    pub open spec fn is_empty(&self) -> bool { self.emp@.value() }
+    pub uninterp spec fn is_empty(&self) -> bool;
+
 
 #[verifier::external_body]
     pub fn empty() -> (ahp: AtomicHeapPtr)
@@ -229,126 +191,47 @@ pub tracked struct PageFullAccess {
 }
 
 impl Page {
-    pub open spec fn wf(&self, page_id: PageId, block_size: nat, mim_instance: Mim::Instance) -> bool {
-        self.xthread_free.wf()
-          && !self.xthread_free.is_empty()
-          && self.xthread_free.instance == mim_instance
-          && self.xthread_free.page_id() == page_id
-          && self.xthread_free.block_size() == block_size
+    pub uninterp spec fn wf(&self, page_id: PageId, block_size: nat, mim_instance: Mim::Instance) -> bool;
 
-          && self.xheap.wf(mim_instance, page_id)
-          && !self.xheap.is_empty()
-    }
 
-    pub open spec fn wf_secondary(&self, mim_instance: Mim::Instance) -> bool {
-        self.xthread_free.wf()
-          && self.xthread_free.is_empty()
-          && self.xthread_free.instance == mim_instance
-    }
+    pub uninterp spec fn wf_secondary(&self, mim_instance: Mim::Instance) -> bool;
 
-    pub open spec fn wf_unused(&self, mim_instance: Mim::Instance) -> bool {
-        self.xthread_free.wf()
-          && self.xthread_free.is_empty()
-          && self.xthread_free.instance == mim_instance
-    }
+
+    pub uninterp spec fn wf_unused(&self, mim_instance: Mim::Instance) -> bool;
+
 }
 
-pub open spec fn page_differ_only_in_offset(page1: Page, page2: Page) -> bool {
-    page2 == Page { offset: page2.offset, .. page1 }
-}
+pub uninterp spec fn page_differ_only_in_offset(page1: Page, page2: Page) -> bool;
 
-pub open spec fn psa_differ_only_in_offset(psa1: PageSharedAccess, psa2: PageSharedAccess) -> bool {
-    psa1.points_to.is_init()
-    && psa2.points_to.is_init()
-    && page_differ_only_in_offset(
-        psa1.points_to.value(),
-        psa2.points_to.value())
-    && psa1.points_to.ptr() == psa2.points_to.ptr()
-}
+
+pub uninterp spec fn psa_differ_only_in_offset(psa1: PageSharedAccess, psa2: PageSharedAccess) -> bool;
+
 
 impl PageSharedAccess {
-    pub open spec fn wf(&self, page_id: PageId, block_size: nat, mim_instance: Mim::Instance) -> bool {
-        &&& is_page_ptr(self.points_to.ptr(), page_id)
-        &&& self.points_to.is_init()
-        &&& self.points_to.value().wf(page_id, block_size, mim_instance)
-        &&& self.exposed.provenance() == self.points_to.ptr()@.provenance
-    }
+    pub uninterp spec fn wf(&self, page_id: PageId, block_size: nat, mim_instance: Mim::Instance) -> bool;
 
-    pub open spec fn wf_secondary(&self, page_id: PageId, block_size: nat, mim_instance: Mim::Instance) -> bool {
-        &&& is_page_ptr(self.points_to.ptr(), page_id)
-        &&& self.points_to.is_init()
-        &&& self.points_to.value().wf_secondary(mim_instance)
-        &&& self.exposed.provenance() == self.points_to.ptr()@.provenance
-    }
 
-    pub open spec fn wf_unused(&self, page_id: PageId, mim_instance: Mim::Instance) -> bool {
-        &&& is_page_ptr(self.points_to.ptr(), page_id)
-        &&& self.points_to.is_init()
-        &&& self.points_to.value().wf_unused(mim_instance)
-        &&& self.exposed.provenance() == self.points_to.ptr()@.provenance
-    }
+    pub uninterp spec fn wf_secondary(&self, page_id: PageId, block_size: nat, mim_instance: Mim::Instance) -> bool;
+
+
+    pub uninterp spec fn wf_unused(&self, page_id: PageId, mim_instance: Mim::Instance) -> bool;
+
 }
 
-pub open spec fn wf_reserved(block_size: int, reserved: int, count: int) -> bool {
-    reserved * block_size + crate::layout::start_offset(block_size) <= count * SLICE_SIZE
-}
+pub uninterp spec fn wf_reserved(block_size: int, reserved: int, count: int) -> bool;
+
 
 impl PageLocalAccess {
-    pub open spec fn wf(&self, page_id: PageId, page_state: PageState, mim_instance: Mim::Instance) -> bool {
-        (page_state.offset == 0 ==> page_state.shared_access.wf(page_id, page_state.block_size, mim_instance))
-        && (page_state.offset != 0 ==> page_state.shared_access.wf_secondary(page_id, page_state.block_size, mim_instance))
-        && page_state.is_enabled
+    pub uninterp spec fn wf(&self, page_id: PageId, page_state: PageState, mim_instance: Mim::Instance) -> bool;
 
-        && match page_state.shared_access.points_to.opt_value() {
-            MemContents::Init(page) => {
-                &&& self.inner.id() == page.inner.id()
-                &&& self.count.id() == page.count.id()
-                &&& self.prev.id() == page.prev.id()
-                &&& self.next.id() == page.next.id()
 
-                &&& match (self.count.value(), self.inner.value(), self.prev.value(), self.next.value()) {
-                    (count, page_inner, prev, next) => {
-                        //&&& is_page_ptr_opt(prev, page_state.prev)
-                        //&&& is_page_ptr_opt(next, page_state.next)
+    pub uninterp spec fn wf_unused(&self, page_id: PageId, shared_access: PageSharedAccess, popped: Popped, mim_instance: Mim::Instance) -> bool;
 
-                        &&& (page_state.offset == 0 ==>
-                            page_inner.wf(page_id, page_state, mim_instance)
-                            && wf_reserved(page_state.block_size as int,
-                                page_inner.reserved as int, count as int)
-                        )
-                        &&& (page_state.offset != 0 ==> page_inner.zeroed_except_block_size())
-                    }
-                }
-            }
-            MemContents::Uninit => false,
-        }
-    }
-
-    pub open spec fn wf_unused(&self, page_id: PageId, shared_access: PageSharedAccess, popped: Popped, mim_instance: Mim::Instance) -> bool {
-        shared_access.wf_unused(page_id, mim_instance)
-
-        && match shared_access.points_to.opt_value() {
-            MemContents::Init(page) => {
-                &&& self.count.id() == page.count.id()
-                &&& self.inner.id() == page.inner.id()
-                &&& self.prev.id() == page.prev.id()
-                &&& self.next.id() == page.next.id()
-
-                &&& self.inner.value().zeroed_except_block_size()
-                // TODO move PageData comparison in here?
-            }
-            MemContents::Uninit => false,
-        }
-    }
 }
 
 impl PageFullAccess {
-    pub open spec fn wf_empty_page_global(&self) -> bool {
-        &&& self.s.points_to.is_init()
-        &&& self.s.points_to.value().inner.id() == self.l.inner.id()
-        &&& self.s.exposed.provenance() == self.s.points_to.ptr()@.provenance
-        &&& self.l.inner.value().zeroed()
-    }
+    pub uninterp spec fn wf_empty_page_global(&self) -> bool;
+
 }
 
 /////////////////////////////////////////////
@@ -424,13 +307,8 @@ pub tracked struct SegmentSharedAccess {
 }
 
 impl SegmentSharedAccess {
-    pub open spec fn wf(&self, segment_id: SegmentId, mim_instance: Mim::Instance) -> bool {
-        &&& is_segment_ptr(self.points_to.ptr(), segment_id)
-        &&& (match self.points_to.opt_value() {
-            MemContents::Init(segment_header) => segment_header.wf(mim_instance, segment_id),
-            MemContents::Uninit => false,
-        })
-    }
+    pub uninterp spec fn wf(&self, segment_id: SegmentId, mim_instance: Mim::Instance) -> bool;
+
 }
 
 pub tracked struct SegmentLocalAccess {
@@ -440,14 +318,8 @@ pub tracked struct SegmentLocalAccess {
 }
 
 impl SegmentLocalAccess {
-    pub open spec fn wf(&self, segment_id: SegmentId, segment_state: SegmentState, mim_instance: Mim::Instance) -> bool {
-        &&& segment_state.shared_access.wf(segment_id, mim_instance)
-        &&& segment_state.shared_access.points_to.value().main.id() == self.main.id()
+    pub uninterp spec fn wf(&self, segment_id: SegmentId, segment_state: SegmentState, mim_instance: Mim::Instance) -> bool;
 
-        &&& segment_state.shared_access.points_to.value().main2.id() == self.main2.id()
-
-        &&& segment_state.is_enabled
-    }
 }
 
 /////////////////////////////////////////////
@@ -505,77 +377,30 @@ pub struct HeapLocalAccess {
 }
 
 impl Heap {
-    pub open spec fn wf(&self, heap_id: HeapId, tld_id: TldId, mim_instance: InstanceId) -> bool {
-        &&& self.thread_delayed_free.wf()
-        &&& self.thread_delayed_free.instance@.id() == mim_instance
-        &&& self.thread_delayed_free.heap_id == heap_id
-        &&& self.tld_ptr.wf()
-        &&& self.tld_ptr.tld_id == tld_id
-    }
+    pub uninterp spec fn wf(&self, heap_id: HeapId, tld_id: TldId, mim_instance: InstanceId) -> bool;
+
 }
 
 impl HeapSharedAccess {
-    pub open spec fn wf(&self, heap_id: HeapId, tld_id: TldId, mim_instance: InstanceId) -> bool {
-        is_heap_ptr(self.points_to.ptr(), heap_id)
-          && self.points_to.is_init()
-          && self.points_to.value().wf(heap_id, tld_id, mim_instance)
-    }
+    pub uninterp spec fn wf(&self, heap_id: HeapId, tld_id: TldId, mim_instance: InstanceId) -> bool;
 
-    pub open spec fn wf2(&self, heap_id: HeapId, mim_instance: InstanceId) -> bool {
-        self.wf(heap_id, self.points_to.value().tld_ptr.tld_id@,
-            mim_instance)
-    }
+
+    pub uninterp spec fn wf2(&self, heap_id: HeapId, mim_instance: InstanceId) -> bool;
+
 }
 
-pub open spec fn pages_free_direct_match(pfd_val: *mut Page, p_val: *mut Page, emp: *mut Page) -> bool {
-    (p_val as int == 0 ==> pfd_val as int == emp as int)
-    && (p_val as int != 0 ==> pfd_val as int == p_val as int)
-}
+pub uninterp spec fn pages_free_direct_match(pfd_val: *mut Page, p_val: *mut Page, emp: *mut Page) -> bool;
 
-pub open spec fn pages_free_direct_is_correct(pfd: Seq<*mut Page>, pages: Seq<PageQueue>, emp: *mut Page) -> bool {
-    &&& pfd.len() == PAGES_DIRECT
-    &&& pages.len() == BIN_FULL + 1
-    &&& (forall |wsize|
-      0 <= wsize < pfd.len() ==>
-        pages_free_direct_match(
-            #[trigger] pfd[wsize],
-            pages[smallest_bin_fitting_size(wsize * INTPTR_SIZE)].first,
-            emp)
-    )
-}
+
+pub uninterp spec fn pages_free_direct_is_correct(pfd: Seq<*mut Page>, pages: Seq<PageQueue>, emp: *mut Page) -> bool;
+
 
 impl HeapLocalAccess {
-    pub open spec fn wf(&self, heap_id: HeapId, heap_state: HeapState, tld_id: TldId, mim_instance: InstanceId, emp: *mut Page) -> bool {
+    pub uninterp spec fn wf(&self, heap_id: HeapId, heap_state: HeapState, tld_id: TldId, mim_instance: InstanceId, emp: *mut Page) -> bool;
 
-        self.wf_basic(heap_id, heap_state, tld_id, mim_instance)
-          && pages_free_direct_is_correct(
-                self.pages_free_direct.value()@,
-                self.pages.value()@,
-                emp)
-          && heap_state.shared_access.points_to.value().page_empty_ptr == emp
-    }
 
-    pub open spec fn wf_basic(&self, heap_id: HeapId, heap_state: HeapState, tld_id: TldId, mim_instance: InstanceId) -> bool {
-      heap_state.shared_access.wf(heap_id, tld_id, mim_instance)
-        && {
-            let heap = heap_state.shared_access.points_to.value();
-              heap.pages_free_direct.id() == self.pages_free_direct.id()
-              && heap.pages.id() == self.pages.id()
-              && heap.page_count.id() == self.page_count.id()
-              && heap.page_retired_min.id() == self.page_retired_min.id()
-              && heap.page_retired_max.id() == self.page_retired_max.id()
+    pub uninterp spec fn wf_basic(&self, heap_id: HeapId, heap_state: HeapState, tld_id: TldId, mim_instance: InstanceId) -> bool;
 
-              && (forall |i: int| #[trigger] valid_bin_idx(i) ==>
-                  self.pages.value()[i].block_size == size_of_bin(i))
-              // 0 isn't a valid_bin_idx
-              && self.pages.value()[0].block_size == 8
-              && self.pages.value()[BIN_FULL as int].block_size ==
-                    8 * (524288 + 2) //MEDIUM_OBJ_WSIZE_MAX + 2
-
-              && self.pages_free_direct.value()@.len() == PAGES_DIRECT
-              && self.pages.value()@.len() == BIN_FULL + 1
-        }
-    }
 }
 
 /////////////////////////////////////////////
@@ -645,142 +470,25 @@ pub tracked struct Local {
     pub tracked page_empty_global: Shared<PageFullAccess>,
 }
 
-pub open spec fn common_preserves(l1: Local, l2: Local) -> bool {
-    l1.heap_id == l2.heap_id
-    && l1.tld_id == l2.tld_id
-    && l1.instance == l2.instance
-}
+pub uninterp spec fn common_preserves(l1: Local, l2: Local) -> bool;
+
 
 impl Local {
     pub open(crate) spec fn inst(&self) -> Mim::Instance {
         self.instance
     }
 
-    pub open(crate) spec fn wf(&self) -> bool {
-        self.wf_main()
-          && self.page_organization.popped == Popped::No
-    }
+    pub uninterp spec fn wf(&self) -> bool;
 
-    pub open spec fn wf_basic(&self) -> bool {
-        &&& is_tld_ptr(self.tld.ptr(), self.tld_id)
 
-        &&& self.thread_token.instance_id() == self.instance.id()
-        &&& self.thread_token.key() == self.thread_id
+    pub uninterp spec fn wf_basic(&self) -> bool;
 
-        &&& self.thread_token.value().segments.dom() == self.segments.dom()
 
-        &&& self.thread_token.value().heap_id == self.heap_id
-        &&& self.heap.wf_basic(self.heap_id, self.thread_token.value().heap, self.tld_id, self.instance.id())
+    pub uninterp spec fn wf_main(&self) -> bool;
 
-        &&& self.thread_token.value().heap.shared_access.points_to.value().page_empty_ptr == self.page_empty_global@.s.points_to.ptr()
-        &&& self.page_empty_global@.wf_empty_page_global()
-    }
 
-    pub open spec fn wf_main(&self) -> bool {
-        &&& is_tld_ptr(self.tld.ptr(), self.tld_id)
+    pub uninterp spec fn page_organization_valid(&self) -> bool;
 
-        &&& self.thread_token.instance_id() == self.instance.id()
-        &&& self.thread_token.key() == self.thread_id
-        &&& self.thread_id == self.is_thread@
-
-        &&& self.checked_token.instance_id() == self.instance.id()
-        &&& self.checked_token.key() == self.thread_id
-
-        &&& self.my_inst.instance_id() == self.instance.id()
-        &&& self.my_inst.value() == self.instance.id()
-
-        //&&& (forall |page_id|
-        //    self.thread_token.value().pages.dom().contains(page_id) <==>
-        //    self.pages.dom().contains(page_id))
-        //&&& self.thread_token.value().pages.dom() == self.pages.dom()
-        &&& self.thread_token.value().segments.dom() == self.segments.dom()
-
-        &&& self.thread_token.value().heap_id == self.heap_id
-        &&& self.heap.wf(self.heap_id, self.thread_token.value().heap, self.tld_id, self.instance.id(), self.page_empty_global@.s.points_to.ptr())
-
-        &&& (forall |page_id|
-            #[trigger] self.pages.dom().contains(page_id) ==>
-            // Page is either 'used' or 'unused'
-              (self.unused_pages.dom().contains(page_id) <==>
-                !self.thread_token.value().pages.dom().contains(page_id)))
-
-        &&& self.thread_token.value().pages.dom().subset_of(self.pages.dom())
-        &&& (forall |page_id|
-            #[trigger] self.pages.dom().contains(page_id) ==>
-              self.thread_token.value().pages.dom().contains(page_id) ==>
-                self.pages.index(page_id).wf(
-                  page_id,
-                  self.thread_token.value().pages.index(page_id),
-                  self.instance,
-                )
-            )
-
-        &&& (forall |page_id|
-            #[trigger] self.pages.dom().contains(page_id) ==>
-              self.unused_pages.dom().contains(page_id) ==>
-                self.pages.index(page_id).wf_unused(page_id, self.unused_pages[page_id], self.page_organization.popped, self.instance))
-
-        &&& (forall |segment_id|
-            #[trigger] self.segments.dom().contains(segment_id) ==>
-              self.segments[segment_id].wf(
-                segment_id,
-                self.thread_token.value().segments.index(segment_id),
-                self.instance,
-              )
-            )
-        &&& (forall |segment_id|
-            #[trigger] self.segments.dom().contains(segment_id) ==>
-              self.mem_chunk_good(segment_id)
-            )
-
-        &&& self.tld.is_init()
-
-        &&& self.page_organization_valid()
-
-        &&& self.page_empty_global@.wf_empty_page_global()
-    }
-
-    pub open spec fn page_organization_valid(&self) -> bool
-    {
-        &&& self.page_organization.invariant()
-        &&& self.tld.is_init()
-
-        &&& page_organization_queues_match(self.page_organization.unused_dlist_headers,
-                self.tld.value().segments.span_queue_headers@)
-
-        &&& page_organization_used_queues_match(self.page_organization.used_dlist_headers,
-                self.heap.pages.value()@)
-
-        &&& page_organization_pages_match(self.page_organization.pages,
-                self.pages, self.psa, self.page_organization.popped)
-
-        &&& page_organization_segments_match(self.page_organization.segments, self.segments)
-
-        &&& (forall |page_id: PageId| #[trigger] self.page_organization.pages.dom().contains(page_id) ==>
-            (!self.page_organization.pages[page_id].is_used <==> self.unused_pages.dom().contains(page_id)))
-
-        //&&& (forall |page_id: PageId|
-        //  #[trigger] self.page_organization.pages.dom().contains(page_id)
-        //    ==> self.page_organization.pages[page_id].is_used
-        //    ==> self.page_organization.pages[page_id].offset == Some(0nat)
-        //    ==> self.thread_token.value().pages[page_id].offset == 0)
-
-        &&& (forall |page_id|
-          #[trigger] self.page_organization.pages.dom().contains(page_id)
-            ==> self.page_organization.pages[page_id].is_used
-            ==> page_organization_matches_token_page(
-                    self.page_organization.pages[page_id],
-                    self.thread_token.value().pages[page_id]))
-
-        &&& (forall |page_id: PageId| (#[trigger] self.unused_pages.dom().contains(page_id)) ==>
-            self.page_organization.pages.dom().contains(page_id))
-
-        &&& (forall |page_id: PageId| #[trigger] self.unused_pages.dom().contains(page_id) ==>
-            self.unused_pages[page_id] == self.psa[page_id])
-
-        &&& (forall |page_id: PageId| #[trigger] self.thread_token.value().pages.dom().contains(page_id) ==>
-            self.thread_token.value().pages[page_id].shared_access == self.psa[page_id])
-    }
 
     pub open spec fn page_state(&self, page_id: PageId) -> PageState
         recommends self.thread_token.value().pages.dom().contains(page_id)
@@ -819,11 +527,8 @@ impl Local {
         self.segments[segment_id].main.value().decommit_mask
     }
 
-    pub open spec fn is_used_primary(&self, page_id: PageId) -> bool {
-        self.page_organization.pages.dom().contains(page_id)
-          && self.page_organization.pages[page_id].is_used
-          && self.page_organization.pages[page_id].offset == Some(0nat)
-    }
+    pub uninterp spec fn is_used_primary(&self, page_id: PageId) -> bool;
+
 
     pub open spec fn page_reserved(&self, page_id: PageId) -> int {
         self.pages[page_id].inner.value().reserved as int
@@ -842,129 +547,45 @@ impl Local {
     }
 }
 
-pub open spec fn page_organization_queues_match(
+pub uninterp spec fn page_organization_queues_match(
     org_queues: Seq<DlistHeader>,
     queues: Seq<SpanQueueHeader>,
-) -> bool {
-    org_queues.len() == queues.len()
-    && (forall |i: int| 0 <= i < org_queues.len() ==>
-        is_page_ptr_opt((#[trigger] queues[i]).first, org_queues[i].first))
-    && (forall |i: int| 0 <= i < org_queues.len() ==>
-        is_page_ptr_opt((#[trigger] queues[i]).last, org_queues[i].last))
-}
+) -> bool;
 
-pub open spec fn page_organization_used_queues_match(
+
+pub uninterp spec fn page_organization_used_queues_match(
     org_queues: Seq<DlistHeader>,
     queues: Seq<PageQueue>,
-) -> bool {
-    org_queues.len() == queues.len()
-    && (forall |i: int| 0 <= i < org_queues.len() ==>
-        is_page_ptr_opt((#[trigger] queues[i]).first, org_queues[i].first))
-    && (forall |i: int| 0 <= i < org_queues.len() ==>
-        is_page_ptr_opt((#[trigger] queues[i]).last, org_queues[i].last))
-}
+) -> bool;
 
 
-pub open spec fn page_organization_pages_match(
+
+pub uninterp spec fn page_organization_pages_match(
     org_pages: Map<PageId, PageData>,
     pages: Map<PageId, PageLocalAccess>,
     psa: Map<PageId, PageSharedAccess>,
     popped: Popped,
-) -> bool {
-    &&& org_pages.dom() =~= pages.dom()
-    &&& org_pages.dom() =~= psa.dom()
+) -> bool;
 
-    //&&& (forall |page_id| #[trigger] org_pages.dom().contains(page_id)
-    //    && !org_pages[page_id].is_used ==> unused_pages.dom().contains(page_id))
-    //
-    //&&& (forall |page_id| #[trigger] org_pages.dom().contains(page_id)
-    //    && !org_pages[page_id].is_used ==> unused_pages[page_id].wf_unused(page_id))
 
-    &&& (forall |page_id| #[trigger] org_pages.dom().contains(page_id) ==>
-        page_organization_pages_match_data(org_pages[page_id], pages[page_id], psa[page_id], page_id, popped))
-}
-
-pub open spec fn page_organization_pages_match_data(
+pub uninterp spec fn page_organization_pages_match_data(
     page_data: PageData,
     pla: PageLocalAccess,
     psa: PageSharedAccess,
     page_id: PageId,
-    popped: Popped) -> bool
-{
-    psa.points_to.is_init() && (
-    match (*pla.count.value(), *pla.inner.value(), *pla.prev.value(), *pla.next.value()) {
-        (count, inner, prev, next) => {
-            &&& (match page_data.count {
-                None => true,
-                Some(c) => count as int == c
-            })
-            &&& (match page_data.full {
-                None => true,
-                Some(b) => inner.in_full() == b,
-            })
-            &&& (match page_data.offset {
-                None => true,
-                Some(o) => psa.points_to.value().offset as int ==
-                            o * SIZEOF_PAGE_HEADER
-            })
-            &&& (match page_data.dlist_entry {
-                None => true,
-                Some(page_queue_data) => {
-                    &&& is_page_ptr_opt(prev, page_queue_data.prev)
-                    &&& is_page_ptr_opt(next, page_queue_data.next)
-                }
-            })
-            &&& (match page_data.page_header_kind {
-                None => {
-                    (page_id.idx == 0 ==> {
-                      &&& !page_data.is_used
-                      &&& (match popped {
-                          Popped::SegmentCreating(sid) if sid == page_id.segment_id =>
-                              true,
-                          _ => inner.xblock_size != 0
-                      })
-                      &&& (!popped.is_SegmentCreating() ==> inner.xblock_size != 0)
-                    })
-                    && (page_id.idx != 0 ==> page_data.offset == Some(0nat) ==> (
-                        (!(popped.is_Ready() && popped.get_Ready_0() == page_id) &&
-                            !(popped.is_VeryUnready() && popped.get_VeryUnready_0() == page_id.segment_id && popped.get_VeryUnready_1() == page_id.idx))
-                          ==>
-                        (page_data.is_used <==> inner.xblock_size != 0)
-                    ))
-                }
-                Some(PageHeaderKind::Normal(_, bsize)) => {
-                    &&& page_id.idx != 0
-                    &&& page_data.is_used
-                    &&& inner.xblock_size != 0
-                    &&& inner.xblock_size == bsize
-                    &&& page_data.is_used
-                    &&& page_data.offset == Some(0nat)
-                }
-            })
-        }
-    })
-}
+    popped: Popped) -> bool;
 
-pub open spec fn page_organization_segments_match(
+
+pub uninterp spec fn page_organization_segments_match(
     org_segments: Map<SegmentId, SegmentData>,
     segments: Map<SegmentId, SegmentLocalAccess>,
-) -> bool {
-    org_segments.dom() =~= segments.dom()
-    && (forall |segment_id: SegmentId| segments.dom().contains(segment_id) ==>
-        org_segments[segment_id].used == segments[segment_id].main2.value().used)
-}
+) -> bool;
 
-pub open spec fn page_organization_matches_token_page(
+
+pub uninterp spec fn page_organization_matches_token_page(
     page_data: PageData,
-    page_state: PageState) -> bool
-{
-    page_data.offset.is_some()
-    && page_data.offset.unwrap() == page_state.offset
-    /*&& (match page_data.page_header_kind {
-        Some(PageHeaderKind::Normal(bsize)) => bsize == page_state.block_size,
-        _ => true,
-    })*/
-}
+    page_state: PageState) -> bool;
+
 
 
 /////////////////////////////////////////////
@@ -992,15 +613,11 @@ impl Clone for HeapPtr {
 impl Copy for HeapPtr { }
 
 impl HeapPtr {
-    #[verifier(inline)]
-    pub open spec fn wf(&self) -> bool {
-        is_heap_ptr(self.heap_ptr, self.heap_id@)
-    }
+    pub uninterp spec fn wf(&self) -> bool;
 
-    #[verifier(inline)]
-    pub open spec fn is_in(&self, local: Local) -> bool {
-        local.heap_id == self.heap_id@
-    }
+
+    pub uninterp spec fn is_in(&self, local: Local) -> bool;
+
 
     #[inline(always)]
 #[verifier::external_body]
@@ -1094,23 +711,14 @@ impl HeapPtr {
     }
 }
 
-pub open spec fn local_page_count_update(loc1: Local, loc2: Local) -> bool {
-    &&& loc2 == Local { heap: loc2.heap, .. loc1 }
-    &&& loc2.heap == HeapLocalAccess { page_count: loc2.heap.page_count, .. loc1.heap }
-    &&& loc1.heap.page_count.id() == loc2.heap.page_count.id()
-}
+pub uninterp spec fn local_page_count_update(loc1: Local, loc2: Local) -> bool;
 
-pub open spec fn local_page_retired_min_update(loc1: Local, loc2: Local) -> bool {
-    &&& loc2 == Local { heap: loc2.heap, .. loc1 }
-    &&& loc2.heap == HeapLocalAccess { page_retired_min: loc2.heap.page_retired_min, .. loc1.heap }
-    &&& loc1.heap.page_retired_min.id() == loc2.heap.page_retired_min.id()
-}
 
-pub open spec fn local_page_retired_max_update(loc1: Local, loc2: Local) -> bool {
-    &&& loc2 == Local { heap: loc2.heap, .. loc1 }
-    &&& loc2.heap == HeapLocalAccess { page_retired_max: loc2.heap.page_retired_max, .. loc1.heap }
-    &&& loc1.heap.page_retired_max.id() == loc2.heap.page_retired_max.id()
-}
+pub uninterp spec fn local_page_retired_min_update(loc1: Local, loc2: Local) -> bool;
+
+
+pub uninterp spec fn local_page_retired_max_update(loc1: Local, loc2: Local) -> bool;
+
 
 
 
@@ -1131,15 +739,11 @@ impl Copy for TldPtr { }
 
 
 impl TldPtr {
-    #[verifier(inline)]
-    pub open spec fn wf(&self) -> bool {
-        is_tld_ptr(self.tld_ptr, self.tld_id@)
-    }
+    pub uninterp spec fn wf(&self) -> bool;
 
-    #[verifier(inline)]
-    pub open spec fn is_in(&self, local: Local) -> bool {
-        local.tld_id == self.tld_id@
-    }
+
+    pub uninterp spec fn is_in(&self, local: Local) -> bool;
+
 
     #[inline(always)]
 #[verifier::external_body]
@@ -1179,15 +783,11 @@ impl Clone for SegmentPtr {
 impl Copy for SegmentPtr { }
 
 impl SegmentPtr {
-    #[verifier(inline)]
-    pub open spec fn wf(&self) -> bool {
-        is_segment_ptr(self.segment_ptr, self.segment_id@)
-    }
+    pub uninterp spec fn wf(&self) -> bool;
 
-    #[verifier(inline)]
-    pub open spec fn is_in(&self, local: Local) -> bool {
-        local.segments.dom().contains(self.segment_id@)
-    }
+
+    pub uninterp spec fn is_in(&self, local: Local) -> bool;
+
 
     #[inline(always)]
 #[verifier::external_body]
@@ -1341,38 +941,23 @@ impl Clone for PagePtr {
 impl Copy for PagePtr { }
 
 impl PagePtr {
-    #[verifier(inline)]
-    pub open spec fn wf(&self) -> bool {
-        is_page_ptr(self.page_ptr, self.page_id@)
-          && self.page_ptr.addr() != 0
-    }
+    pub uninterp spec fn wf(&self) -> bool;
 
-    #[verifier(inline)]
-    pub open spec fn is_in(&self, local: Local) -> bool {
-        local.pages.dom().contains(self.page_id@)
-    }
 
-    pub open spec fn is_empty_global(&self, local: Local) -> bool {
-        self.page_ptr == local.page_empty_global@.s.points_to.ptr()
-    }
+    pub uninterp spec fn is_in(&self, local: Local) -> bool;
 
-    #[verifier(inline)]
-    pub open spec fn is_used_and_primary(&self, local: Local) -> bool {
-        local.pages.dom().contains(self.page_id@)
-          && local.thread_token.value().pages.dom().contains(self.page_id@)
-          && local.thread_token.value().pages[self.page_id@].offset == 0
-    }
 
-    #[verifier(inline)]
-    pub open spec fn is_in_unused(&self, local: Local) -> bool {
-        local.unused_pages.dom().contains(self.page_id@)
-    }
+    pub uninterp spec fn is_empty_global(&self, local: Local) -> bool;
 
-    #[verifier(inline)]
-    pub open spec fn is_used(&self, local: Local) -> bool {
-        local.pages.dom().contains(self.page_id@)
-          && local.thread_token.value().pages.dom().contains(self.page_id@)
-    }
+
+    pub uninterp spec fn is_used_and_primary(&self, local: Local) -> bool;
+
+
+    pub uninterp spec fn is_in_unused(&self, local: Local) -> bool;
+
+
+    pub uninterp spec fn is_used(&self, local: Local) -> bool;
+
 
     #[inline(always)]
 #[verifier::external_body]

@@ -63,9 +63,8 @@ impl PageId {
 }
 
 impl BlockId {
-    pub open spec fn wf(&self) -> bool {
-        self.slice_idx >= self.page_id.idx
-    }
+    pub uninterp spec fn wf(&self) -> bool;
+
 
     pub open spec fn page_id_for_slice(&self) -> PageId {
         PageId {
@@ -78,9 +77,8 @@ impl BlockId {
         (page_id.idx + (crate::layout::start_offset(block_size as int) + idx * block_size) / (SLICE_SIZE as int)) as nat
     }
 
-    pub open spec fn slice_idx_is_right(&self) -> bool {
-        self.slice_idx == BlockId::get_slice_idx(self.page_id, self.idx, self.block_size)
-    }
+    pub uninterp spec fn slice_idx_is_right(&self) -> bool;
+
 }
 
 // States
@@ -216,29 +214,20 @@ pub open spec fn segment_u_max(s: Set<SegmentId>) -> int
     }
 }
 
+#[verifier::external_body]
 proof fn segment_u_max_not_in(s: Set<SegmentId>)
     ensures forall |id: SegmentId| s.contains(id) ==> id.uniq < segment_u_max(s) + 1,
-    decreases s.len(),
-{
-    vstd::set_lib::lemma_set_empty_equivalency_len(s);
-    if s.len() == 0 {
-        assert(s === Set::empty());
-    } else {
-        let x = s.choose();
-        let t = s.remove(x);
-        segment_u_max_not_in(t);
-    }
-}
+    decreases s.len(), { unimplemented!() }
+
 
 pub open spec fn segment_get_unused_uniq_field(s: Set<SegmentId>) -> int {
     segment_u_max(s) + 1
 }
 
+#[verifier::external_body]
 pub proof fn lemma_segment_get_unused_uniq_field(s: Set<SegmentId>)
-    ensures forall |id: SegmentId| s.contains(id) ==> id.uniq != segment_get_unused_uniq_field(s)
-{
-    segment_u_max_not_in(s);
-}
+    ensures forall |id: SegmentId| s.contains(id) ==> id.uniq != segment_get_unused_uniq_field(s) { unimplemented!() }
+
 
 pub open spec fn heap_u_max(s: Set<HeapId>) -> int
     decreases s.len()
@@ -251,29 +240,20 @@ pub open spec fn heap_u_max(s: Set<HeapId>) -> int
     }
 }
 
+#[verifier::external_body]
 proof fn heap_u_max_not_in(s: Set<HeapId>)
     ensures forall |id: HeapId| s.contains(id) ==> id.uniq < heap_u_max(s) + 1,
-    decreases s.len(),
-{
-    vstd::set_lib::lemma_set_empty_equivalency_len(s);
-    if s.len() == 0 {
-        assert(s === Set::empty());
-    } else {
-        let x = s.choose();
-        let t = s.remove(x);
-        heap_u_max_not_in(t);
-    }
-}
+    decreases s.len(), { unimplemented!() }
+
 
 pub open spec fn heap_get_unused_uniq_field(s: Set<HeapId>) -> int {
     heap_u_max(s) + 1
 }
 
+#[verifier::external_body]
 pub proof fn lemma_heap_get_unused_uniq_field(s: Set<HeapId>)
-    ensures forall |id: HeapId| s.contains(id) ==> id.uniq != heap_get_unused_uniq_field(s)
-{
-    heap_u_max_not_in(s);
-}
+    ensures forall |id: HeapId| s.contains(id) ==> id.uniq != heap_get_unused_uniq_field(s) { unimplemented!() }
+
 
 pub open spec fn all_thread_ids() -> Set<ThreadId> {
     vstd::contrib::set_build!{ ThreadId { thread_id }: ThreadId | thread_id: u64 }

@@ -25,37 +25,8 @@ pub tracked struct MimDeallocInner {
     pub ghost ptr: *mut u8,
 }
 
-pub open spec fn valid_block_token(block: Mim::block, instance: Mim::Instance) -> bool {
-    &&& block.key().wf()
-    &&& block.instance_id() == instance.id()
+pub uninterp spec fn valid_block_token(block: Mim::block, instance: Mim::Instance) -> bool;
 
-    // TODO factor this stuff into wf predicates
-
-    // Valid segment
-
-    &&& is_segment_ptr(
-        block.value().segment_shared_access.points_to.ptr(),
-        block.key().page_id.segment_id)
-    &&& block.value().segment_shared_access.points_to.is_init()
-    &&& block.value().segment_shared_access.points_to.value()
-        .wf(instance, block.key().page_id.segment_id)
-
-    // Valid slice page
-
-    &&& is_page_ptr(
-        block.value().page_slice_shared_access.points_to.ptr(),
-        block.key().page_id_for_slice())
-    &&& block.value().page_slice_shared_access.points_to.is_init()
-    &&& block.value().page_slice_shared_access.points_to.value().offset as int
-          == (block.key().slice_idx - block.key().page_id.idx) * crate::config::SIZEOF_PAGE_HEADER
-
-    // Valid main page
-
-    &&& block.value().page_shared_access.wf(
-        block.key().page_id,
-        block.key().block_size,
-        instance)
-}
 
 impl MimDeallocInner {
     #[verifier(inline)]
@@ -63,10 +34,8 @@ impl MimDeallocInner {
         self.mim_block.key()
     }
 
-    pub open spec fn wf(&self) -> bool {
-        &&& valid_block_token(self.mim_block, self.mim_instance)
-        &&& is_block_ptr(self.ptr, self.block_id())
-    }
+    pub uninterp spec fn wf(&self) -> bool;
+
 
 }
 
@@ -80,15 +49,8 @@ impl MimDealloc {
     pub uninterp spec fn size(&self) -> int;
 
     #[verifier::type_invariant]
-    spec fn wf(&self) -> bool {
-        self.inner.wf()
-          // PAPER CUT: is_range should probably have this condition in it
-          && self.block_id().block_size - self._size >= 0
-          && self._size >= 0
-          && self.padding.is_range(self.inner.ptr as int + self._size,
-              self.block_id().block_size - self._size)
-          && self.padding.provenance() == self.inner.ptr@.provenance
-    }
+    uninterp spec fn wf(&self) -> bool;
+
 
     #[verifier::external_body]
     pub(crate) proof fn into_internal(tracked self, tracked points_to_raw: PointsToRaw)

@@ -20,14 +20,20 @@ pub uninterp spec fn flags2_is_zero(u: u8) -> bool;
 pub uninterp spec fn flags2_retire_expire(u: u8) -> int;
 
 impl PageInner {
-    pub open spec fn is_reset(&self) -> bool { flags0_is_reset(self.flags0) }
-    pub open spec fn is_committed(&self) -> bool { flags0_is_committed(self.flags0) }
-    pub open spec fn is_zero_init(&self) -> bool { flags0_is_zero_init(self.flags0) }
+    pub uninterp spec fn is_reset(&self) -> bool;
 
-    pub open spec fn in_full(&self) -> bool { flags1_in_full(self.flags1) }
-    pub open spec fn has_aligned(&self) -> bool { flags1_has_aligned(self.flags1) }
+    pub uninterp spec fn is_committed(&self) -> bool;
 
-    pub open spec fn is_zero(&self) -> bool { flags2_is_zero(self.flags2) }
+    pub uninterp spec fn is_zero_init(&self) -> bool;
+
+
+    pub uninterp spec fn in_full(&self) -> bool;
+
+    pub uninterp spec fn has_aligned(&self) -> bool;
+
+
+    pub uninterp spec fn is_zero(&self) -> bool;
+
     pub open spec fn retire_expire(&self) -> int { flags2_retire_expire(self.flags2) }
 
     // getters

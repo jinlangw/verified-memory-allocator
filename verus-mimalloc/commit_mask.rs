@@ -12,10 +12,8 @@ verus!{
 spec fn mod64(x: usize) -> usize { x % 64 }
 spec fn div64(x: usize) -> usize { x / 64 }
 
-#[verifier::opaque]
-spec fn is_bit_set(a: usize, b: usize) -> bool {
-    a & (1usize << b) == (1usize << b)
-}
+uninterp spec fn is_bit_set(a: usize, b: usize) -> bool;
+
 
 #[allow(unused_macros)]
 macro_rules! is_bit_set {

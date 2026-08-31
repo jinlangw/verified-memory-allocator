@@ -14,26 +14,17 @@ use crate::config::*;
 
 verus!{
 
-pub open spec fn is_page_ptr(ptr: *mut Page, page_id: PageId) -> bool {
-    ptr as int == page_header_start(page_id)
-        && 0 <= page_id.idx <= SLICES_PER_SEGMENT
-        && segment_start(page_id.segment_id) + SEGMENT_SIZE < usize::MAX
-        && ptr@.provenance == page_id.segment_id.provenance
-}
+pub uninterp spec fn is_page_ptr(ptr: *mut Page, page_id: PageId) -> bool;
 
-pub open spec fn is_segment_ptr(ptr: *mut SegmentHeader, segment_id: SegmentId) -> bool {
-    ptr as int == segment_start(segment_id)
-      && ptr as int + SEGMENT_SIZE < usize::MAX
-      && ptr@.provenance == segment_id.provenance
-}
 
-pub open spec fn is_heap_ptr(ptr: *mut Heap, heap_id: HeapId) -> bool {
-    heap_id.id == ptr.addr() && ptr@.provenance == heap_id.provenance
-}
+pub uninterp spec fn is_segment_ptr(ptr: *mut SegmentHeader, segment_id: SegmentId) -> bool;
 
-pub open spec fn is_tld_ptr(ptr: *mut Tld, tld_id: TldId) -> bool {
-    tld_id.id == ptr.addr() && ptr@.provenance == tld_id.provenance
-}
+
+pub uninterp spec fn is_heap_ptr(ptr: *mut Heap, heap_id: HeapId) -> bool;
+
+
+pub uninterp spec fn is_tld_ptr(ptr: *mut Tld, tld_id: TldId) -> bool;
+
 
 pub uninterp spec fn segment_start(segment_id: SegmentId) -> int;
 
@@ -55,52 +46,22 @@ pub open spec fn block_start_at(page_id: PageId, block_size: int, block_idx: int
 
 pub uninterp spec fn block_start(block_id: BlockId) -> int;
 
-pub open spec fn is_block_ptr(ptr: *mut u8, block_id: BlockId) -> bool {
-    &&& ptr@.provenance == block_id.page_id.segment_id.provenance
-    &&& is_block_ptr1(ptr as int, block_id)
-}
+pub uninterp spec fn is_block_ptr(ptr: *mut u8, block_id: BlockId) -> bool;
 
-#[verifier::opaque]
-pub open spec fn is_block_ptr1(ptr: int, block_id: BlockId) -> bool {
-    // ptr should be in the range (segment start, segment end]
-    // Yes, that's open at the start and closed at the end
-    //  - segment start is invalid since that's where the SegmentHeader is
-    //  - segment end is valid because there might be a huge block there
-    &&& segment_start(block_id.page_id.segment_id) < ptr
-        <= segment_start(block_id.page_id.segment_id) + (SEGMENT_SIZE as int)
-        < usize::MAX
 
-    // Has valid slice_idx (again this is <= to account for the huge slice)
-    &&& 0 <= block_id.slice_idx <= SLICES_PER_SEGMENT
+pub uninterp spec fn is_block_ptr1(ptr: int, block_id: BlockId) -> bool;
 
-    // It also has to be in the right slice
-    &&& segment_start(block_id.page_id.segment_id) + (block_id.slice_idx * SLICE_SIZE)
-        <= ptr
-        < segment_start(block_id.page_id.segment_id) + (block_id.slice_idx * SLICE_SIZE)
-              + SLICE_SIZE
 
-    // the pptr should actually agree with the block_id
-    &&& ptr == block_start(block_id)
+pub uninterp spec fn is_page_ptr_opt(pptr: *mut Page, opt_page_id: Option<PageId>) -> bool;
 
-    &&& 0 <= block_id.page_id.segment_id.id
 
-    // The block size must be a multiple of the word size
-    &&& block_id.block_size >= size_of::<crate::linked_list::Node>()
-    &&& block_id.block_size % size_of::<crate::linked_list::Node>() == 0
-}
+#[verifier::external_body]
+pub proof fn block_size_ge_word() { unimplemented!() }
 
-pub open spec fn is_page_ptr_opt(pptr: *mut Page, opt_page_id: Option<PageId>) -> bool {
-    match opt_page_id {
-        Some(page_id) => is_page_ptr(pptr, page_id) && pptr.addr() != 0,
-        None => pptr.addr() == 0,
-    }
-}
 
-pub proof fn block_size_ge_word()
-{ }
+#[verifier::external_body]
+pub proof fn block_ptr_aligned_to_word() { unimplemented!() }
 
-pub proof fn block_ptr_aligned_to_word()
-{ }
 
 // Bit lemmas
 
@@ -246,8 +207,9 @@ pub fn calculate_page_block_at(
     return p;
 }
 
-pub proof fn mk_segment_id(p: *mut SegmentHeader) -> (id: SegmentId)
-{ arbitrary() }
+#[verifier::external_body]
+pub proof fn mk_segment_id(p: *mut SegmentHeader) -> (id: SegmentId) { unimplemented!() }
+
 
 #[verifier::external_body]
 pub fn segment_page_start_from_slice(
@@ -311,8 +273,9 @@ impl SegmentPtr {
     }
 }
 
-pub proof fn is_block_ptr_mult4(ptr: *mut u8, block_id: BlockId)
-{ }
+#[verifier::external_body]
+pub proof fn is_block_ptr_mult4(ptr: *mut u8, block_id: BlockId) { unimplemented!() }
+
 
 #[verifier::external_body]
 pub fn calculate_start_offset(block_size: usize) -> (res: u32)

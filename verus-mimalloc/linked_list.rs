@@ -125,6 +125,7 @@ impl LL {
     // It requires the pointer writer has already been done, so it's just arranging
     // ghost data in a ghost LL.
 
+    #[verifier::external_body]
     pub proof fn ghost_insert_block(
         tracked self_: &mut Tracked<LL>,
         tracked ptr: *mut Node,
@@ -132,8 +133,8 @@ impl LL {
         tracked points_to_raw: PointsToRaw,
         tracked block_token: Mim::block,
         tracked is_exposed: IsExposed,
-     )
-    { }
+     ) { unimplemented!() }
+
 
     #[inline(always)]
 #[verifier::external_body]
@@ -674,9 +675,8 @@ struct_with_invariants!{
 }
 
 impl ThreadLLWithDelayBits {
-    pub open spec fn is_empty(&self) -> bool {
-        self.emp@.value().is_none()
-    }
+    pub uninterp spec fn is_empty(&self) -> bool;
+
 
     pub open spec fn block_size(&self) -> nat {
         self.emp@.value().unwrap().block_size

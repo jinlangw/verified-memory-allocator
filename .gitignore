@@ -1,3 +1,9 @@
 build/
 test_libc/target/
 .run/
+
+# Verification harness artefacts — never commit these back onto the benchmark
+# baseline; doing so leaks solved state into future runs.
+.verus_agent/
+*.orig
+research/

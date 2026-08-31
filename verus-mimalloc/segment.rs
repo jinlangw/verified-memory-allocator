@@ -29,9 +29,8 @@ use crate::init::current_thread_count;
 
 verus!{
 
-pub open spec fn good_count_for_block_size(block_size: int, count: int) -> bool {
-    count * SLICE_SIZE < block_size * 0x10000
-}
+pub uninterp spec fn good_count_for_block_size(block_size: int, count: int) -> bool;
+
 
 #[verifier::external_body]
 pub fn segment_page_alloc(
