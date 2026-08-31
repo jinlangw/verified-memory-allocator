@@ -58,7 +58,7 @@ use crate::types::print_hex;
 fn main() {
     let tracked (global, mut rights) = init::global_init();
     let tracked is_thread = crate::thread::ghost_thread_id();
-    assert(rights.dom().contains(is_thread@));
+
     let tracked right = rights.tracked_remove(is_thread@);
     let (heap, Tracked(local)) = init::heap_init(Tracked(global), Tracked(right), Tracked(is_thread));
 

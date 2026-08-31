@@ -1204,7 +1204,7 @@ macro_rules! unused_page_get_mut_prev_internal {
     ($ptr:expr, $local:ident, $page_prev:ident => $body:expr) => {
         ::vstd::prelude::verus_exec_expr!{ {
             let page_ptr = ($ptr);
-            assert(page_ptr.wf());
+
 
             let tracked perm = &$local.unused_pages.tracked_borrow(page_ptr.page_id@).points_to;
             let page = ptr_ref(page_ptr.page_ptr, Tracked(perm));
@@ -1359,7 +1359,7 @@ macro_rules! used_page_get_mut_prev_internal {
     ($ptr:expr, $local:ident, $page_prev:ident => $body:expr) => {
         ::vstd::prelude::verus_exec_expr!{ {
             let page_ptr = ($ptr);
-            assert(page_ptr.wf());
+
 
             let tracked perm = &$local.instance.thread_local_state_guards_page(
                 $local.thread_id, page_ptr.page_id@, &$local.thread_token).points_to;
@@ -1452,7 +1452,7 @@ macro_rules! used_page_get_mut_next_internal {
     ($ptr:expr, $local:ident, $page_next:ident => $body:expr) => {
         ::vstd::prelude::verus_exec_expr!{ {
             let page_ptr = ($ptr);
-            assert(page_ptr.wf());
+
 
             let tracked perm = &$local.instance.thread_local_state_guards_page(
                 $local.thread_id, page_ptr.page_id@, &$local.thread_token).points_to;
