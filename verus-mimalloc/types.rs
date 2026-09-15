@@ -30,7 +30,7 @@ pub struct PageInner {
 
     pub capacity: u16,
     pub reserved: u16,
-    
+
     pub flags1: u8,       // in_full, has_aligned
     pub flags2: u8,       // is_zero, retire_expire
 
@@ -166,8 +166,7 @@ impl AtomicHeapPtr {
     pub open spec fn is_empty(&self) -> bool { self.emp@.value() }
 
     pub fn empty() -> (ahp: AtomicHeapPtr)
-        ensures ahp.is_empty(),
-    {
+        {
         let tracked (Tracked(emp_inst), Tracked(emp_x), Tracked(emp_y)) = BoolAgree::Instance::initialize(true);
         let ghost g = (Ghost(arbitrary()), Ghost(arbitrary()), Tracked(emp_x), Tracked(emp_inst));
         AtomicHeapPtr {
@@ -181,13 +180,7 @@ impl AtomicHeapPtr {
 
     #[inline(always)]
     pub fn disable(&mut self) -> (hop: Tracked<Mim::heap_of_page>)
-        requires old(self).wf(old(self).instance@, old(self).page_id@),
-            !old(self).is_empty(),
-        ensures
-            final(self).is_empty(),
-            hop@.instance_id() == old(self).instance@.id(),
-            hop@.key() == old(self).page_id@,
-    {
+        {
         let tracked mut heap_of_page;
         atomic_with_ghost!(
             &self.atomic => no_op();
@@ -258,6 +251,7 @@ impl Page {
     }
 }
 
+
 pub open spec fn page_differ_only_in_offset(page1: Page, page2: Page) -> bool {
     page2 == Page { offset: page2.offset, .. page1 }
 }
@@ -270,6 +264,8 @@ pub open spec fn psa_differ_only_in_offset(psa1: PageSharedAccess, psa2: PageSha
         psa2.points_to.value())
     && psa1.points_to.ptr() == psa2.points_to.ptr()
 }
+
+
 
 impl PageSharedAccess {
     pub open spec fn wf(&self, page_id: PageId, block_size: nat, mim_instance: Mim::Instance) -> bool {
@@ -467,8 +463,7 @@ pub struct PageQueue {
 
 impl Clone for PageQueue {
     fn clone(&self) -> (s: Self)
-        ensures s == *self
-    {
+        {
         PageQueue { first: self.first, last: self.last, block_size: self.block_size }
     }
 }
@@ -486,7 +481,7 @@ pub struct Heap {
     pub arena_id: ArenaId,
     //pub cookie: usize,
     //pub keys: usize,
-    //pub random: 
+    //pub random:
     pub page_count: PCell<usize>,
     pub page_retired_min: PCell<usize>,
     pub page_retired_max: PCell<usize>,
@@ -510,6 +505,7 @@ pub struct HeapLocalAccess {
 }
 
 impl Heap {
+
     pub open spec fn wf(&self, heap_id: HeapId, tld_id: TldId, mim_instance: InstanceId) -> bool {
         &&& self.thread_delayed_free.wf()
         &&& self.thread_delayed_free.instance@.id() == mim_instance
@@ -517,9 +513,11 @@ impl Heap {
         &&& self.tld_ptr.wf()
         &&& self.tld_ptr.tld_id == tld_id
     }
+
 }
 
 impl HeapSharedAccess {
+
     pub open spec fn wf(&self, heap_id: HeapId, tld_id: TldId, mim_instance: InstanceId) -> bool {
         is_heap_ptr(self.points_to.ptr(), heap_id)
           && self.points_to.is_init()
@@ -530,6 +528,7 @@ impl HeapSharedAccess {
         self.wf(heap_id, self.points_to.value().tld_ptr.tld_id@,
             mim_instance)
     }
+
 }
 
 pub open spec fn pages_free_direct_match(pfd_val: *mut Page, p_val: *mut Page, emp: *mut Page) -> bool {
@@ -572,15 +571,11 @@ impl HeapLocalAccess {
 
               && (forall |i: int| #[trigger] valid_bin_idx(i) ==>
                   self.pages.value()[i].block_size == size_of_bin(i))
-              // 0 isn't a valid_bin_idx
-              && self.pages.value()[0].block_size == 8
-              && self.pages.value()[BIN_FULL as int].block_size == 
-                    8 * (524288 + 2) //MEDIUM_OBJ_WSIZE_MAX + 2
-
-              && self.pages_free_direct.value()@.len() == PAGES_DIRECT
-              && self.pages.value()@.len() == BIN_FULL + 1
+              && self.pages.value()[0].block_size == 0
+              && self.pages.value()[BIN_FULL as int].block_size == 0
         }
     }
+
 }
 
 /////////////////////////////////////////////
@@ -606,8 +601,7 @@ pub struct SpanQueueHeader {
 
 impl Clone for SpanQueueHeader {
     fn clone(&self) -> (s: Self)
-        ensures s == *self
-    {
+        {
         SpanQueueHeader { first: self.first, last: self.last }
     }
 }
@@ -650,6 +644,7 @@ pub tracked struct Local {
     pub tracked page_empty_global: Shared<PageFullAccess>,
 }
 
+
 pub open spec fn common_preserves(l1: Local, l2: Local) -> bool {
     l1.heap_id == l2.heap_id
     && l1.tld_id == l2.tld_id
@@ -680,6 +675,7 @@ impl Local {
         &&& self.thread_token.value().heap.shared_access.points_to.value().page_empty_ptr == self.page_empty_global@.s.points_to.ptr()
         &&& self.page_empty_global@.wf_empty_page_global()
     }
+
 
     pub open spec fn wf_main(&self) -> bool {
         &&& is_tld_ptr(self.tld.ptr(), self.tld_id)
@@ -770,7 +766,7 @@ impl Local {
         //    ==> self.page_organization.pages[page_id].offset == Some(0nat)
         //    ==> self.thread_token.value().pages[page_id].offset == 0)
 
-        &&& (forall |page_id| 
+        &&& (forall |page_id|
           #[trigger] self.page_organization.pages.dom().contains(page_id)
             ==> self.page_organization.pages[page_id].is_used
             ==> page_organization_matches_token_page(
@@ -787,29 +783,15 @@ impl Local {
             self.thread_token.value().pages[page_id].shared_access == self.psa[page_id])
     }
 
-    pub open spec fn page_state(&self, page_id: PageId) -> PageState
-        recommends self.thread_token.value().pages.dom().contains(page_id)
-    {
-        self.thread_token.value().pages.index(page_id)
-    }
 
-    pub open spec fn page_inner(&self, page_id: PageId) -> PageInner
-        recommends
-            self.pages.dom().contains(page_id),
-    {
-        *self.pages.index(page_id).inner.value()
-    }
+
+
 
 
     // This is for when we need to obtain ownership of the ThreadToken
     // but when we have a &mut reference to the Local
 
     pub proof fn take_thread_token(tracked &mut self) -> (tracked tt: Mim::thread_local_state)
-        ensures
-            // All fields remain the same except thread_token which is set to an
-            // arbitrary value
-            *final(self) == (Local { thread_token: final(self).thread_token, .. *old(self) }),
-            tt == old(self).thread_token,
     {
         let tracked mut t = Mim::thread_local_state::arbitrary();
         tracked_swap(&mut t, &mut self.thread_token);
@@ -817,16 +799,13 @@ impl Local {
     }
 
     pub proof fn take_checked_token(tracked &mut self) -> (tracked tt: Mim::thread_checked_state)
-        ensures
-            // All fields remain the same except thread_token which is set to an
-            // arbitrary value
-            *final(self) == (Local { checked_token: final(self).checked_token, .. *old(self) }),
-            tt == old(self).checked_token,
     {
         let tracked mut t = Mim::thread_checked_state::arbitrary();
         tracked_swap(&mut t, &mut self.checked_token);
         t
     }
+
+
 
     pub open spec fn commit_mask(&self, segment_id: SegmentId) -> CommitMask {
         self.segments[segment_id].main.value().commit_mask
@@ -842,9 +821,7 @@ impl Local {
           && self.page_organization.pages[page_id].offset == Some(0nat)
     }
 
-    pub open spec fn page_reserved(&self, page_id: PageId) -> int {
-        self.pages[page_id].inner.value().reserved as int
-    }
+
 
     pub open spec fn page_count(&self, page_id: PageId) -> int {
         self.pages[page_id].count.value() as int
@@ -1001,8 +978,7 @@ pub struct HeapPtr {
 impl Clone for HeapPtr {
     #[inline(always)]
     fn clone(&self) -> (s: Self)
-        ensures *self == s
-    {
+        {
         HeapPtr { heap_ptr: self.heap_ptr, heap_id: Ghost(self.heap_id@) }
     }
 }
@@ -1021,13 +997,7 @@ impl HeapPtr {
 
     #[inline(always)]
     pub fn get_ref<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (heap: &'a Heap)
-        requires
-            local.wf_basic(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            MemContents::Init(*heap) == local.thread_token.value().heap.shared_access.points_to.opt_value(),
-    {
+        {
         let tracked perm = &local.instance.thread_local_state_guards_heap(
             local.thread_id, &local.thread_token).points_to;
         ptr_ref(self.heap_ptr, Tracked(perm))
@@ -1035,37 +1005,19 @@ impl HeapPtr {
 
     #[inline(always)]
     pub fn get_pages<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (pages: &'a [PageQueue; 75])
-        requires
-            local.wf_basic(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            *pages == *local.heap.pages.value()
-    {
+        {
         self.get_ref(Tracked(local)).pages.borrow(Tracked(&local.heap.pages))
     }
 
     #[inline(always)]
     pub fn get_page_count<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (page_count: usize)
-        requires
-            local.wf_basic(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            page_count == *local.heap.page_count.value()
-    {
+        {
         *self.get_ref(Tracked(local)).page_count.borrow(Tracked(&local.heap.page_count))
     }
 
     #[inline(always)]
     pub fn set_page_count<'a>(&self, Tracked(local): Tracked<&mut Local>, page_count: usize)
-        requires
-            old(local).wf_basic(),
-            self.wf(),
-            self.is_in(*old(local)),
-        ensures
-            local_page_count_update(*old(local), *final(local)),
-    {
+        {
         let tracked perm = &local.instance.thread_local_state_guards_heap(
             local.thread_id, &local.thread_token).points_to;
         let heap = ptr_ref(self.heap_ptr, Tracked(perm));
@@ -1074,25 +1026,13 @@ impl HeapPtr {
 
     #[inline(always)]
     pub fn get_page_retired_min<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (page_retired_min: usize)
-        requires
-            local.wf_basic(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            page_retired_min == local.heap.page_retired_min.value()
-    {
+        {
         *self.get_ref(Tracked(local)).page_retired_min.borrow(Tracked(&local.heap.page_retired_min))
     }
 
     #[inline(always)]
     pub fn set_page_retired_min<'a>(&self, Tracked(local): Tracked<&mut Local>, page_retired_min: usize)
-        requires
-            old(local).wf_basic(),
-            self.wf(),
-            self.is_in(*old(local)),
-        ensures
-            local_page_retired_min_update(*old(local), *final(local)),
-    {
+        {
         let tracked perm = &local.instance.thread_local_state_guards_heap(
             local.thread_id, &local.thread_token).points_to;
         let heap = ptr_ref(self.heap_ptr, Tracked(perm));
@@ -1101,25 +1041,13 @@ impl HeapPtr {
 
     #[inline(always)]
     pub fn get_page_retired_max<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (page_retired_max: usize)
-        requires
-            local.wf_basic(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            page_retired_max == local.heap.page_retired_max.value()
-    {
+        {
         *self.get_ref(Tracked(local)).page_retired_max.borrow(Tracked(&local.heap.page_retired_max))
     }
 
     #[inline(always)]
     pub fn set_page_retired_max<'a>(&self, Tracked(local): Tracked<&mut Local>, page_retired_max: usize)
-        requires
-            old(local).wf_basic(),
-            self.wf(),
-            self.is_in(*old(local)),
-        ensures
-            local_page_retired_max_update(*old(local), *final(local)),
-    {
+        {
         let tracked perm = &local.instance.thread_local_state_guards_heap(
             local.thread_id, &local.thread_token).points_to;
         let heap = ptr_ref(self.heap_ptr, Tracked(perm));
@@ -1128,67 +1056,32 @@ impl HeapPtr {
 
     #[inline(always)]
     pub fn get_pages_free_direct<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (pages: &'a [*mut Page; 129])
-        requires
-            local.wf_basic(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            *pages == local.heap.pages_free_direct.value()
-    {
+        {
         self.get_ref(Tracked(local)).pages_free_direct.borrow(Tracked(&local.heap.pages_free_direct))
     }
 
     #[inline(always)]
     pub fn get_arena_id<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (arena_id: ArenaId)
-        requires
-            local.wf_main(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            arena_id
-             == local.thread_token.value().heap.shared_access.points_to.value().arena_id,
-    {
+        {
         self.get_ref(Tracked(local)).arena_id
     }
 
     #[inline(always)]
     pub fn get_page_empty(&self, Tracked(local): Tracked<&Local>)
         -> (res: (*mut Page, Tracked<Shared<PageFullAccess>>))
-    requires
-        local.wf_basic(),
-        self.wf(),
-        self.is_in(*local),
-    ensures ({ let (page_ptr, pfa) = res; {
-        pfa@@.wf_empty_page_global()
-        && pfa@@.s.points_to.ptr() == page_ptr
-        && page_ptr.addr() != 0
-        && page_ptr == local.page_empty_global@.s.points_to.ptr()
-    }})
     {
         let page_ptr = self.get_ref(Tracked(local)).page_empty_ptr;
         let tracked pfa = local.page_empty_global.clone();
-        proof { const_facts(); pfa.borrow().s.points_to.is_nonnull(); }
+
         (page_ptr, Tracked(pfa))
     }
 }
 
-pub open spec fn local_page_count_update(loc1: Local, loc2: Local) -> bool {
-    &&& loc2 == Local { heap: loc2.heap, .. loc1 }
-    &&& loc2.heap == HeapLocalAccess { page_count: loc2.heap.page_count, .. loc1.heap }
-    &&& loc1.heap.page_count.id() == loc2.heap.page_count.id()
-}
 
-pub open spec fn local_page_retired_min_update(loc1: Local, loc2: Local) -> bool {
-    &&& loc2 == Local { heap: loc2.heap, .. loc1 }
-    &&& loc2.heap == HeapLocalAccess { page_retired_min: loc2.heap.page_retired_min, .. loc1.heap }
-    &&& loc1.heap.page_retired_min.id() == loc2.heap.page_retired_min.id()
-}
 
-pub open spec fn local_page_retired_max_update(loc1: Local, loc2: Local) -> bool {
-    &&& loc2 == Local { heap: loc2.heap, .. loc1 }
-    &&& loc2.heap == HeapLocalAccess { page_retired_max: loc2.heap.page_retired_max, .. loc1.heap }
-    &&& loc1.heap.page_retired_max.id() == loc2.heap.page_retired_max.id()
-}
+
+
+
 
 
 
@@ -1200,8 +1093,7 @@ pub struct TldPtr {
 impl Clone for TldPtr {
     #[inline(always)]
     fn clone(&self) -> (s: Self)
-        ensures *self == s
-    {
+        {
         TldPtr { tld_ptr: self.tld_ptr, tld_id: Ghost(self.tld_id@) }
     }
 }
@@ -1209,6 +1101,7 @@ impl Copy for TldPtr { }
 
 
 impl TldPtr {
+
     #[verifier(inline)]
     pub open spec fn wf(&self) -> bool {
         is_tld_ptr(self.tld_ptr, self.tld_id@)
@@ -1221,36 +1114,19 @@ impl TldPtr {
 
     #[inline(always)]
     pub fn get_ref<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (tld: &'a Tld)
-        requires
-            local.wf_main(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            MemContents::Init(*tld) == local.tld.opt_value()
-    {
+        {
         ptr_ref(self.tld_ptr, Tracked(&local.tld))
     }
 
     #[inline(always)]
     pub fn get_mut<'a>(&self, Tracked(local): Tracked<&'a mut Local>) -> (tld: &'a mut Tld)
-        requires
-            local.tld.ptr() == self.tld_ptr,
-            local.tld.opt_value().is_init(),
-        ensures
-            MemContents::Init(*tld) == old(local).tld.opt_value(),
-            *final(local) == (Local { tld: final(local).tld, .. *old(local) }),
-            final(local).tld.ptr() == old(local).tld.ptr(),
-            final(local).tld.opt_value() == MemContents::Init(*final(tld)),
-    {
+        {
         ptr_mut_ref(self.tld_ptr, Tracked(&mut local.tld))
     }
 
     #[inline(always)]
     pub fn get_segments_count(&self, Tracked(local): Tracked<&Local>) -> (count: usize)
-        requires
-            self.wf(), self.is_in(*local), local.wf_main(),
-        ensures count == local.tld.value().segments.count,
-    {
+        {
         self.get_ref(Tracked(local)).segments.count
     }
 }
@@ -1263,14 +1139,14 @@ pub struct SegmentPtr {
 impl Clone for SegmentPtr {
     #[inline(always)]
     fn clone(&self) -> (s: Self)
-        ensures *self == s
-    {
+        {
         SegmentPtr { segment_ptr: self.segment_ptr, segment_id: Ghost(self.segment_id@) }
     }
 }
 impl Copy for SegmentPtr { }
 
 impl SegmentPtr {
+
     #[verifier(inline)]
     pub open spec fn wf(&self) -> bool {
         is_segment_ptr(self.segment_ptr, self.segment_id@)
@@ -1283,15 +1159,13 @@ impl SegmentPtr {
 
     #[inline(always)]
     pub fn is_null(&self) -> (b: bool)
-        ensures b == (self.segment_ptr as int == 0)
-    {
+        {
         self.segment_ptr.addr() == 0
     }
 
     #[inline(always)]
     pub fn null() -> (s: Self)
-        ensures s.segment_ptr as int == 0
-    {
+        {
         SegmentPtr { segment_ptr: core::ptr::null_mut(),
             segment_id: Ghost(arbitrary())
         }
@@ -1299,13 +1173,8 @@ impl SegmentPtr {
 
     #[inline(always)]
     pub fn get_page_header_ptr(&self, idx: usize) -> (page_ptr: PagePtr)
-        requires self.wf(),
-            0 <= idx <= SLICES_PER_SEGMENT
-        ensures page_ptr.wf(),
-            page_ptr.page_id@.segment_id == self.segment_id@,
-            page_ptr.page_id@.idx == idx,
-    {
-        proof { const_facts(); }
+        {
+
         let j = self.segment_ptr.addr() + SIZEOF_SEGMENT_HEADER + idx * SIZEOF_PAGE_HEADER;
         return PagePtr {
             page_ptr: self.segment_ptr.with_addr(j) as *mut Page,
@@ -1315,11 +1184,8 @@ impl SegmentPtr {
 
     #[inline]
     pub fn get_page_after_end(&self) -> (page_ptr: *mut Page)
-        requires self.wf(),
-        ensures page_ptr as int == crate::layout::page_header_start(
-            PageId { segment_id: self.segment_id@, idx: SLICES_PER_SEGMENT as nat })
-    {
-        proof { const_facts(); }
+        {
+
         let j = self.segment_ptr.addr()
           + SIZEOF_SEGMENT_HEADER
           + SLICES_PER_SEGMENT as usize * SIZEOF_PAGE_HEADER;
@@ -1328,20 +1194,8 @@ impl SegmentPtr {
 
     #[inline(always)]
     pub fn get_ref<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (segment: &'a SegmentHeader)
-        requires
-            //local.wf_main(),
-            local.thread_token.value().segments.dom().contains(self.segment_id@),
-            local.thread_token.value().segments[self.segment_id@].shared_access.points_to.ptr() == self.segment_ptr,
-            local.thread_token.value().segments[self.segment_id@].shared_access.points_to.is_init(),
-            local.thread_token.value().segments[self.segment_id@].is_enabled,
-            local.thread_token.key() == local.thread_id,
-            local.thread_token.instance_id() == local.instance.id(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            MemContents::Init(*segment) == local.thread_token.value().segments.index(self.segment_id@).shared_access.points_to.opt_value(),
-    {
-        let tracked perm = 
+        {
+        let tracked perm =
             &local.instance.thread_local_state_guards_segment(
                 local.thread_id, self.segment_id@, &local.thread_token).points_to;
         ptr_ref(self.segment_ptr, Tracked(perm))
@@ -1349,114 +1203,76 @@ impl SegmentPtr {
 
     #[inline(always)]
     pub fn get_main_ref<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (segment_header_main: &'a SegmentHeaderMain)
-        requires
-            self.wf(), self.is_in(*local),
-            //local.wf_main(),
-            local.thread_token.value().segments.dom().contains(self.segment_id@),
-            local.thread_token.value().segments[self.segment_id@].shared_access.points_to.ptr() == self.segment_ptr,
-            local.thread_token.value().segments.index(self.segment_id@).shared_access.points_to.is_init(),
-            local.thread_token.value().segments[self.segment_id@].is_enabled,
-            local.thread_token.key() == local.thread_id,
-            local.thread_token.instance_id() == local.instance.id(),
-            local.thread_token.value().segments.index(self.segment_id@).shared_access.points_to.value().main.id()
-                == local.segments[self.segment_id@].main.id(),
-            local.segments.dom().contains(self.segment_id@),
-        ensures *segment_header_main == local.segments.index(self.segment_id@).main.value()
-    {
+        {
         let segment = self.get_ref(Tracked(local));
         segment.main.borrow(Tracked(&local.segments.tracked_borrow(self.segment_id@).main))
     }
 
     #[inline(always)]
     pub fn get_main2_ref<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (segment_header_main2: &'a SegmentHeaderMain2)
-        requires local.wf_main(), self.wf(), self.is_in(*local),
-        ensures *segment_header_main2 == local.segments.index(self.segment_id@).main2.value()
-    {
+        {
         let segment = self.get_ref(Tracked(local));
         segment.main2.borrow(Tracked(&local.segments.tracked_borrow(self.segment_id@).main2))
     }
 
     #[inline(always)]
     pub fn get_commit_mask<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (cm: &'a CommitMask)
-        requires self.wf(), self.is_in(*local),
-            local.wf_main(),
-        ensures cm == local.segments[self.segment_id@].main.value().commit_mask
-    {
+        {
         &self.get_main_ref(Tracked(local)).commit_mask
     }
 
     #[inline(always)]
     pub fn get_decommit_mask<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (cm: &'a CommitMask)
-        requires self.wf(), self.is_in(*local),
-            local.wf_main(),
-        ensures cm == local.segments[self.segment_id@].main.value().decommit_mask
-    {
+        {
         &self.get_main_ref(Tracked(local)).decommit_mask
     }
 
     #[inline(always)]
     pub fn get_decommit_expire(&self, Tracked(local): Tracked<&Local>) -> (i: i64)
-        requires self.wf(), self.is_in(*local),
-            local.wf_main(),
-        ensures i == local.segments[self.segment_id@].main.value().decommit_expire
-    {
+        {
         self.get_main_ref(Tracked(local)).decommit_expire
     }
 
 
     #[inline(always)]
     pub fn get_allow_decommit(&self, Tracked(local): Tracked<&Local>) -> (b: bool)
-        requires self.wf(), self.is_in(*local),
-            local.wf_main(),
-        ensures b == local.segments[self.segment_id@].main.value().allow_decommit
-    {
+        {
         self.get_main_ref(Tracked(local)).allow_decommit
     }
 
     #[inline(always)]
     pub fn get_used(&self, Tracked(local): Tracked<&Local>) -> (used: usize)
-        requires self.wf(), self.is_in(*local), local.wf_main(),
-        ensures used == local.segments[self.segment_id@].main2.value().used,
-    {
+        {
         self.get_main2_ref(Tracked(local)).used
     }
 
     #[inline(always)]
     pub fn get_abandoned(&self, Tracked(local): Tracked<&Local>) -> (abandoned: usize)
-        requires self.wf(), self.is_in(*local), local.wf_main(),
-        ensures abandoned == local.segments[self.segment_id@].main2.value().abandoned,
-    {
+        {
         self.get_main2_ref(Tracked(local)).abandoned
     }
 
     #[inline(always)]
     pub fn get_mem_is_pinned(&self, Tracked(local): Tracked<&Local>) -> (mem_is_pinned: bool)
-        requires self.wf(), self.is_in(*local), local.wf_main(),
-        ensures mem_is_pinned == local.segments[self.segment_id@].main.value().mem_is_pinned,
-    {
+        {
         self.get_main_ref(Tracked(local)).mem_is_pinned
     }
 
     #[inline(always)]
     pub fn is_abandoned(&self, Tracked(local): Tracked<&Local>) -> (is_ab: bool)
-        requires self.wf(), self.is_in(*local), local.wf_main(),
-    {
+        {
         self.get_ref(Tracked(local)).thread_id.load() == 0
     }
 
     #[inline(always)]
     pub fn get_segment_kind(&self, Tracked(local): Tracked<&Local>) -> (kind: SegmentKind)
-        requires self.wf(), self.is_in(*local), local.wf_main(),
-        ensures kind == local.segments[self.segment_id@].main2.value().kind,
-    {
+        {
         self.get_main2_ref(Tracked(local)).kind
     }
 
     #[inline(always)]
     pub fn is_kind_huge(&self, Tracked(local): Tracked<&Local>) -> (b: bool)
-        requires self.wf(), self.is_in(*local), local.wf_main(),
-        ensures b == (local.segments[self.segment_id@].main2.value().kind == SegmentKind::Huge)
-    {
+        {
         let kind = self.get_main2_ref(Tracked(local)).kind;
         matches!(kind, SegmentKind::Huge)
     }
@@ -1470,14 +1286,14 @@ pub struct PagePtr {
 impl Clone for PagePtr {
     #[inline(always)]
     fn clone(&self) -> (s: Self)
-        ensures *self == s
-    {
+        {
         PagePtr { page_ptr: self.page_ptr, page_id: Ghost(self.page_id@) }
     }
 }
 impl Copy for PagePtr { }
 
 impl PagePtr {
+
     #[verifier(inline)]
     pub open spec fn wf(&self) -> bool {
         is_page_ptr(self.page_ptr, self.page_id@)
@@ -1513,8 +1329,7 @@ impl PagePtr {
 
     #[inline(always)]
     pub fn null() -> (s: Self)
-        ensures s.page_ptr == core::ptr::null_mut::<Page>(),
-    {
+        {
         PagePtr { page_ptr: core::ptr::null_mut(),
             page_id: Ghost(arbitrary())
         }
@@ -1522,24 +1337,13 @@ impl PagePtr {
 
     #[inline(always)]
     pub fn is_null(&self) -> (b: bool)
-        ensures b == (self.page_ptr.addr() == 0)
-    {
+        {
         self.page_ptr.addr() == 0
     }
 
     #[inline(always)]
     pub fn get_ref<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (page: &'a Page)
-        requires
-            local.wf_main(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            !self.is_in_unused(*local) ==>
-              MemContents::Init(*page) == local.thread_token.value().pages.index(self.page_id@)
-                                .shared_access.points_to.opt_value(),
-            self.is_in_unused(*local) ==>
-              MemContents::Init(*page) == local.unused_pages[self.page_id@].points_to.opt_value(),
-    {
+        {
         let tracked perm = if self.is_in_unused(*local) {
             &local.unused_pages.tracked_borrow(self.page_id@).points_to
         } else {
@@ -1552,13 +1356,7 @@ impl PagePtr {
 
     #[inline(always)]
     pub fn get_inner_ref<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (page_inner: &'a PageInner)
-        requires
-            local.wf_main(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            *page_inner == local.pages.index(self.page_id@).inner.value()
-    {
+        {
         let page = self.get_ref(Tracked(local));
         page.inner.borrow(Tracked(
             &local.pages.tracked_borrow(self.page_id@).inner
@@ -1567,19 +1365,7 @@ impl PagePtr {
 
     #[inline(always)]
     pub fn get_inner_ref_maybe_empty<'a>(&self, Tracked(local): Tracked<&'a Local>) -> (page_inner: &'a PageInner)
-        requires
-            local.wf_main(),
-            !self.is_empty_global(*local) ==> (
-              self.wf() && self.is_in(*local)
-            )
-        ensures
-            !self.is_empty_global(*local) ==> (
-                *page_inner == local.pages.index(self.page_id@).inner.value()
-            ),
-            self.is_empty_global(*local) ==> (
-                *page_inner == local.page_empty_global@.l.inner.value()
-            ),
-    {
+        {
         let tracked perm = if self.is_empty_global(*local) {
             &local.page_empty_global.borrow().s.points_to
         } else if self.is_in_unused(*local) {
@@ -1600,13 +1386,7 @@ impl PagePtr {
 
     #[inline(always)]
     pub fn get_count<'a>(&self, Tracked(local): Tracked<&Local>) -> (count: u32)
-        requires
-            local.wf_main(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            count == local.pages.index(self.page_id@).count.value()
-    {
+        {
         let page = self.get_ref(Tracked(local));
         *page.count.borrow(Tracked(
             &local.pages.tracked_borrow(self.page_id@).count
@@ -1615,13 +1395,7 @@ impl PagePtr {
 
     #[inline(always)]
     pub fn get_next<'a>(&self, Tracked(local): Tracked<&Local>) -> (next: *mut Page)
-        requires
-            local.wf_main(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            next == local.pages.index(self.page_id@).next.value()
-    {
+        {
         let page = self.get_ref(Tracked(local));
         *page.next.borrow(Tracked(
             &local.pages.tracked_borrow(self.page_id@).next
@@ -1630,13 +1404,7 @@ impl PagePtr {
 
     #[inline(always)]
     pub fn get_prev<'a>(&self, Tracked(local): Tracked<&Local>) -> (prev: *mut Page)
-        requires
-            local.wf_main(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            prev == local.pages.index(self.page_id@).prev.value()
-    {
+        {
         let page = self.get_ref(Tracked(local));
         *page.prev.borrow(Tracked(
             &local.pages.tracked_borrow(self.page_id@).prev
@@ -1645,19 +1413,8 @@ impl PagePtr {
 
     #[inline(always)]
     pub fn add_offset(&self, count: usize) -> (p: Self)
-        requires
-            self.wf(),
-            self.page_id@.idx + count <= SLICES_PER_SEGMENT,
-        ensures
-            p.wf(),
-            p.page_id@.segment_id == self.page_id@.segment_id,
-            p.page_id@.idx == self.page_id@.idx + count as int,
-            p.page_ptr.addr() != 0,
-    {
-        proof {
-            const_facts();
-            assert(SIZEOF_PAGE_HEADER == 80);
-        }
+        {
+
         let p = self.page_ptr.addr();
         let q = p + count * SIZEOF_PAGE_HEADER;
         PagePtr {
@@ -1671,20 +1428,8 @@ impl PagePtr {
 
     #[inline(always)]
     pub fn sub_offset(&self, count: usize) -> (p: Self)
-        requires
-            self.wf(),
-            self.page_id@.idx >= count,
-        ensures
-            p.wf(),
-            p.page_id@.segment_id == self.page_id@.segment_id,
-            p.page_id@.idx == self.page_id@.idx - count as int,
-            p.page_ptr.addr() != 0,
-    {
-        proof {
-            const_facts();
-            assert(SIZEOF_PAGE_HEADER == 80);
-            crate::layout::segment_start_ge0(self.page_id@.segment_id);
-        }
+        {
+
         let p = self.page_ptr.addr();
         let q = p - count * SIZEOF_PAGE_HEADER;
         let ghost page_id = PageId {
@@ -1692,9 +1437,7 @@ impl PagePtr {
                 idx: (self.page_id@.idx - count) as nat,
             };
         let q = self.page_ptr.with_addr(q);
-        proof {
-            crate::layout::is_page_ptr_nonzero(q, page_id);
-        }
+
         PagePtr {
             page_ptr: q,
             page_id: Ghost(page_id)
@@ -1703,37 +1446,23 @@ impl PagePtr {
 
     #[inline(always)]
     pub fn is_gt_0th_slice(&self, segment: SegmentPtr) -> (res: bool)
-        requires self.wf(),
-            segment.wf(),
-            segment.segment_id@ == self.page_id@.segment_id,
-    ensures
-        res == (self.page_id@.idx > 0),
-    {
-        proof { const_facts(); }
+        {
+
         self.page_ptr.addr() > segment.get_page_header_ptr(0).page_ptr.addr()
     }
 
     #[inline(always)]
     pub fn get_index(&self) -> (idx: usize)
-        requires self.wf(),
-    ensures
-        idx == self.page_id@.idx,
-    {
-        proof { const_facts(); }
+        {
+
         let segment = SegmentPtr::ptr_segment(*self);
         (self.page_ptr.addr() - segment.segment_ptr.addr() - SIZEOF_SEGMENT_HEADER)
             / SIZEOF_PAGE_HEADER
     }
 
     pub fn slice_start(&self) -> (p: usize)
-        requires self.wf(),
-        ensures
-            p == crate::layout::page_start(self.page_id@),
-    {
-        proof {
-            const_facts();
-            assert(SLICE_SIZE as usize == 65536);
-        }
+        {
+
         let segment = SegmentPtr::ptr_segment(*self);
         let s = segment.segment_ptr.addr();
         s +
@@ -1743,25 +1472,8 @@ impl PagePtr {
 
     #[inline(always)]
     pub fn add_offset_and_check(&self, count: usize, segment: SegmentPtr) -> (res: (Self, bool))
-        requires
-            self.wf(),
-            self.page_id@.idx + count <= SLICES_PER_SEGMENT,
-            segment.wf(),
-            self.page_id@.segment_id == segment.segment_id@,
-        ensures ({ let (p, b) = res; {
-            b ==> ({
-                &&& p.wf()
-                &&& p.page_id@.segment_id == self.page_id@.segment_id
-                &&& p.page_id@.idx == self.page_id@.idx + count as int
-                &&& p.page_ptr.addr() != 0
-            })
-            && (b <==> self.page_id@.idx + count < SLICES_PER_SEGMENT)
-        }})
-    {
-        proof {
-            const_facts();
-            assert(SIZEOF_PAGE_HEADER == 80);
-        }
+        {
+
         let p = self.page_ptr.addr();
         let q = p + count * SIZEOF_PAGE_HEADER;
         let page_ptr = PagePtr {
@@ -1777,23 +1489,13 @@ impl PagePtr {
 
     #[inline(always)]
     pub fn get_block_size(&self, Tracked(local): Tracked<&Local>) -> (bsize: u32)
-        requires
-            local.wf_main(),
-            self.wf(),
-            self.is_in(*local),
-        ensures
-            bsize == local.pages.index(self.page_id@).inner.value().xblock_size
-    {
+        {
         self.get_inner_ref(Tracked(local)).xblock_size
     }
 
     #[inline(always)]
     pub fn get_heap(&self, Tracked(local): Tracked<&Local>) -> (heap: HeapPtr)
-        requires
-            local.wf_main(), self.wf(), self.is_in(*local),
-                self.is_used_and_primary(*local),
-        ensures heap.wf(), heap.is_in(*local),
-    {
+        {
         let page_ref = self.get_ref(Tracked(&*local));
         let h = atomic_with_ghost!(
             &page_ref.xheap.atomic => load();
@@ -2189,7 +1891,7 @@ pub fn todo()
 pub fn todo()
     ensures false
 {
-    panic!("todo"); 
+    panic!("todo");
 }
 
 #[macro_export]

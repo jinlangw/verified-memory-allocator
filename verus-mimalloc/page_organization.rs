@@ -55,9 +55,11 @@ pub ghost enum Popped {
 }
 
 // {page_id | page_id.segment_id == segment_id && lo <= page_id.idx < hi}
+
 pub open spec fn page_id_range(segment_id: SegmentId, lo: nat, hi: nat) -> Set<PageId> {
     vstd::contrib::set_build!{ PageId { segment_id, idx }: PageId | idx: nat in lo..hi }
 }
+
 
 state_machine!{ PageOrg {
     fields {
@@ -660,7 +662,7 @@ state_machine!{ PageOrg {
         requires self.invariant(), self.popped.is_VeryUnready(),
         ensures
             0 < self.popped.get_VeryUnready_1(),
-            self.popped.get_VeryUnready_1() + 
+            self.popped.get_VeryUnready_1() +
                 self.popped.get_VeryUnready_2() <= SLICES_PER_SEGMENT,
     {
     }
@@ -1044,7 +1046,7 @@ state_machine!{ PageOrg {
                 }
                 Option::None => { }
             }
-            
+
             // Workaround for not begin able to do `update unused_dlist_headers[sbin_idx].first = ...`
             if dlist_entry.prev.is_none() && dlist_entry.next.is_none() {
                 update unused_dlist_headers[sbin_idx] = DlistHeader {
@@ -1119,7 +1121,7 @@ state_machine!{ PageOrg {
             require sbin_idx == smallest_sbin_fitting_size(current_count - target_count);
 
             //  |------------current_count---------------|
-            //  
+            //
             //  |--------------|-------------------------|
             //    target_count
             //
@@ -1979,7 +1981,7 @@ state_machine!{ PageOrg {
 
         let dlist_entry = pre.pages[page_id].dlist_entry.unwrap();
 
-        
+
         Self::take_page_from_unused_queue_ll_inv_valid_unused(pre, post, page_id, sbin_idx, list_idx);
         Self::take_page_from_unused_queue_inductive_attached_ranges(pre, post, page_id, sbin_idx, list_idx);
         Self::take_page_from_unused_queue_inductive_unusedinv2(pre, post, page_id, sbin_idx, list_idx);
@@ -2134,7 +2136,7 @@ state_machine!{ PageOrg {
                 page_id.idx + pre.pages[page_id].count.unwrap() as int,
                 false));
             /*assert(post.popped.get_SegmentFreeing_0() == segment_id);
-            assert(post.popped.get_SegmentFreeing_1() == 
+            assert(post.popped.get_SegmentFreeing_1() ==
                 page_id.idx + pre.pages[page_id].count.unwrap() as int);
             assert(post.popped.get_SegmentFreeing_1() > 0);
             assert(post.attached_ranges());*/
@@ -2338,7 +2340,7 @@ state_machine!{ PageOrg {
             let segment_id = pre.popped.get_VeryUnready_0();
             Self::attached_ranges_except(pre, post, segment_id);
             assert(post.good_range0(segment_id));
-            Self::rec_split_page(pre, post, page_id, current_count, target_count, sbin_idx, 
+            Self::rec_split_page(pre, post, page_id, current_count, target_count, sbin_idx,
                 pre.pages[PageId { segment_id, idx: 0 }].count.unwrap() as int, true);
         }
     }
@@ -2369,7 +2371,7 @@ state_machine!{ PageOrg {
         }
     }
 
-   
+
     #[inductive(allocate_popped)]
     fn allocate_popped_inductive(pre: Self, post: Self) {
         Self::ucount_preserve_all(pre, post);
@@ -2396,7 +2398,7 @@ state_machine!{ PageOrg {
 
         Self::attached_ranges_all(pre, post);
     }
-  
+
     #[inductive(set_range_to_used)]
     fn set_range_to_used_inductive(pre: Self, post: Self, page_header_kind: PageHeaderKind) {
         let page_id = post.popped.get_Used_0();
@@ -2514,7 +2516,7 @@ state_machine!{ PageOrg {
 
         assert(post.attached_ranges()) by {
             Self::attached_ranges_except(pre, post, segment_id);
-            Self::rec_into_used_list(pre, post, bin_idx, 
+            Self::rec_into_used_list(pre, post, bin_idx,
                 pre.pages[PageId { segment_id, idx: 0 }].count.unwrap() as int, true);
         }
 
@@ -2568,7 +2570,7 @@ state_machine!{ PageOrg {
 
         reveal(State::ll_inv_exists_in_some_list);
     }
-   
+
     #[inductive(forget_about_first_page)]
     fn forget_about_first_page_inductive(pre: Self, post: Self, count: int) {
         let segment_id = pre.popped.get_SegmentCreating_0();
@@ -2591,7 +2593,7 @@ state_machine!{ PageOrg {
                 && post.pages[pid].page_header_kind.is_none()
                 && (post.pages[pid].count.is_some() <==> pid == page_id)
                 && post.pages[pid].dlist_entry.is_none()
-                && post.pages[pid].offset == 
+                && post.pages[pid].offset ==
                             Some((pid.idx - page_id.idx) as nat)
             by {
             }*/
@@ -2674,7 +2676,7 @@ state_machine!{ PageOrg {
         assert(post.attached_ranges()) by {
             Self::attached_ranges_except(pre, post, segment_id);
             assert(post.good_range0(segment_id));
-            Self::rec_free_to_unused_queue(pre, post, sbin_idx, 
+            Self::rec_free_to_unused_queue(pre, post, sbin_idx,
                 pre.pages[PageId { segment_id, idx: 0 }].count.unwrap() as int, true);
         }
     }
@@ -3130,7 +3132,7 @@ state_machine!{ PageOrg {
                 /*assert(self.pages[page_id].count.unwrap() > 0);
                 assert(idx + self.pages[page_id].count.unwrap()
                     <= SLICES_PER_SEGMENT);*/
-                self.sp_true_implies_le(idx + 
+                self.sp_true_implies_le(idx +
                     self.pages[page_id].count.unwrap());
             }
         }
@@ -3609,7 +3611,7 @@ state_machine!{ PageOrg {
 
         assert(post.attached_ranges()) by {
             Self::attached_ranges_except(pre, post, segment_id);
-            Self::rec_into_used_list(pre, post, bin_idx, 
+            Self::rec_into_used_list(pre, post, bin_idx,
                 pre.pages[PageId { segment_id, idx: 0 }].count.unwrap() as int, true);
         }
 
@@ -3970,7 +3972,7 @@ state_machine!{ PageOrg {
                 self.rec_lemma_range_not_used(page_id, idx, false);
             }
             _ => {
-                self.rec_lemma_range_not_used(page_id, 
+                self.rec_lemma_range_not_used(page_id,
                     self.pages[PageId { segment_id: page_id.segment_id, idx: 0 }].count.unwrap() as int,
                     self.popped_for_seg(page_id.segment_id));
             }
@@ -3998,7 +4000,7 @@ state_machine!{ PageOrg {
                 self.rec_lemma_range_used(page_id, idx, false);
             }
             _ => {
-                self.rec_lemma_range_used(page_id, 
+                self.rec_lemma_range_used(page_id,
                     self.pages[PageId { segment_id: page_id.segment_id, idx: 0 }].count.unwrap() as int,
                     self.popped_for_seg(page_id.segment_id));
             }
@@ -4015,7 +4017,7 @@ state_machine!{ PageOrg {
                 _ => true,
             },
             self.attached_rec(page_id.segment_id, idx, sp),
-        ensures 
+        ensures
             self.pages[page_id].count.is_some(),
             self.good_range_used(page_id),
         decreases SLICES_PER_SEGMENT - idx
@@ -4075,7 +4077,7 @@ state_machine!{ PageOrg {
                 _ => true,
             },
             self.attached_rec(page_id.segment_id, idx, sp)
-        ensures 
+        ensures
             self.pages[page_id].count.is_some(),
             self.good_range_unused(page_id),
         decreases SLICES_PER_SEGMENT - idx
@@ -4207,7 +4209,7 @@ state_machine!{ PageOrg {
                 (forall |pid| #![trigger self.pages.dom().contains(pid)]
                     #![trigger self.pages.index(pid)]
                   pid.segment_id == segment_id
-                  && start <= pid.idx < start + count ==> 
+                  && start <= pid.idx < start + count ==>
                     self.pages.dom().contains(pid)
                     && self.pages[pid].is_used == false)
             }
@@ -4227,7 +4229,7 @@ state_machine!{ PageOrg {
             && (forall |pid| #![trigger self.pages.dom().contains(pid)]
                 #![trigger self.pages.index(pid)]
               pid.segment_id == page_id.segment_id
-              && page_id.idx <= pid.idx < page_id.idx + count ==> 
+              && page_id.idx <= pid.idx < page_id.idx + count ==>
                 self.pages.dom().contains(pid)
                 && self.pages[pid].is_used == false
                 && self.pages[pid].full.is_none()
@@ -4250,7 +4252,7 @@ state_machine!{ PageOrg {
             && (forall |pid| #![trigger self.pages.dom().contains(pid)]
                 #![trigger self.pages.index(pid)]
               pid.segment_id == page_id.segment_id
-              && page_id.idx <= pid.idx < page_id.idx + count ==> 
+              && page_id.idx <= pid.idx < page_id.idx + count ==>
                 self.pages.dom().contains(pid)
                 && self.pages[pid].is_used == false
                 && self.pages[pid].full.is_none()
@@ -4273,7 +4275,7 @@ state_machine!{ PageOrg {
             && (forall |pid| #![trigger self.pages.dom().contains(pid)]
                 #![trigger self.pages.index(pid)]
               pid.segment_id == page_id.segment_id
-              && page_id.idx <= pid.idx < page_id.idx + count ==> 
+              && page_id.idx <= pid.idx < page_id.idx + count ==>
                 self.pages.dom().contains(pid)
                 && self.pages[pid].is_used == false
                 && self.pages[pid].full.is_none()
@@ -4299,7 +4301,7 @@ state_machine!{ PageOrg {
             && (forall |pid| #![trigger self.pages.dom().contains(pid)]
                 #![trigger self.pages.index(pid)]
               pid.segment_id == page_id.segment_id
-              && page_id.idx <= pid.idx < page_id.idx + count ==> 
+              && page_id.idx <= pid.idx < page_id.idx + count ==>
                 self.pages.dom().contains(pid)
                 && self.pages[pid].is_used == true
                 && self.pages[pid].offset == Some((pid.idx - page_id.idx) as nat)
@@ -4535,14 +4537,14 @@ state_machine!{ PageOrg {
         by {
             assert(pre.segments.dom().contains(sid));
             assert(pre.attached_ranges_segment(sid));
-            Self::attached_rec_same(pre, post, sid, 
+            Self::attached_rec_same(pre, post, sid,
                 pre.pages[PageId { segment_id: sid, idx: 0 }].count.unwrap() as int,
                 false);
             assert(pre.good_range0(sid));
 
             let page_id = PageId { segment_id: sid, idx: 0 };
             let count = post.pages[page_id].count.unwrap();
-            assert forall |pid: PageId| 
+            assert forall |pid: PageId|
               #![trigger self.pages.dom().contains(pid)]
               #![trigger self.pages.index(pid)]
               pid.segment_id == page_id.segment_id
@@ -4630,7 +4632,7 @@ state_machine!{ PageOrg {
                     assert(false);
                 }
                 _ => {
-                    Self::attached_rec_same(pre, post, segment_id, 
+                    Self::attached_rec_same(pre, post, segment_id,
                         pre.pages[PageId { segment_id, idx: 0 }].count.unwrap() as int,
                         pre.popped_for_seg(segment_id));
                     assert(post.attached_ranges_segment(segment_id));
@@ -4717,7 +4719,7 @@ state_machine!{ PageOrg {
                     assert(page_id.idx + count <= SLICES_PER_SEGMENT);
                     assert forall |pid: PageId|
                           pid.segment_id == page_id.segment_id
-                          && page_id.idx <= pid.idx < page_id.idx + count ==> 
+                          && page_id.idx <= pid.idx < page_id.idx + count ==>
                             post.pages.dom().contains(pid)
                             && post.pages[pid].is_used == true
                             && post.pages[pid].offset == Some((pid.idx - page_id.idx) as nat)
@@ -4762,7 +4764,7 @@ state_machine!{ PageOrg {
             Popped::ExtraCount(_) => true,
         }
     }
-        
+
     pub proof fn unchanged_used_ll(pre: Self, post: Self)
         requires pre.invariant(),
           pre.used_lists == post.used_lists,
@@ -4772,7 +4774,7 @@ state_machine!{ PageOrg {
               && pre.pages[page_id].is_used
               ==> post.pages.dom().contains(page_id)
                 && post.pages[page_id].dlist_entry == pre.pages[page_id].dlist_entry
-        ensures 
+        ensures
           post.ll_inv_valid_used()
     {
         assert forall |i| 0 <= i < post.used_lists.len()
@@ -4785,7 +4787,7 @@ state_machine!{ PageOrg {
             }
         }
     }
- 
+
     pub proof fn unchanged_unused_ll(pre: Self, post: Self)
         requires pre.invariant(),
           pre.unused_lists == post.unused_lists,
@@ -4795,7 +4797,7 @@ state_machine!{ PageOrg {
               && !pre.pages[page_id].is_used
               ==> post.pages.dom().contains(page_id)
                 && post.pages[page_id].dlist_entry == pre.pages[page_id].dlist_entry
-        ensures 
+        ensures
           post.ll_inv_valid_unused()
     {
         assert forall |i| 0 <= i < post.unused_lists.len()
@@ -4846,7 +4848,7 @@ state_machine!{ PageOrg {
                         //assert(page_id.idx < pid2.idx + );
                         assert(false);*/
 
-                        self.rec_grd(segment_id, 
+                        self.rec_grd(segment_id,
                             self.pages[PageId { segment_id, idx: 0 }].count.unwrap() as int, page_id);
                     } else {
                         assert(false);
@@ -4901,7 +4903,7 @@ state_machine!{ PageOrg {
             self.good_range_unused(page_id1),
             self.good_range_unused(page_id2),
             page_id1 != page_id2,
-        ensures 
+        ensures
             page_id1.segment_id != page_id2.segment_id
               || page_id1.idx + self.pages[page_id1].count.unwrap() <= page_id2.idx
               || page_id2.idx + self.pages[page_id2].count.unwrap() <= page_id1.idx
@@ -5008,12 +5010,12 @@ state_machine!{ PageOrg {
                 } else if is_in_lls(pid, pre.used_lists) {
                     assert(is_in_lls(pid, post.used_lists));
                 } else {
-                    let (i, j) = choose |i, j| 
+                    let (i, j) = choose |i, j|
                         0 <= i < pre.unused_lists.len()
                         && 0 <= j < pre.unused_lists[i].len()
                         && pre.unused_lists[i][j] == pid;
                     if i == sbin_idx {
-                        assert 
+                        assert
                     } else {
                     }
                 }
@@ -5090,10 +5092,26 @@ pub open spec fn valid_ll(pages: Map<PageId, PageData>, header: DlistHeader, ll:
 }
 
 pub open spec fn is_in_lls(page_id: PageId, s: Seq<Seq<PageId>>) -> bool {
-    exists |i: int, j: int| 
+    exists |i: int, j: int|
         0 <= i < s.len()
         && 0 <= j < s[i].len()
         && s[i][j] == page_id
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

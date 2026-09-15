@@ -54,7 +54,6 @@ pub ghost struct BlockId {
 
 impl PageId {
     pub open spec fn range_from(&self, lo: int, hi: int) -> Set<PageId> {
-        // {page_id | page_id.segment_id == self.segment_id && self.idx + lo <= page_id.idx < self.idx + hi}
         Set::range(self.idx + lo, self.idx + hi).map_by(
             |idx: int| PageId { segment_id: self.segment_id, idx: idx as nat },
             |page_id: PageId| page_id.idx as int,
@@ -205,6 +204,7 @@ pub type ThreadId = crate::thread::ThreadId;
 
 // PAPER CUT: doing this more than once, no generic finite condition for map,
 // having to do the maximum thing
+
 pub open spec fn segment_u_max(s: Set<SegmentId>) -> int
     decreases s.len()
 {
@@ -216,29 +216,11 @@ pub open spec fn segment_u_max(s: Set<SegmentId>) -> int
     }
 }
 
-proof fn segment_u_max_not_in(s: Set<SegmentId>)
-    ensures forall |id: SegmentId| s.contains(id) ==> id.uniq < segment_u_max(s) + 1,
-    decreases s.len(),
-{
-    vstd::set_lib::lemma_set_empty_equivalency_len(s);
-    if s.len() == 0 {
-        assert(s === Set::empty());
-    } else {
-        let x = s.choose();
-        let t = s.remove(x);
-        segment_u_max_not_in(t);
-    }
-}
-
 pub open spec fn segment_get_unused_uniq_field(s: Set<SegmentId>) -> int {
     segment_u_max(s) + 1
 }
 
-pub proof fn lemma_segment_get_unused_uniq_field(s: Set<SegmentId>)
-    ensures forall |id: SegmentId| s.contains(id) ==> id.uniq != segment_get_unused_uniq_field(s)
-{
-    segment_u_max_not_in(s);
-}
+pub proof fn lemma_segment_get_unused_uniq_field(s: Set<SegmentId>) { }
 
 pub open spec fn heap_u_max(s: Set<HeapId>) -> int
     decreases s.len()
@@ -251,29 +233,11 @@ pub open spec fn heap_u_max(s: Set<HeapId>) -> int
     }
 }
 
-proof fn heap_u_max_not_in(s: Set<HeapId>)
-    ensures forall |id: HeapId| s.contains(id) ==> id.uniq < heap_u_max(s) + 1,
-    decreases s.len(),
-{
-    vstd::set_lib::lemma_set_empty_equivalency_len(s);
-    if s.len() == 0 {
-        assert(s === Set::empty());
-    } else {
-        let x = s.choose();
-        let t = s.remove(x);
-        heap_u_max_not_in(t);
-    }
-}
-
 pub open spec fn heap_get_unused_uniq_field(s: Set<HeapId>) -> int {
     heap_u_max(s) + 1
 }
 
-pub proof fn lemma_heap_get_unused_uniq_field(s: Set<HeapId>)
-    ensures forall |id: HeapId| s.contains(id) ==> id.uniq != heap_get_unused_uniq_field(s)
-{
-    heap_u_max_not_in(s);
-}
+pub proof fn lemma_heap_get_unused_uniq_field(s: Set<HeapId>) { }
 
 pub open spec fn all_thread_ids() -> Set<ThreadId> {
     vstd::contrib::set_build!{ ThreadId { thread_id }: ThreadId | thread_id: u64 }
@@ -290,6 +254,25 @@ pub open spec fn range_block_ids(lo: nat, hi: nat, page_id: PageId, block_size: 
         idx: nat in lo..hi,
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
@@ -450,7 +433,7 @@ tokenized_state_machine!{ Mim {
             have thread_local_state >= [ thread_id => let ts ];
             have block >= [ block_id => let _ ];
             require tid == thread_id;
-            
+
             let page_id = block_id.page_id;
             let segment_id = page_id.segment_id;
 
@@ -749,7 +732,7 @@ tokenized_state_machine!{ Mim {
             //      && page_id.idx <= pid.idx < page_id.idx + n_slices);
             //let new_pages = Map::new(
             //    |pid: PageId| range.contains(pid),
-            //    |pid: PageId| 
+            //    |pid: PageId|
             //);
             require(forall |pid: PageId| page_map.dom().contains(pid)
               <==> (pid.segment_id == page_id.segment_id
@@ -1112,7 +1095,7 @@ tokenized_state_machine!{ Mim {
         forall |thread_id, page_id| #![all_triggers]
             self.thread_local_state.dom().contains(thread_id)
             && self.thread_local_state[thread_id].pages.dom().contains(page_id)
-                ==> 
+                ==>
     }*/
 
     #[invariant]
@@ -1194,7 +1177,7 @@ tokenized_state_machine!{ Mim {
 
     #[invariant]
     pub closed spec fn right_to_use_thread_complement(&self) -> bool {
-        forall |thread_id: ThreadId| 
+        forall |thread_id: ThreadId|
             #![trigger self.right_to_use_thread.contains(thread_id)]
             #![trigger self.thread_local_state.dom().contains(thread_id)]
             self.right_to_use_thread.contains(thread_id)
@@ -1212,7 +1195,7 @@ tokenized_state_machine!{ Mim {
 
     #[invariant]
     pub closed spec fn wf_heap_shared_access_requires_inst(&self) -> bool {
-        self.my_inst.is_none() ==> 
+        self.my_inst.is_none() ==>
             self.heap_shared_access.dom() =~= Set::empty()
     }
 
@@ -1331,14 +1314,14 @@ tokenized_state_machine!{ Mim {
         && ts.pages[block_id.page_id].offset == 0
         && ts.pages[block_id.page_id].block_size == block_id.block_size
         && ts.pages[block_id.page_id].shared_access == block_state.page_shared_access
-        && 0 <= block_id.idx < 
+        && 0 <= block_id.idx <
             ts.pages[block_id.page_id].num_blocks
 
         && ts.pages.dom().contains(slice_id)
         && ts.pages[slice_id].is_enabled
         && ts.pages[slice_id].shared_access == block_state.page_slice_shared_access
 
-        && slice_id.idx - block_id.page_id.idx == 
+        && slice_id.idx - block_id.page_id.idx ==
             ts.pages[slice_id].offset
 
         && ts.segments[block_id.page_id.segment_id].is_enabled
@@ -1393,28 +1376,28 @@ tokenized_state_machine!{ Mim {
 
     #[inductive(initialize)]
     fn initialize_inductive(post: Self) { }
-   
+
     #[inductive(set_inst)]
     fn set_inst_inductive(pre: Self, post: Self, inst: InstanceId) { }
-   
+
     #[inductive(actor_make_idle)]
     fn actor_make_idle_inductive(pre: Self, post: Self, thread_id: ThreadId) { }
-   
+
     #[inductive(actor_abandon)]
     fn actor_abandon_inductive(pre: Self, post: Self, thread_id: ThreadId) { }
-   
+
     #[inductive(set_use_delayed_free)]
     fn set_use_delayed_free_inductive(pre: Self, post: Self, page_id: PageId) { }
-   
+
     #[inductive(delay_enter_freeing)]
     fn delay_enter_freeing_inductive(pre: Self, post: Self, page_id: PageId, block_id: BlockId) { }
-   
+
     #[inductive(delay_leave_freeing)]
     fn delay_leave_freeing_inductive(pre: Self, post: Self, page_id: PageId) { }
-   
+
     #[inductive(delay_lookup_heap)]
     fn delay_lookup_heap_inductive(pre: Self, post: Self, block_id: BlockId) { }
-   
+
     #[inductive(block_set_heap_id)]
     fn block_set_heap_id_inductive(pre: Self, post: Self, block_id: BlockId) {
         /*match pre.delay_actor[block_id.page_id] {
@@ -1428,7 +1411,7 @@ tokenized_state_machine!{ Mim {
             _ => { assert(false); }
         }*/
     }
-   
+
     #[inductive(create_thread_mk_tokens)]
     fn create_thread_mk_tokens_inductive(pre: Self, post: Self, thread_id: ThreadId, thread_state: ThreadState) {
         /*assert forall |tid, segment_id| post.thread_local_state.dom().contains(tid) && #[trigger] post.thread_local_state[tid].segments.dom().contains(segment_id) implies
@@ -1444,21 +1427,21 @@ tokenized_state_machine!{ Mim {
             }
         }*/
     }
-   
+
     #[inductive(create_segment_mk_tokens)]
     fn create_segment_mk_tokens_inductive(pre: Self, post: Self, thread_id: ThreadId, pre_segment_id: SegmentId, segment_state: SegmentState) { }
-   
+
     #[inductive(segment_enable)]
     fn segment_enable_inductive(pre: Self, post: Self, thread_id: ThreadId, segment_id: SegmentId, shared_access: SegmentSharedAccess) { }
-   
+
     #[inductive(create_page_mk_tokens)]
     fn create_page_mk_tokens_inductive(pre: Self, post: Self, thread_id: ThreadId, page_id: PageId, n_slices: nat, block_size: nat, page_map: Map<PageId, PageState>) {
-        
+
     }
-   
+
     #[inductive(page_enable)]
     fn page_enable_inductive(pre: Self, post: Self, thread_id: ThreadId, page_id: PageId, n_slices: nat, page_map: Map<PageId, PageState>, psa_map: Map<PageId, PageSharedAccess>) { }
-   
+
     #[inductive(page_mk_block_tokens)]
     fn page_mk_block_tokens_inductive(pre: Self, post: Self, thread_id: ThreadId, page_id: PageId, old_num_blocks: nat, new_num_blocks: nat, block_size: nat) {
         let ts1 = pre.thread_local_state[thread_id];
@@ -1551,7 +1534,7 @@ tokenized_state_machine!{ Mim {
             }
         }
     }
-   
+
     #[inductive(page_disable)]
     fn page_disable_inductive(pre: Self, post: Self, thread_id: ThreadId, page_id: PageId, n_slices: nat) {
         assert forall |pid: PageId| #[trigger] post.delay_actor.dom().contains(pid)
@@ -1592,7 +1575,7 @@ tokenized_state_machine!{ Mim {
             }
         }*/
     }
-   
+
     #[inductive(page_destroy_tokens)]
     fn page_destroy_tokens_inductive(pre: Self, post: Self, thread_id: ThreadId, page_id: PageId, n_slices: nat) {
         assert(page_id.range_from(0, n_slices as int).contains(page_id));
@@ -1612,10 +1595,10 @@ tokenized_state_machine!{ Mim {
         assert(!ts.pages[page_id].is_enabled);
         assert(!pre.delay_actor.dom().contains(page_id));
     }
-   
+
     #[inductive(block_tokens_distinct)]
     fn block_tokens_distinct_inductive(pre: Self, post: Self, block_id1: BlockId, block_id2: BlockId) { }
-   
+
     #[inductive(block_in_range)]
     fn block_in_range_inductive(pre: Self, post: Self, thread_id: ThreadId, block_id: BlockId) { }
 

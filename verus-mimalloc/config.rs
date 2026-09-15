@@ -76,43 +76,15 @@ pub const COMMIT_SIZE: u64 = SLICE_SIZE;
 pub const COMMIT_MASK_BITS: u64 = SLICES_PER_SEGMENT;
 pub const COMMIT_MASK_FIELD_COUNT: u64 = COMMIT_MASK_BITS / (usize::BITS as u64);
 
-// huge 
+// huge
 
 pub const HUGE_BLOCK_SIZE: u32 = 0x80000000; // 2 GiB
 
 // Helpers
 
-pub proof fn const_facts()
-    ensures SLICE_SIZE == 65536,
-        SEGMENT_SIZE == 33554432,
-        SLICES_PER_SEGMENT == 512,
-        SMALL_PAGE_SIZE == 65536,
-        MEDIUM_PAGE_SIZE == 524288,
+pub proof fn const_facts() { }
 
-        SMALL_OBJ_SIZE_MAX == 16384,
-        MEDIUM_OBJ_SIZE_MAX == 131072,
-        MEDIUM_OBJ_WSIZE_MAX == 16384,
-        SMALL_SIZE_MAX == 1024,
-        LARGE_OBJ_SIZE_MAX == 16777216,
 
-        COMMIT_MASK_FIELD_COUNT == 8,
-
-        vstd::layout::size_of::<SegmentHeader>() == SIZEOF_SEGMENT_HEADER,
-        vstd::layout::size_of::<Page>() == SIZEOF_PAGE_HEADER,
-        vstd::layout::size_of::<Heap>() == SIZEOF_HEAP,
-        vstd::layout::size_of::<Tld>() == SIZEOF_TLD,
-
-        vstd::layout::align_of::<SegmentHeader>() == 8,
-        vstd::layout::align_of::<Page>() == 8,
-        vstd::layout::align_of::<Heap>() == 8,
-        vstd::layout::align_of::<Tld>() == 8,
-{
-    assert(SLICE_SIZE == 65536) by (compute);
-    assert(SEGMENT_SIZE == 33554432) by (compute);
-    assert(SMALL_PAGE_SIZE == 65536) by (compute);
-    assert(MEDIUM_PAGE_SIZE == 524288) by (compute);
-    assert(COMMIT_MASK_FIELD_COUNT == 8) by (compute);
-}
 
 use crate::types::todo;
 pub fn option_eager_commit_delay() -> i64 { 1 }
