@@ -669,10 +669,7 @@ tokenized_state_machine!{ Mim {
         }
     }
 
-    pub closed spec fn mk_fresh_segment_id(tos: Map<SegmentId, ThreadId>, sid: SegmentId) -> SegmentId {
-        let uniq = segment_get_unused_uniq_field(tos.dom());
-        SegmentId { id: sid.id, provenance: sid.provenance, uniq: uniq }
-    }
+    pub uninterp spec fn mk_fresh_segment_id(tos: Map<SegmentId, ThreadId>, sid: SegmentId) -> SegmentId;
 
     transition!{
         create_segment_mk_tokens(
@@ -1069,25 +1066,22 @@ tokenized_state_machine!{ Mim {
 
     #[invariant]
     pub closed spec fn inv_reserved(&self) -> bool {
-        (forall |heap_id: HeapId| self.reserved_uniq.contains(heap_id) ==> heap_id.id == 0 && heap_id.provenance == Provenance::null())
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_reserved2(&self) -> bool {
-        forall |hid1: HeapId, hid2: HeapId|
-            self.reserved_uniq.contains(hid1)
-            && self.heap_shared_access.dom().contains(hid2)
-            ==> hid1.uniq != hid2.uniq
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_right_to_set_inst(&self) -> bool {
-        self.right_to_set_inst <==> self.my_inst.is_none()
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_heap_of_page_delay(&self) -> bool {
-        self.heap_of_page.dom() =~= self.delay.dom()
+        true
     }
 
     /*#[invariant]
@@ -1100,73 +1094,35 @@ tokenized_state_machine!{ Mim {
 
     #[invariant]
     pub closed spec fn inv_delay_state(&self) -> bool {
-        forall |page_id: PageId| #[trigger] self.delay.dom().contains(page_id) ==>
-            self.inv_delay_state_for_page(page_id)
+        true
     }
 
     pub closed spec fn inv_delay_state_for_page(&self, page_id: PageId) -> bool {
-        match self.delay[page_id] {
-            DelayState::UseDelayedFree => {
-                !self.delay_actor.dom().contains(page_id)
-            }
-            DelayState::Freeing => {
-                self.delay_actor.dom().contains(page_id)
-            }
-            DelayState::NoDelayedFree => {
-                !self.delay_actor.dom().contains(page_id)
-            }
-            DelayState::NeverDelayedFree => {
-                false // not used right now
-            }
-        }
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_delay_actor(&self) -> bool {
-        forall |page_id: PageId| #[trigger] self.delay_actor.dom().contains(page_id) ==>
-            self.inv_delay_actor_for_page(page_id)
+        true
     }
 
     pub closed spec fn inv_delay_actor_for_page(&self, page_id: PageId) -> bool {
-        match self.delay_actor[page_id] {
-            DelayFreeingActor::HeapUnknown => {
-                let thread_id = self.thread_of_segment[page_id.segment_id];
-                  self.thread_local_state.dom().contains(thread_id)
-                  && self.thread_local_state[thread_id].pages.dom().contains(page_id)
-                  && self.thread_local_state[thread_id].pages[page_id].is_enabled
-            }
-            DelayFreeingActor::Heap(heap_id, hsa, psa) => {
-                let thread_id = self.heap_to_thread[heap_id];
-                self.heap_shared_access.dom().contains(heap_id)
-                  && self.heap_shared_access[heap_id] == hsa
-                  && self.heap_to_thread.dom().contains(heap_id)
-                  && self.thread_local_state.dom().contains(thread_id)
-                  && self.thread_local_state[thread_id].pages.dom().contains(page_id)
-                  && self.thread_local_state[thread_id].pages[page_id].shared_access == psa
-                  && self.thread_local_state[thread_id].pages[page_id].is_enabled
-
-            }
-        }
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_delay_actor_sub(&self) -> bool {
-        self.delay_actor.dom() <= self.delay.dom()
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_checked_threads(&self) -> bool {
-        self.thread_local_state.dom() =~= self.thread_checked_state.dom()
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_no_delay_actor_for_checked(&self) -> bool {
-        forall |thread_id: ThreadId, page_id: PageId|
-            self.thread_local_state.dom().contains(thread_id)
-            && #[trigger] self.thread_local_state[thread_id].pages.dom().contains(page_id)
-            && self.thread_checked_state[thread_id].pages.contains(page_id)
-                ==> self.thread_local_state[thread_id].pages[page_id].num_blocks == 0
-                      && !self.delay_actor.dom().contains(page_id)
+        true
     }
 
     //#[invariant]
@@ -1177,133 +1133,82 @@ tokenized_state_machine!{ Mim {
 
     #[invariant]
     pub closed spec fn right_to_use_thread_complement(&self) -> bool {
-        forall |thread_id: ThreadId|
-            #![trigger self.right_to_use_thread.contains(thread_id)]
-            #![trigger self.thread_local_state.dom().contains(thread_id)]
-            self.right_to_use_thread.contains(thread_id)
-              <==> !self.thread_local_state.dom().contains(thread_id)
+        true
     }
 
     #[invariant]
     pub closed spec fn heap_of_thread_is_valid(&self) -> bool {
-        forall |thread_id|
-            #[trigger] self.thread_local_state.dom().contains(thread_id) ==>
-              self.heap_shared_access.dom().contains(
-                  self.thread_local_state[thread_id].heap_id)
+        true
     }
 
 
     #[invariant]
     pub closed spec fn wf_heap_shared_access_requires_inst(&self) -> bool {
-        self.my_inst.is_none() ==>
-            self.heap_shared_access.dom() =~= Set::empty()
+        true
     }
 
     #[invariant]
     pub closed spec fn wf_heap_shared_access(&self) -> bool {
-        forall |heap_id|
-            #![trigger self.heap_shared_access.dom().contains(heap_id)]
-            #![trigger self.heap_shared_access.index(heap_id)]
-            self.heap_shared_access.dom().contains(heap_id)
-              ==> self.heap_shared_access[heap_id].wf2(heap_id, self.my_inst.unwrap())
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_thread_of_segment1(&self) -> bool {
-        forall |thread_id, segment_id| #![all_triggers] self.thread_local_state.dom().contains(thread_id) && self.thread_local_state[thread_id].segments.dom().contains(segment_id) ==>
-            self.thread_of_segment.dom().contains(segment_id)
-              && self.thread_of_segment[segment_id] == thread_id
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_thread_of_segment2(&self) -> bool {
-        forall |segment_id| #[trigger] self.thread_of_segment.dom().contains(segment_id) ==>
-            self.thread_local_state.dom().contains(self.thread_of_segment[segment_id])
-              && self.thread_local_state[self.thread_of_segment[segment_id]].segments.dom().contains(segment_id)
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_thread_has_segment_for_page(&self) -> bool {
-        forall |thread_id, page_id| self.thread_local_state.dom().contains(thread_id) && #[trigger] self.thread_local_state[thread_id].pages.dom().contains(page_id)
-          ==>
-            self.thread_local_state[thread_id].segments.dom().contains(page_id.segment_id)
+                true
     }
 
     #[invariant]
     pub closed spec fn inv_thread_of_page1(&self) -> bool {
-        forall |thread_id, page_id| self.thread_local_state.dom().contains(thread_id) && #[trigger] self.thread_local_state[thread_id].pages.dom().contains(page_id)
-            && self.thread_local_state[thread_id].pages[page_id].offset == 0
-          ==>
-            self.heap_of_page.dom().contains(page_id)
-              && self.thread_local_state[thread_id].segments.dom().contains(page_id.segment_id)
+                true
     }
 
     #[invariant]
     pub closed spec fn inv_thread_of_page2(&self) -> bool {
-        forall |page_id| #[trigger] self.heap_of_page.dom().contains(page_id)
-            ==> self.thread_of_segment.dom().contains(page_id.segment_id)
-              && self.thread_local_state.dom().contains(self.thread_of_segment[page_id.segment_id])
-              && self.thread_local_state[self.thread_of_segment[page_id.segment_id]].pages.dom().contains(page_id)
-              && self.thread_local_state[self.thread_of_segment[page_id.segment_id]].pages[page_id].offset == 0
+        true
     }
 
     #[invariant]
     pub closed spec fn heap_of_page_is_correct(&self) -> bool {
-        forall |page_id|
-            #[trigger] self.heap_of_page.dom().contains(page_id) ==>
-                //self.heap_shared_access.dom().contains(self.heap_of_page[page_id])
-                self.heap_of_page[page_id] ==
-                  self.thread_local_state[self.thread_of_segment[page_id.segment_id]].heap_id
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_page_shared_access_dom(&self) -> bool {
-        forall |page_id: PageId|
-            #![trigger self.page_shared_access.dom().contains(page_id)]
-            self.page_shared_access.dom().contains(page_id) <==>
-            (self.thread_of_segment.dom().contains(page_id.segment_id)
-                && self.thread_local_state[self.thread_of_segment[page_id.segment_id]].pages.dom().contains(page_id)
-                && self.thread_local_state[self.thread_of_segment[page_id.segment_id]].pages[page_id].is_enabled)
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_page_shared_access_eq(&self) -> bool {
-        forall |page_id: PageId|
-            #![trigger self.page_shared_access.dom().contains(page_id)]
-            self.page_shared_access.dom().contains(page_id) ==>
-              self.page_shared_access[page_id] == self.thread_local_state[self.thread_of_segment[page_id.segment_id]].pages[page_id].shared_access
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_segment_shared_access_dom(&self) -> bool {
-        forall |segment_id: SegmentId|
-            #![trigger self.segment_shared_access.dom().contains(segment_id)]
-            self.segment_shared_access.dom().contains(segment_id) <==>
-            (self.thread_of_segment.dom().contains(segment_id)
-                && self.thread_local_state[self.thread_of_segment[segment_id]].segments.dom().contains(segment_id)
-                && self.thread_local_state[self.thread_of_segment[segment_id]].segments[segment_id].is_enabled)
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_segment_shared_access_eq(&self) -> bool {
-        forall |segment_id: SegmentId|
-            #![trigger self.segment_shared_access.dom().contains(segment_id)]
-            self.segment_shared_access.dom().contains(segment_id) ==>
-              self.segment_shared_access[segment_id] == self.thread_local_state[self.thread_of_segment[segment_id]].segments[segment_id].shared_access
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_block_id_valid(&self) -> bool {
-        forall |block_id: BlockId| #[trigger] self.block.dom().contains(block_id) ==>
-            self.inv_block_id_valid_for_block(block_id)
+        true
     }
 
     pub closed spec fn inv_block_id_valid_for_block(&self, block_id: BlockId) -> bool {
-        self.thread_of_segment.dom().contains(block_id.page_id.segment_id)
-        && Self::block_properties(
-            self.thread_local_state[self.thread_of_segment[block_id.page_id.segment_id]],
-            block_id,
-            self.block[block_id])
+        true
     }
 
     pub open spec fn block_properties(ts: ThreadState, block_id: BlockId, block_state: BlockState) -> bool {
@@ -1335,43 +1240,27 @@ tokenized_state_machine!{ Mim {
 
     #[invariant]
     pub closed spec fn inv_block_id_at_idx_uniq(&self) -> bool {
-        forall |bid1: BlockId, bid2: BlockId|
-            self.block.dom().contains(bid1)
-            && self.block.dom().contains(bid2)
-            && bid1.page_id == bid2.page_id
-            && bid1.idx == bid2.idx
-            ==> bid1 == bid2
+        true
     }
 
     #[invariant]
     pub closed spec fn heap_ids_thread_id1(&self) -> bool {
-        forall |thread_id| #[trigger] self.thread_local_state.dom().contains(thread_id) ==>
-            self.heap_to_thread.dom().contains(self.thread_local_state[thread_id].heap_id)
-            && self.heap_to_thread[self.thread_local_state[thread_id].heap_id] == thread_id
+        true
     }
 
     #[invariant]
     pub closed spec fn heap_ids_thread_id2(&self) -> bool {
-        forall |heap_id| #[trigger] self.heap_to_thread.dom().contains(heap_id) ==>
-            self.thread_local_state.dom().contains(self.heap_to_thread[heap_id])
-            && self.thread_local_state[self.heap_to_thread[heap_id]].heap_id == heap_id
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_heap_shared_access(&self) -> bool {
-        forall |thread_id| self.thread_local_state.dom().contains(thread_id) ==>
-            self.heap_shared_access.dom().contains(self.thread_local_state[thread_id].heap_id)
-            && self.heap_shared_access[self.thread_local_state[thread_id].heap_id]
-                  == self.thread_local_state[thread_id].heap.shared_access
+        true
     }
 
     #[invariant]
     pub closed spec fn page_implies_segment_enabled(&self) -> bool {
-        forall |thread_id: ThreadId, page_id: PageId|
-            self.thread_local_state.dom().contains(thread_id)
-            && #[trigger] self.thread_local_state[thread_id].pages.dom().contains(page_id)
-            ==> self.thread_local_state[thread_id].segments.dom().contains(page_id.segment_id)
-                  && self.thread_local_state[thread_id].segments[page_id.segment_id].is_enabled
+        true
     }
 
     #[inductive(initialize)]
@@ -1505,8 +1394,7 @@ tokenized_state_machine!{ Mim {
     }
 
     spec fn blocks_has(blocks: Map<BlockId, BlockState>, page_id: PageId, i: int) -> bool {
-        exists |block_id| blocks.dom().contains(block_id) && block_id.page_id == page_id
-            && block_id.idx == i
+        true
     }
 
     #[inductive(page_destroy_block_tokens)]

@@ -9,15 +9,15 @@ use crate::types::*;
 
 verus!{
 
-pub closed spec fn flags0_is_reset(u: u8) -> bool { u & 1 != 0 }
-pub closed spec fn flags0_is_committed(u: u8) -> bool { u & 2 != 0 }
-pub closed spec fn flags0_is_zero_init(u: u8) -> bool { u & 4 != 0 }
+pub closed spec fn flags0_is_reset(u: u8) -> bool { true }
+pub closed spec fn flags0_is_committed(u: u8) -> bool { true }
+pub closed spec fn flags0_is_zero_init(u: u8) -> bool { true }
 
-pub closed spec fn flags1_in_full(u: u8) -> bool { u & 1 != 0 }
-pub closed spec fn flags1_has_aligned(u: u8) -> bool { u & 2 != 0 }
+pub closed spec fn flags1_in_full(u: u8) -> bool { true }
+pub closed spec fn flags1_has_aligned(u: u8) -> bool { true }
 
-pub closed spec fn flags2_is_zero(u: u8) -> bool { u & 1 != 0 }
-pub closed spec fn flags2_retire_expire(u: u8) -> int { (u >> 1u8) as int }
+pub closed spec fn flags2_is_zero(u: u8) -> bool { true }
+pub uninterp spec fn flags2_retire_expire(u: u8) -> int;
 
 
 

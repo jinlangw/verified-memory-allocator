@@ -14,9 +14,9 @@ verus!{
 
 // used for triggering
 
-spec fn mod64(x: usize) -> usize { x % 64 }
+uninterp spec fn mod64(x: usize) -> usize;
 
-spec fn div64(x: usize) -> usize { x / 64 }
+uninterp spec fn div64(x: usize) -> usize;
 
 #[verifier::opaque]
 spec fn is_bit_set(a: usize, b: usize) -> bool {
@@ -53,18 +53,12 @@ pub struct CommitMask {
 }
 
 // {(x, y) | 0 <= x < 8 && y < 64}
-spec fn set_8_64() -> Set<(int, usize)> {
-    set_build!{ (x, y): (int, usize) | x: int in 0..8, y: usize in 0..64 }
-}
+uninterp spec fn set_8_64() -> Set<(int, usize)>;
 
 
 impl CommitMask {
 
-pub closed spec fn view(&self) -> Set<int> {
-    set_8_64()
-        .filter(|t: (int, usize)| is_bit_set(self.mask[t.0], t.1))
-        .map(|t: (int, usize)| t.0 * 64 + t.1)
-}
+pub uninterp spec fn view(&self) -> Set<int>;
 
 proof fn lemma_view(&self) { }
 

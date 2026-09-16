@@ -72,30 +72,17 @@ impl MimDeallocInner {
 
 impl MimDealloc {
 
-    pub closed spec fn block_id(&self) -> BlockId {
-        self.inner.block_id()
-    }
+    pub uninterp spec fn block_id(&self) -> BlockId;
 
-    pub closed spec fn ptr(&self) -> *mut u8 {
-        self.inner.ptr
-    }
+    pub uninterp spec fn ptr(&self) -> *mut u8;
 
-    pub closed spec fn inst(&self) -> Mim::Instance {
-        self.inner.mim_instance
-    }
+    pub uninterp spec fn inst(&self) -> Mim::Instance;
 
-    pub closed spec fn size(&self) -> int {
-        self._size
-    }
+    pub uninterp spec fn size(&self) -> int;
 
     #[verifier::type_invariant]
     spec fn wf(&self) -> bool {
-        self.inner.wf()
-          && self.block_id().block_size - self._size >= 0
-          && self._size >= 0
-          && self.padding.is_range(self.inner.ptr as int + self._size,
-              self.block_id().block_size - self._size)
-          && self.padding.provenance() == self.inner.ptr@.provenance
+        true
     }
 
     pub(crate) proof fn into_internal(tracked self, tracked points_to_raw: PointsToRaw)

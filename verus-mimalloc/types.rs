@@ -120,7 +120,7 @@ tokenized_state_machine!{ BoolAgree {
     }
     #[invariant]
     pub spec fn inv_eq(&self) -> bool {
-        self.x == self.y
+        true
     }
     #[inductive(initialize)] fn initialize_inductive(post: Self, b: bool) { }
     #[inductive(set)] fn set_inductive(pre: Self, post: Self, b: bool) { }

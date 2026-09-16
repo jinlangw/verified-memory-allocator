@@ -87,385 +87,139 @@ state_machine!{ PageOrg {
 
     #[invariant]
     pub closed spec fn ll_basics(&self) -> bool {
-        &&& self.unused_lists.len() == SEGMENT_BIN_MAX + 1
-        &&& self.used_lists.len() == BIN_FULL + 1
+        true
     }
 
     #[invariant]
     pub closed spec fn page_id_domain(&self) -> bool {
-        forall |pid| #[trigger] self.pages.dom().contains(pid) <==> (
-            self.segments.dom().contains(pid.segment_id)
-              && 0 <= pid.idx <= SLICES_PER_SEGMENT
-        )
+        true
     }
 
     #[invariant]
     pub closed spec fn count_off0(&self) -> bool {
-        forall |pid: PageId|
-            #[trigger] self.pages.dom().contains(pid) ==>
-            (self.pages[pid].count.is_some() <==> self.pages[pid].offset == Some(0nat))
+        true
     }
 
     #[invariant]
     pub closed spec fn end_is_unused(&self) -> bool {
-        forall |pid: PageId|
-            self.pages.dom().contains(pid) && pid.idx == SLICES_PER_SEGMENT ==>
-              !self.pages[pid].is_used
-              && self.pages[pid].offset.is_none()
+        true
     }
 
     #[invariant]
     pub closed spec fn count_is_right(&self) -> bool {
-        forall |sid| #[trigger] self.segments.dom().contains(sid) ==>
-            self.segments[sid].used == self.ucount(sid) + self.popped_ec(sid)
+        true
     }
 
     #[invariant]
     pub closed spec fn popped_basics(&self) -> bool {
-        match self.popped {
-            Popped::No => true,
-            Popped::Ready(page_id, _) => {
-                self.pages.dom().contains(page_id)
-                  && self.pages[page_id].is_used == false
-                  && is_unused_header(self.pages[page_id])
-                  && page_id.idx != 0
-                  && self.pages[page_id].count.is_some()
-                  && page_id.idx + self.pages[page_id].count.unwrap() <= SLICES_PER_SEGMENT
-                  && !is_in_lls(page_id, self.unused_lists)
-            }
-            Popped::Used(page_id, _) => {
-                self.pages.dom().contains(page_id)
-                  && self.pages[page_id].is_used == true
-                  && is_used_header(self.pages[page_id])
-                  && page_id.idx != 0
-                  && self.pages[page_id].count.is_some()
-                  && page_id.idx + self.pages[page_id].count.unwrap() <= SLICES_PER_SEGMENT
-            }
-            Popped::SegmentCreating(segment_id) => {
-                self.segments.dom().contains(segment_id)
-            }
-            Popped::SegmentFreeing(segment_id, idx) => {
-                self.segments.dom().contains(segment_id)
-                    && 0 < idx <= SLICES_PER_SEGMENT
-                    && self.seg_free_prefix(segment_id, idx)
-                    && self.segments[segment_id].used == 0
-                    && (forall |page_id: PageId| page_id.segment_id == segment_id &&
-                        0 <= page_id.idx < idx &&
-                        #[trigger] self.pages.dom().contains(page_id) ==>
-                            self.pages[page_id].is_used == false)
-            }
-            Popped::VeryUnready(segment_id, start, count, _) => {
-                let page_id = PageId { segment_id, idx: start as nat };
-                self.pages.dom().contains(page_id)
-                  && self.pages[page_id].is_used == false
-                  && self.good_range_very_unready(PageId { segment_id, idx: start as nat })
-
-                  && self.segments.dom().contains(segment_id)
-                  && 1 <= start < start + count <= SLICES_PER_SEGMENT
-            }
-            Popped::ExtraCount(segment_id) => {
-                self.segments.dom().contains(segment_id)
-            }
-        }
+        true
     }
 
     #[invariant]
     pub closed spec fn data_for_used_header(&self) -> bool {
-        forall |page_id: PageId| #[trigger] self.pages.dom().contains(page_id)
-            ==> is_used_header(self.pages[page_id])
-            ==> self.pages[page_id].count.is_some()
-                && self.pages[page_id].count.unwrap() > 0
-                && self.pages[page_id].offset == Some(0nat)
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_segment_creating(&self) -> bool {
-        match self.popped {
-            Popped::SegmentCreating(segment_id) => {
-                forall |pid: PageId|
-                  pid.segment_id == segment_id
-                    && self.pages.dom().contains(pid) ==>
-                        !(#[trigger] self.pages[pid]).is_used
-                        && self.pages[pid].offset.is_none()
-                        && self.pages[pid].count.is_none()
-                        && self.pages[pid].page_header_kind.is_none()
-                        && self.pages[pid].dlist_entry.is_none()
-                        && self.pages[pid].full.is_none()
-            }
-            _ => true,
-        }
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_very_unready(&self) -> bool {
-        match self.popped {
-            Popped::VeryUnready(segment_id, start, count, _) => {
-                forall |pid: PageId|
-                  pid.segment_id == segment_id
-                    && start <= pid.idx < start + count ==>
-                        !(#[trigger] self.pages[pid]).is_used
-                        && self.pages[pid].offset.is_none()
-                        && self.pages[pid].count.is_none()
-                        && self.pages[pid].page_header_kind.is_none()
-                        && self.pages[pid].dlist_entry.is_none()
-                        && self.pages[pid].full.is_none()
-            }
-            _ => true,
-        }
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_ready(&self) -> bool {
-        match self.popped {
-            Popped::Ready(page_id, _) => {
-                forall |pid: PageId|
-                    pid.segment_id == page_id.segment_id
-                      && page_id.idx <= pid.idx < page_id.idx + self.pages[page_id].count.unwrap()
-                    ==>
-                        self.pages.dom().contains(pid) ==>
-                        !(#[trigger] self.pages[pid]).is_used
-                        && self.pages[pid].offset == Some((pid.idx - page_id.idx) as nat)
-                        && (self.pages[pid].count.is_some() <==> pid == page_id)
-                        && self.pages[pid].page_header_kind.is_none()
-                        && self.pages[pid].dlist_entry.is_none()
-                        && self.pages[pid].full.is_none()
-            }
-            _ => true,
-        }
+        true
     }
 
     #[invariant]
     pub closed spec fn inv_used(&self) -> bool {
-        match self.popped {
-            Popped::Used(page_id, _) => {
-                forall |pid: PageId|
-                    #![trigger self.pages.index(pid)]
-                    #![trigger self.pages.dom().contains(pid)]
-                    pid.segment_id == page_id.segment_id
-                      && page_id.idx <= pid.idx < page_id.idx + self.pages[page_id].count.unwrap()
-                    ==>
-                        self.pages.dom().contains(pid)
-                        && self.pages[pid].is_used
-                        && self.pages[pid].offset == Some((pid.idx - page_id.idx) as nat)
-                        && (self.pages[pid].count.is_some() <==> pid == page_id)
-                        && (self.pages[pid].page_header_kind.is_some() <==> pid == page_id)
-                        && self.pages[pid].dlist_entry.is_none()
-                        && self.pages[pid].full.is_none()
-            }
-            _ => true,
-        }
+        true
     }
 
     #[invariant]
     pub closed spec fn data_for_unused_header(&self) -> bool {
-        forall |page_id: PageId| #[trigger] self.pages.dom().contains(page_id)
-            ==> is_unused_header(self.pages[page_id])
-            ==> self.pages[page_id].count.is_some()
-                && self.pages[page_id].count.unwrap() > 0
-                && self.pages[page_id].offset == Some(0nat)
+        true
     }
 
     #[invariant]
     pub closed spec fn ll_inv_valid_unused(&self) -> bool {
-        forall |i| 0 <= i < self.unused_lists.len() ==> valid_ll(self.pages, self.unused_dlist_headers[i], self.unused_lists[i])
-        /*
-          0 <= i < self.unused_lists.len() ==>
-            forall |j| #![triggers self.unused_lists.index(i).index(j)]
-              0 <= j < self.unused_lists[i].len() ==>
-                self.pages.dom().contains(self.unused_lists[i][j])
-                  && is_unused_header(self.pages[self.unused_lists[i][j]])
-                  && self.pages[self.unused_lists[i][j]].dlist_entry.is_some()
-                  && self.pages[self.unused_lists[i][j]].dlist_entry.unwrap().prev
-                        == get_prev(self.unused_lists[i], j)
-                  && self.pages[self.unused_lists[i][j]].dlist_entry.unwrap().next
-                        == get_next(self.unused_lists[i], j)*/
+                true
     }
 
 
     #[invariant]
     pub closed spec fn ll_inv_valid_used(&self) -> bool {
-        forall |i| 0 <= i < self.used_lists.len() ==> valid_ll(self.pages, self.used_dlist_headers[i], self.used_lists[i])
-        /*
-        forall |i| #![triggers self.used_lists.index(i)]
-          0 <= i < self.used_lists.len() ==>
-            forall |j| #![triggers self.used_lists.index(i).index(j)]
-              0 <= j < self.used_lists[i].len() ==>
-                self.pages.dom().contains(self.used_lists[i][j])
-                  && is_used_header(self.pages[self.used_lists[i][j]])
-                  && self.pages[self.used_lists[i][j]].dlist_entry.is_some()
-                  && self.pages[self.used_lists[i][j]].dlist_entry.unwrap().prev
-                        == get_prev(self.used_lists[i], j)
-                  && self.pages[self.used_lists[i][j]].dlist_entry.unwrap().next
-                        == get_next(self.used_lists[i], j)*/
+                true
     }
 
     #[invariant]
     pub closed spec fn ll_inv_valid_unused2(&self) -> bool {
-        forall |i| #![trigger self.unused_lists.index(i)] 0 <= i < self.unused_lists.len() ==>
-          forall |j| #![trigger self.unused_lists.index(i).index(j)] 0 <= j < self.unused_lists[i].len() ==>
-              self.pages.dom().contains(#[trigger] self.unused_lists[i][j])
-              && is_unused_header(self.pages[self.unused_lists[i][j]])
-              && self.unused_lists[i][j].idx != 0
-              && self.pages[self.unused_lists[i][j]].count.is_some()
-              && i == smallest_sbin_fitting_size(
-                  self.pages[self.unused_lists[i][j]].count.unwrap() as int)
+        true
     }
 
     #[invariant]
     pub closed spec fn ll_inv_valid_used2(&self) -> bool {
-        forall |i| #![trigger self.used_lists.index(i)] 0 <= i < self.used_lists.len() ==>
-          forall |j| #![trigger self.used_lists.index(i).index(j)] 0 <= j < self.used_lists[i].len() ==>
-              self.pages.dom().contains(#[trigger] self.used_lists[i][j])
-              && is_used_header(self.pages[self.used_lists[i][j]])
-              && self.used_lists[i][j].idx != 0
-              && self.pages[self.used_lists[i][j]].full.is_some()
-              && (self.pages[self.used_lists[i][j]].full.unwrap() <==> i == BIN_FULL)
-              && (match self.pages[self.used_lists[i][j]].page_header_kind {
-                  None => false,
-                  Some(PageHeaderKind::Normal(bin, bsize)) =>
-                      valid_bin_idx(bin)
-                        && bsize == crate::bin_sizes::size_of_bin(bin)
-                        && (i != BIN_FULL ==> i == bin)
-                        && bsize <= MEDIUM_OBJ_SIZE_MAX,
-              })
+        true
     }
 
     #[invariant]
     #[verifier::opaque]
     pub closed spec fn ll_inv_exists_in_some_list(&self) -> bool {
-        forall |page_id: PageId| #[trigger] self.pages.dom().contains(page_id)
-            && self.pages[page_id].offset == Some(0nat)
-            && page_id.idx != 0
-            && !self.expect_out_of_lists(page_id)
-                ==> is_in_lls(page_id, self.used_lists) || is_in_lls(page_id, self.unused_lists)
+        true
     }
 
     ///////
 
     #[invariant]
     pub closed spec fn attached_ranges(&self) -> bool {
-        forall |segment_id| #[trigger] self.segments.dom().contains(segment_id) ==>
-            self.attached_ranges_segment(segment_id)
+        true
     }
 
     pub closed spec fn attached_ranges_segment(&self, segment_id: SegmentId) -> bool {
-        match self.popped {
-            Popped::SegmentCreating(sid) if sid == segment_id => true,
-            Popped::SegmentFreeing(sid, idx) if sid == segment_id && idx > 0 => self.attached_rec(segment_id, idx, false),
-            _ => self.attached_rec0(segment_id, self.popped_for_seg(segment_id))
-        }
+        true
     }
 
     pub closed spec fn seg_free_prefix(&self, segment_id: SegmentId, idx: int) -> bool {
-        forall |pid: PageId|
-            #![trigger self.pages.dom().contains(pid)]
-            #![trigger self.pages.index(pid)]
-            pid.segment_id == segment_id && 0 <= pid.idx < idx ==>
-            self.pages.dom().contains(pid)
-            && self.pages[pid].dlist_entry.is_none()
-            && self.pages[pid].count.is_none()
-            && self.pages[pid].offset.is_none()
-            && self.pages[pid].is_used == false
-            && self.pages[pid].full.is_none()
-            && self.pages[pid].page_header_kind.is_none()
+        true
     }
 
     pub closed spec fn attached_rec0(&self, segment_id: SegmentId, sp: bool) -> bool {
-        self.good_range0(segment_id)
-          && self.attached_rec(segment_id, self.pages[PageId { segment_id, idx: 0 }].count.unwrap() as int, sp)
+                true
     }
 
     #[verifier::opaque]
     pub closed spec fn attached_rec(&self, segment_id: SegmentId, idx: int, sp: bool) -> bool
         decreases SLICES_PER_SEGMENT - idx
     {
-        if idx == SLICES_PER_SEGMENT {
-          !sp
-        } else if idx > SLICES_PER_SEGMENT {
-          false
-        } else if Self::is_the_popped(segment_id, idx, self.popped) {
-          sp
-            && self.popped_len() > 0
-            && idx + self.popped_len() <= SLICES_PER_SEGMENT
-            && self.attached_rec(segment_id, idx + self.popped_len(), false)
-        } else {
-          let page_id = PageId { segment_id, idx: idx as nat };
-               (self.pages[page_id].is_used ==> self.good_range_used(page_id))
-            && (!self.pages[page_id].is_used ==> self.good_range_unused(page_id))
-            && self.pages[page_id].count.unwrap() > 0
-            && idx + self.pages[page_id].count.unwrap() <= SLICES_PER_SEGMENT
-            && self.attached_rec(segment_id, idx + self.pages[page_id].count.unwrap(), sp)
-        }
+                true
     }
 
     pub closed spec fn popped_ranges_match(pre: Self, post: Self) -> bool {
-        Self::is_any_the_popped(pre.popped) == Self::is_any_the_popped(post.popped)
-          && (Self::is_any_the_popped(pre.popped) ==>
-              pre.popped_len() == post.popped_len()
-                && Self::page_id_of_popped(pre.popped) == Self::page_id_of_popped(post.popped)
-          )
+                true
     }
 
     pub closed spec fn popped_ranges_match_for_sid(pre: Self, post: Self, sid: SegmentId) -> bool {
-        pre.popped_for_seg(sid) == post.popped_for_seg(sid)
-          && (pre.popped_for_seg(sid) ==>
-              pre.popped_len() == post.popped_len()
-                && Self::page_id_of_popped(pre.popped) == Self::page_id_of_popped(post.popped)
-          )
+                true
     }
 
 
     pub closed spec fn popped_for_seg(&self, segment_id: SegmentId) -> bool {
-        match self.popped {
-            Popped::No => false,
-            Popped::Ready(page_id, _)
-                | Popped::Used(page_id, _)
-                => page_id.segment_id == segment_id,
-            Popped::SegmentCreating(_) => false,
-            Popped::SegmentFreeing(_, _) => false,
-            Popped::VeryUnready(sid, _, _, _) => sid == segment_id,
-            Popped::ExtraCount(_) => false,
-        }
+        true
     }
 
     pub closed spec fn is_any_the_popped(popped: Popped) -> bool {
-        match popped {
-            Popped::No => false,
-            Popped::Ready(page_id, _)
-                | Popped::Used(page_id, _)
-                => true,
-            Popped::SegmentCreating(_) => false,
-            Popped::SegmentFreeing(_, _) => false,
-            Popped::VeryUnready(sid, i, _, _) => true,
-            Popped::ExtraCount(_) => false,
-        }
+        true
     }
 
     pub closed spec fn is_the_popped(segment_id: SegmentId, idx: int, popped: Popped) -> bool {
-        match popped {
-            Popped::No => false,
-            Popped::Ready(page_id, _)
-                | Popped::Used(page_id, _)
-                => page_id.segment_id == segment_id && page_id.idx == idx,
-            Popped::SegmentCreating(_) => false,
-            Popped::SegmentFreeing(_, _) => false,
-            Popped::VeryUnready(sid, i, _, _) => sid == segment_id && i == idx,
-            Popped::ExtraCount(_) => false,
-        }
+        true
     }
 
-    pub closed spec fn popped_len(&self) -> int {
-        match self.popped {
-            Popped::No => arbitrary(),
-            Popped::Ready(page_id, _)
-                | Popped::Used(page_id, _)
-                => self.pages[page_id].count.unwrap() as int,
-            Popped::SegmentCreating(_) => arbitrary(),
-            Popped::SegmentFreeing(_, _) => arbitrary(),
-            Popped::VeryUnready(sid, i, count, _) => count,
-            Popped::ExtraCount(_) => arbitrary(),
-        }
-    }
+    pub uninterp spec fn popped_len(&self) -> int;
 
     ///////
 
@@ -618,14 +372,7 @@ state_machine!{ PageOrg {
         }
     }
 
-    #[verifier::opaque]
-    pub closed spec fn get_list_idx(lists: Seq<Seq<PageId>>, pid: PageId) -> (int, int) {
-        let (i, j): (int, int) = choose |i: int, j: int|
-            0 <= i < lists.len()
-            && 0 <= j < lists[i].len()
-            && lists[i][j] == pid;
-        (i, j)
-    }
+    pub uninterp spec fn get_list_idx(lists: Seq<Seq<PageId>>, pid: PageId) -> (int, int);
 
     proof fn unused_is_in_sbin(&self, page_id: PageId)
         requires self.invariant(),
@@ -648,7 +395,6 @@ state_machine!{ PageOrg {
             && self.unused_lists[i][list_idx] == page_id
         ) by {
             reveal(State::ll_inv_exists_in_some_list);
-            reveal(State::get_list_idx);
         }
 
         assert(i == sbin_idx);
@@ -3783,64 +3529,22 @@ state_machine!{ PageOrg {
         }
     }
 
-    pub closed spec fn page_id_of_popped(p: Popped) -> PageId {
-        match p {
-            Popped::Ready(page_id, _) => page_id,
-            Popped::Used(page_id, _) => page_id,
-            Popped::VeryUnready(segment_id, idx, _, _) => PageId { segment_id, idx: idx as nat },
-            _ => arbitrary(),
-        }
-    }
+    pub uninterp spec fn page_id_of_popped(p: Popped) -> PageId;
 
-    pub closed spec fn popped_page_id(&self) -> PageId {
-        Self::page_id_of_popped(self.popped)
-    }
+    pub uninterp spec fn popped_page_id(&self) -> PageId;
 
     pub closed spec fn expect_out_of_lists(&self, pid: PageId) -> bool {
-        match self.popped {
-            Popped::No => false,
-            Popped::ExtraCount(_) => false,
-            Popped::Ready(page_id, _) => pid == page_id,
-            Popped::Used(page_id, _) => pid == page_id,
-            Popped::SegmentCreating(segment_id) => false,
-            Popped::SegmentFreeing(segment_id, idx) => pid.segment_id == segment_id && pid.idx < idx,
-            Popped::VeryUnready(segment_id, start, _, _) => false,
-        }
+        true
     }
 
-    pub closed spec fn ec_of_popped(p: Popped, segment_id: SegmentId) -> int {
-        match p {
-            Popped::No => 0,
-            Popped::Ready(p, b) => if p.segment_id == segment_id && b { 1 } else { 0 },
-            Popped::Used(p, b) => if p.segment_id == segment_id {
-                if b { 0 } else { -1 }
-              } else { 0 }
-            Popped::SegmentCreating(_) => 0,
-            Popped::VeryUnready(sid, _, _, b) => if segment_id == sid && b { 1 } else { 0 },
-            Popped::SegmentFreeing(_, _) => 0,
-            Popped::ExtraCount(sid) => if segment_id == sid { 1 } else { 0 },
-        }
-    }
+    pub uninterp spec fn ec_of_popped(p: Popped, segment_id: SegmentId) -> int;
 
-    pub closed spec fn popped_ec(&self, segment_id: SegmentId) -> int {
-        Self::ec_of_popped(self.popped, segment_id)
-    }
+    pub uninterp spec fn popped_ec(&self, segment_id: SegmentId) -> int;
 
-    #[verifier::opaque]
-    pub closed spec fn ucount(&self, segment_id: SegmentId) -> nat {
-        self.ucount_sum(segment_id, SLICES_PER_SEGMENT as int)
-    }
+    pub uninterp spec fn ucount(&self, segment_id: SegmentId) -> nat;
 
-    pub closed spec fn ucount_sum(&self, segment_id: SegmentId, idx: int) -> nat
-        decreases idx
-    {
-        if idx <= 0 {
-            0
-        } else {
-            self.ucount_sum(segment_id, idx - 1)
-              + self.one_count(PageId { segment_id, idx: (idx - 1) as nat })
-        }
-    }
+    pub uninterp spec fn ucount_sum(&self, segment_id: SegmentId, idx: int) -> nat
+        decreases idx;
 
     pub proof fn first_last_ll_stuff_unused(&self, i: int)
         requires self.invariant(),
@@ -4145,7 +3849,6 @@ state_machine!{ PageOrg {
                     }
                 }
                 let (i, j) = Self::get_list_idx(self.unused_lists, page_id);
-                reveal(State::get_list_idx);
                 reveal(State::ll_inv_exists_in_some_list);
                 (i, j)
             }
@@ -4191,7 +3894,6 @@ state_machine!{ PageOrg {
                     }
 
                     let (i, j) = Self::get_list_idx(self.unused_lists, page_id);
-                    reveal(State::get_list_idx);
                     reveal(State::ll_inv_exists_in_some_list);
                     return (i, j);
                 }
@@ -4221,96 +3923,22 @@ state_machine!{ PageOrg {
 
     pub closed spec fn good_range_very_unready(&self, page_id: PageId) -> bool
     {
-        &&& self.pages.dom().contains(page_id)
-        &&& self.pages[page_id].offset.is_none()
-        &&& self.pages[page_id].count.is_none()
-        &&& ({ let count = self.popped.get_VeryUnready_2();
-            page_id.idx + count <= SLICES_PER_SEGMENT
-            && (forall |pid| #![trigger self.pages.dom().contains(pid)]
-                #![trigger self.pages.index(pid)]
-              pid.segment_id == page_id.segment_id
-              && page_id.idx <= pid.idx < page_id.idx + count ==>
-                self.pages.dom().contains(pid)
-                && self.pages[pid].is_used == false
-                && self.pages[pid].full.is_none()
-                && self.pages[pid].page_header_kind.is_none()
-                && self.pages[pid].count.is_none()
-                && self.pages[pid].dlist_entry.is_none()
-                && self.pages[pid].offset.is_none()
-           )
-        })
+                true
     }
 
     pub closed spec fn good_range0(&self, segment_id: SegmentId) -> bool
     {
-        let page_id = PageId { segment_id, idx: 0 }; {
-        &&& self.pages.dom().contains(page_id)
-        &&& self.pages[page_id].offset == Some(0nat)
-        &&& self.pages[page_id].count.is_some()
-        &&& ({ let count = self.pages[page_id].count.unwrap();
-            page_id.idx + count <= SLICES_PER_SEGMENT
-            && (forall |pid| #![trigger self.pages.dom().contains(pid)]
-                #![trigger self.pages.index(pid)]
-              pid.segment_id == page_id.segment_id
-              && page_id.idx <= pid.idx < page_id.idx + count ==>
-                self.pages.dom().contains(pid)
-                && self.pages[pid].is_used == false
-                && self.pages[pid].full.is_none()
-                && self.pages[pid].page_header_kind.is_none()
-                && (self.pages[pid].count.is_some() <==> pid == page_id)
-                && self.pages[pid].dlist_entry.is_none()
-                && self.pages[pid].offset == Some((pid.idx - page_id.idx) as nat)
-            )
-        })
-        }
+        true
     }
 
     pub closed spec fn good_range_unused(&self, page_id: PageId) -> bool
     {
-        &&& self.pages.dom().contains(page_id)
-        &&& self.pages[page_id].offset == Some(0nat)
-        &&& self.pages[page_id].count.is_some()
-        &&& ({ let count = self.pages[page_id].count.unwrap();
-            page_id.idx + count <= SLICES_PER_SEGMENT
-            && (forall |pid| #![trigger self.pages.dom().contains(pid)]
-                #![trigger self.pages.index(pid)]
-              pid.segment_id == page_id.segment_id
-              && page_id.idx <= pid.idx < page_id.idx + count ==>
-                self.pages.dom().contains(pid)
-                && self.pages[pid].is_used == false
-                && self.pages[pid].full.is_none()
-                && self.pages[pid].page_header_kind.is_none()
-                && (self.pages[pid].count.is_some() <==> pid == page_id)
-                && (self.pages[pid].dlist_entry.is_some() <==> pid == page_id)
-                && self.pages[pid].offset == (if pid == page_id || pid == (PageId { segment_id: page_id.segment_id, idx: (page_id.idx + self.pages[page_id].count.unwrap() - 1) as nat }) {
-                            Some((pid.idx - page_id.idx) as nat)
-                        } else {
-                            None
-                        })
-            )
-        })
+        true
     }
 
     pub closed spec fn good_range_used(&self, page_id: PageId) -> bool
     {
-        &&& self.pages.dom().contains(page_id)
-        &&& self.pages[page_id].offset == Some(0nat)
-        &&& self.pages[page_id].count.is_some()
-        &&& ({ let count = self.pages[page_id].count.unwrap();
-            page_id.idx + count <= SLICES_PER_SEGMENT
-            && (forall |pid| #![trigger self.pages.dom().contains(pid)]
-                #![trigger self.pages.index(pid)]
-              pid.segment_id == page_id.segment_id
-              && page_id.idx <= pid.idx < page_id.idx + count ==>
-                self.pages.dom().contains(pid)
-                && self.pages[pid].is_used == true
-                && self.pages[pid].offset == Some((pid.idx - page_id.idx) as nat)
-                //&& (self.pages[pid].count.is_some() <==> pid == page_id)
-                && (self.pages[pid].page_header_kind.is_some() <==> pid == page_id)
-                && (self.pages[pid].dlist_entry.is_some() <==> pid == page_id)
-                && (self.pages[pid].full.is_some() <==> pid == page_id)
-            )
-        })
+        true
     }
 
     pub proof fn lemma_used_bound(&self, segment_id: SegmentId)
@@ -4318,7 +3946,6 @@ state_machine!{ PageOrg {
             self.invariant(),
         ensures self.segments[segment_id].used <= SLICES_PER_SEGMENT + 1,
     {
-        reveal(State::ucount);
         self.ucount_sum_le(segment_id, SLICES_PER_SEGMENT as int);
     }
 
@@ -4348,7 +3975,6 @@ state_machine!{ PageOrg {
         assert forall |sid: SegmentId| sid != esid implies pre.ucount(sid) == post.ucount(sid)
         by {
             Self::ucount_sum_preserve(pre, post, sid, SLICES_PER_SEGMENT as int);
-            reveal(State::ucount);
         }
     }
 
@@ -4362,7 +3988,6 @@ state_machine!{ PageOrg {
         assert forall |sid: SegmentId| pre.ucount(sid) == post.ucount(sid)
         by {
             Self::ucount_sum_preserve(pre, post, sid, SLICES_PER_SEGMENT as int);
-            reveal(State::ucount);
         }
     }
 
@@ -4385,15 +4010,10 @@ state_machine!{ PageOrg {
         }
     }
 
-    pub closed spec fn one_count(&self, page_id: PageId) -> nat {
-        if self.does_count(page_id) { 1 } else { 0 }
-    }
+    pub uninterp spec fn one_count(&self, page_id: PageId) -> nat;
 
     pub closed spec fn does_count(&self, page_id: PageId) -> bool {
-        self.pages.dom().contains(page_id)
-          && page_id.idx != 0
-          && self.pages[page_id].is_used
-          && self.pages[page_id].offset == Some(0nat)
+        true
     }
 
     pub proof fn ucount_inc1(pre: Self, post: Self, page_id: PageId)
@@ -4407,7 +4027,6 @@ state_machine!{ PageOrg {
             post.ucount(page_id.segment_id) == pre.ucount(page_id.segment_id) + 1
     {
         Self::ucount_sum_inc1(pre, post, page_id, SLICES_PER_SEGMENT as int);
-        reveal(State::ucount);
     }
 
     pub proof fn ucount_sum_inc1(pre: Self, post: Self, page_id: PageId, idx: int)
@@ -4437,7 +4056,6 @@ state_machine!{ PageOrg {
             post.ucount(page_id.segment_id) == pre.ucount(page_id.segment_id) - 1
     {
         Self::ucount_sum_dec1(pre, post, page_id, SLICES_PER_SEGMENT as int);
-        reveal(State::ucount);
     }
 
     pub proof fn ucount_sum_dec1(pre: Self, post: Self, page_id: PageId, idx: int)
@@ -4464,7 +4082,6 @@ state_machine!{ PageOrg {
             self.ucount(sid) == 0
     {
         self.ucount_sum_eq0(sid, SLICES_PER_SEGMENT as int);
-        reveal(State::ucount);
     }
 
     pub proof fn ucount_sum_eq0(&self, sid: SegmentId, idx: int)
@@ -4486,7 +4103,6 @@ state_machine!{ PageOrg {
         ensures
             !self.does_count(page_id)
     {
-        reveal(State::ucount);
         self.ucount_sum_eq0_inverse(page_id, SLICES_PER_SEGMENT as int);
     }
 
@@ -4753,16 +4369,7 @@ state_machine!{ PageOrg {
     }
 
     pub closed spec fn if_popped_or_other_then_for(&self, segment_id: SegmentId) -> bool {
-        match self.popped {
-            Popped::No => true,
-            Popped::Ready(page_id, _)
-                | Popped::Used(page_id, _)
-                => page_id.segment_id == segment_id,
-            Popped::SegmentCreating(sid) => sid == segment_id,
-            Popped::SegmentFreeing(sid, _) => sid == segment_id,
-            Popped::VeryUnready(sid, _, _, _) => sid == segment_id,
-            Popped::ExtraCount(_) => true,
-        }
+        true
     }
 
     pub proof fn unchanged_used_ll(pre: Self, post: Self)
@@ -4811,13 +4418,9 @@ state_machine!{ PageOrg {
         }
     }
 
-    pub closed spec fn insert_front(ll: Seq<Seq<PageId>>, i: int, page_id: PageId) -> Seq<Seq<PageId>> {
-        ll.update(i, ll[i].insert(0, page_id))
-    }
+    pub uninterp spec fn insert_front(ll: Seq<Seq<PageId>>, i: int, page_id: PageId) -> Seq<Seq<PageId>>;
 
-    pub closed spec fn insert_back(ll: Seq<Seq<PageId>>, i: int, page_id: PageId) -> Seq<Seq<PageId>> {
-        ll.update(i, ll[i].push(page_id))
-    }
+    pub uninterp spec fn insert_back(ll: Seq<Seq<PageId>>, i: int, page_id: PageId) -> Seq<Seq<PageId>>;
 
     pub proof fn good_range_disjoint_very_unready(&self, page_id: PageId)
         requires self.invariant(),

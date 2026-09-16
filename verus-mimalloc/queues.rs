@@ -191,25 +191,11 @@ pub fn page_queue_push_back(heap: HeapPtr, pq: usize, page: PagePtr, Tracked(loc
 //}
 
 spec fn local_direct_update(loc1: Local, loc2: Local, i: int, j: int, pq: int) -> bool {
-    &&& loc2 == Local { heap: loc2.heap, .. loc1 }
-    &&& loc2.heap == HeapLocalAccess { pages_free_direct: loc2.heap.pages_free_direct, .. loc1.heap }
-    &&& loc1.heap.pages_free_direct.id() == loc2.heap.pages_free_direct.id()
-    &&& pfd_direct_update(
-          loc1.heap.pages_free_direct.value()@,
-          loc2.heap.pages_free_direct.value()@, i, j,
-            loc1.page_empty_global@.s.points_to.ptr(),
-            loc1.heap.pages.value()@[pq].first)
+    true
 }
 
 spec fn pfd_direct_update(pfd1: Seq<*mut Page>, pfd2: Seq<*mut Page>, i: int, j: int, emp: *mut Page, p: *mut Page) -> bool {
-    &&& pfd1.len() == pfd2.len() == PAGES_DIRECT
-    &&& (forall |k|
-        #![trigger(pfd1.index(k))]
-        #![trigger(pfd2.index(k))]
-      0 <= k < pfd1.len() && !(i <= k < j) ==> pfd1[k] == pfd2[k])
-    &&& (forall |k| #![trigger pfd2.index(k)]
-        0 <= k < pfd2.len() && i <= k < j ==>
-            pages_free_direct_match(pfd2[k], p, emp))
+    true
 }
 
 

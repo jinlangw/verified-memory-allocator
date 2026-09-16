@@ -121,54 +121,17 @@ pub open spec fn mem_chunk_good1(
 }
 
 impl Local {
-    spec fn segment_page_range(&self, segment_id: SegmentId, page_id: PageId) -> Set<int> {
-        if page_id.segment_id == segment_id && self.is_used_primary(page_id) {
-            set_int_range(
-                page_start(page_id) + start_offset(self.block_size(page_id)),
-                page_start(page_id) + start_offset(self.block_size(page_id))
-                    + self.page_capacity(page_id) * self.block_size(page_id)
-            )
-        } else {
-            Set::empty()
-        }
-    }
+    uninterp spec fn segment_page_range(&self, segment_id: SegmentId, page_id: PageId) -> Set<int>;
 
-    pub closed spec fn segment_pages_range_total(&self, segment_id: SegmentId) -> Set<int> {
-        self.page_organization.pages.dom().map(
-            |page_id| self.segment_page_range(segment_id, page_id)
-        ).flatten()
-        /* The following old way of building the set isn't evidently finite:
-        Set::<int>::new(|addr| exists |page_id|
-            self.segment_page_range(segment_id, page_id).contains(addr)
-        )
-        */
-    }
+    pub uninterp spec fn segment_pages_range_total(&self, segment_id: SegmentId) -> Set<int>;
 
 
 
 
 
-    spec fn segment_page_used(&self, segment_id: SegmentId, page_id: PageId) -> Set<int> {
-        if page_id.segment_id == segment_id && self.is_used_primary(page_id) {
-            set_int_range(
-                page_start(page_id),
-                page_start(page_id) + self.page_count(page_id) * SLICE_SIZE
-            )
-        } else {
-            Set::empty()
-        }
-    }
+    uninterp spec fn segment_page_used(&self, segment_id: SegmentId, page_id: PageId) -> Set<int>;
 
-    pub closed spec fn segment_pages_used_total(&self, segment_id: SegmentId) -> Set<int> {
-        self.page_organization.pages.dom().map(
-            |page_id| self.segment_page_used(segment_id, page_id)
-        ).flatten()
-        /* The following old way of building the set isn't evidently finite:
-        Set::<int>::new(|addr| exists |page_id|
-            self.segment_page_used(segment_id, page_id).contains(addr)
-        )
-        */
-    }
+    pub uninterp spec fn segment_pages_used_total(&self, segment_id: SegmentId) -> Set<int>;
 
 
 

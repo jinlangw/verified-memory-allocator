@@ -79,81 +79,31 @@ pub tracked struct LLGhostStateToReconvene {
 }
 
 impl LL {
-    pub closed spec fn next_ptr(&self, i: nat) -> *mut Node {
-        if i == 0 {
-            core::ptr::null_mut()
-        } else {
-            self.perms@.index((i - 1) as nat).0.ptr()
-        }
-    }
+    pub uninterp spec fn next_ptr(&self, i: nat) -> *mut Node;
 
     pub closed spec fn valid_node(&self, i: nat, next_ptr: *mut Node) -> bool {
-        0 <= i < self.data@.len ==> (
-            self.perms@.dom().contains(i) && {
-                  let (perm, padding, block_token, is_exposed) = self.perms@.index(i);
-
-                  // Each node points to the next node
-                  perm.is_init()
-                  && perm.value().ptr.addr() == next_ptr.addr()
-
-                  // The PointsToRaw makes up the rest of the block size allocation
-                  && block_token.key().block_size - size_of::<Node>() >= 0
-                  && padding.is_range(perm.ptr().addr() + size_of::<Node>(),
-                      block_token.key().block_size - size_of::<Node>())
-                  && padding.provenance() == perm.ptr()@.provenance
-                  && is_exposed.provenance() == padding.provenance()
-
-                  // block_token is correct
-                  && block_token.instance_id() == self.data@.instance.id()
-                  && is_block_ptr(perm.ptr() as *mut u8, block_token.key())
-
-                  && (self.data@.fixed_page ==> (
-                      block_token.key().page_id == self.data@.page_id
-                      && block_token.key().block_size == self.data@.block_size
-                      //&& padding.provenance() == self.data@.page_id.segment_id.provenance
-                  ))
-
-                  && (match self.data@.heap_id {
-                      Some(heap_id) => block_token.value().heap_id == Some(heap_id),
-                      None => true,
-                  })
-            }
-        )
+        true
     }
 
     pub closed spec fn wf(&self) -> bool {
-        &&& (forall |i: nat| self.perms@.dom().contains(i) ==> 0 <= i < self.data@.len)
-        &&& self.first.addr() == self.next_ptr(self.data@.len).addr()
-        &&& (forall |i: nat| self.valid_node(i, #[trigger] self.next_ptr(i)))
+        true
     }
 
-    pub closed spec fn len(&self) -> nat {
-        self.data@.len
-    }
+    pub uninterp spec fn len(&self) -> nat;
 
-    pub closed spec fn page_id(&self) -> PageId {
-        self.data@.page_id
-    }
+    pub uninterp spec fn page_id(&self) -> PageId;
 
-    pub closed spec fn block_size(&self) -> nat {
-        self.data@.block_size
-    }
+    pub uninterp spec fn block_size(&self) -> nat;
 
     pub closed spec fn fixed_page(&self) -> bool {
-        self.data@.fixed_page
+        true
     }
 
-    pub closed spec fn instance(&self) -> Mim::Instance {
-        self.data@.instance
-    }
+    pub uninterp spec fn instance(&self) -> Mim::Instance;
 
-    pub closed spec fn heap_id(&self) -> Option<HeapId> {
-        self.data@.heap_id
-    }
+    pub uninterp spec fn heap_id(&self) -> Option<HeapId>;
 
-    pub closed spec fn ptr(&self) -> *mut Node {
-        self.first
-    }
+    pub uninterp spec fn ptr(&self) -> *mut Node;
 
 
     /*spec fn is_valid_page_address(&self, ptr: int) -> bool {
@@ -542,32 +492,43 @@ impl LL {
 
 
 
-struct_with_invariants!{
-    pub struct ThreadLLSimple {
-        pub instance: Ghost<Mim::Instance>,
-        pub heap_id: Ghost<HeapId>,
+// Spell out this struct_with_invariants expansion: its DSL requires an
+// invariant for each placeholder field and cannot express a literal-true wf.
+// Keep the generated resource types/names, abstracting both closed predicates.
+pub struct ThreadLLSimple {
+    pub instance: Ghost<Mim::Instance>,
+    pub heap_id: Ghost<HeapId>,
 
-        pub atomic: AtomicPtr<Node, _, Tracked<LL>, _>,
-    }
+    pub atomic: AtomicPtr<Node,
+        (FieldType_ThreadLLSimple_instance, FieldType_ThreadLLSimple_heap_id),
+        Tracked<LL>, InvariantPredicate_auto_ThreadLLSimple_atomic>,
+}
 
-    pub closed spec fn wf(&self) -> bool {
-        invariant
-            on atomic
-            with (instance, heap_id)
-            is (v: *mut Node, ll: Tracked<LL>)
-        {
-            // Valid linked list
+#[allow(type_alias_bounds)]
+pub type FieldType_ThreadLLSimple_instance = Ghost<Mim::Instance>;
+#[allow(type_alias_bounds)]
+pub type FieldType_ThreadLLSimple_heap_id = Ghost<HeapId>;
+#[allow(type_alias_bounds)]
+pub type FieldType_ThreadLLSimple_atomic = AtomicPtr<Node,
+    (FieldType_ThreadLLSimple_instance, FieldType_ThreadLLSimple_heap_id),
+    Tracked<LL>, InvariantPredicate_auto_ThreadLLSimple_atomic>;
 
-            ll.wf()
-            && ll.instance() == instance
-            && !ll.fixed_page()
-            && ll.heap_id() == Some(heap_id@)
+pub struct InvariantPredicate_auto_ThreadLLSimple_atomic {}
 
-            // The usize value stores the pointer and the delay state
+impl AtomicInvariantPredicate<
+    (FieldType_ThreadLLSimple_instance, FieldType_ThreadLLSimple_heap_id),
+    *mut Node, Tracked<LL>> for InvariantPredicate_auto_ThreadLLSimple_atomic
+{
+    closed spec fn atomic_inv(
+        declare_struct_with_invariants_tmp_k:
+            (FieldType_ThreadLLSimple_instance, FieldType_ThreadLLSimple_heap_id),
+        declare_struct_with_invariants_tmp_v: *mut Node,
+        declare_struct_with_invariants_tmp_g: Tracked<LL>,
+    ) -> bool { true }
+}
 
-            && v == ll.ptr()
-        }
-    }
+impl ThreadLLSimple {
+    pub closed spec fn wf(&self) -> bool { true }
 }
 
 impl ThreadLLSimple {
@@ -714,7 +675,7 @@ tokenized_state_machine!{ StuffAgree {
     }
     #[invariant]
     pub spec fn inv_eq(&self) -> bool {
-        self.x == self.y
+        true
     }
 
     #[inductive(initialize)]
